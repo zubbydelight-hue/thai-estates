@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Недвижимость Таиланда 2026 — 18 избранных проектов Пхукета и Паттайи</title>
+  <meta name="description" content="Подборка 18 лучших инвестиционных проектов Таиланда: аренда, перепродажа, проживание и private collection. Пхукет и Паттайя.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css?v=3">
+  <link rel="stylesheet" href="assets/css/quiz.css?v=3">
+  <style>
+    /* Почему Таиланд — редакционные карточки */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(20px, 2.6vw, 40px);
+    }
+    .why-card__media {
+      aspect-ratio: 3 / 3.8;
+      overflow: hidden;
+      border-radius: 4px;
+      position: relative;
+    }
+    .why-card__media img { width: 100%; height: 100%; object-fit: cover; }
+    .why-card__num {
+      font-family: var(--ff-d);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--gold);
+      margin-top: 22px;
+    }
+    .why-card__title {
+      font-family: var(--ff-d);
+      font-weight: 500;
+      font-size: clamp(24px, 2.4vw, 34px);
+      margin-top: 6px;
+    }
+    .why-card__text { margin-top: 12px; font-size: 14px; line-height: 1.75; color: var(--stone); max-width: 360px; }
+    .why-card:nth-child(2) { transform: translateY(clamp(0px, 4vw, 64px)); }
+
+    /* CTA-финал */
+    .cta-final { position: relative; overflow: hidden; }
+    .cta-final__bg { position: absolute; inset: 0; }
+    .cta-final__bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.16; }
+    .cta-final__inner { position: relative; z-index: 2; max-width: 860px; margin: 0 auto; text-align: center; }
+    .cta-final form {
+      margin-top: clamp(34px, 4vw, 54px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 26px;
+      text-align: left;
+    }
+    .cta-final form .btn { grid-column: 1 / -1; justify-self: center; min-width: min(420px, 100%); margin-top: 10px; }
+    .cta-final .form-note { grid-column: 1 / -1; text-align: center; color: rgba(244,240,230,0.4); }
+
+    @media (max-width: 1080px) {
+      .why-grid { grid-template-columns: 1fr; max-width: 560px; }
+      .why-card:nth-child(2) { transform: none; }
+      .why-card__media { aspect-ratio: 16 / 10; }
+    }
+    @media (max-width: 720px) {
+      .cta-final form { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preloader">
+    <div class="preloader__logo">Thai<em>·</em>Estates</div>
+    <div class="preloader__line"></div>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="nav__logo" href="#top">Thai<em>·</em>Estates</a>
+      <nav class="nav__links">
+        <a href="#catalog">Каталог</a>
+        <a href="#quiz">Подбор</a>
+        <a href="#why">Почему Таиланд</a>
+        <a href="#steps">Процесс</a>
+        <a href="#faq">Вопросы</a>
+        <div class="nav__links-extra">
+          <a class="nav__phone" href="tel:+66800000000"><small>Позвонить нам</small>+66 80 000 00 00</a>
+          <button class="btn btn--gold" data-open-modal="Мобильное меню">Оставить заявку <span class="arr">→</span></button>
+        </div>
+      </nav>
+      <div class="nav__right">
+        <button class="btn btn--line btn--sm nav__cta-desktop" data-open-modal="Шапка сайта">Оставить заявку</button>
+        <button class="nav__burger" aria-label="Меню"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero__bg" data-hero-img><img src="assets/img/btgr-lagoon-1.jpg" alt="Побережье Бангтао, Пхукет"></div>
+    <div class="hero__content">
+      <div class="container">
+        <span class="label label--line">Пхукет · Паттайя · Июль 2026</span>
+        <div class="hero__grid">
+          <h1 class="h-hero hero__title" data-split>Недвижимость Таиланда, которая <em>работает</em> на вас</h1>
+          <div class="hero__desc" data-hero-fade>
+            <p>18 избранных проектов — от апартаментов у пляжа за $85 000 до вилл Amanpuri из закрытых коллекций. Под любую стратегию: аренда, перепродажа, жизнь у моря.</p>
+            <a class="btn btn--gold" href="#quiz">Подобрать проект <span class="arr">→</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="hero__meta" data-hero-fade>
+        <div class="container">
+          <div class="hero__meta-grid">
+            <div class="hero__meta-item"><b data-count="18">0</b><span>проектов от проверенных застройщиков</span></div>
+            <div class="hero__meta-item"><b data-count="85" data-prefix="$" data-suffix="K">0</b><span>минимальный порог входа</span></div>
+            <div class="hero__meta-item"><b data-count="10" data-suffix="%">0</b><span>целевая доходность на аренде</span></div>
+            <div class="hero__meta-item"><b data-count="4">0</b><span>инвестиционные стратегии</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <div class="marquee__seq">
+        <span>Бангтао</span><i>✦</i><span>Лагуна</span><i>✦</i><span>Лаян</span><i>✦</i><span>Сурин</span><i>✦</i><span>Найянг</span><i>✦</i><span>Пансея</span><i>✦</i><span>Чернгталай</span><i>✦</i><span>Джомтьен</span><i>✦</i><span>Пратумнак</span><i>✦</i>
+      </div>
+      <div class="marquee__seq">
+        <span>Бангтао</span><i>✦</i><span>Лагуна</span><i>✦</i><span>Лаян</span><i>✦</i><span>Сурин</span><i>✦</i><span>Найянг</span><i>✦</i><span>Пансея</span><i>✦</i><span>Чернгталай</span><i>✦</i><span>Джомтьен</span><i>✦</i><span>Пратумнак</span><i>✦</i>
+      </div>
+    </div>
+  </div>
+
+  <!-- КАТАЛОГ -->
+  <section class="section" id="catalog">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-head__idx">01 / Каталог</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Сводная подборка</span>
+          <h2 class="h2" data-split>Все проекты <em>одной</em> коллекцией</h2>
+          <p class="sec-head__sub" data-reveal>Реальные фотографии, актуальные стратегии и пороги входа по каждому объекту из аналитической таблицы. Фильтруйте по региону, стратегии или бюджету.</p>
+        </div>
+      </div>
+
+      <div class="filters" id="filters" data-reveal-group data-stagger="0.04">
+        <button class="chip is-active" data-filter="all">Все проекты</button>
+        <button class="chip" data-filter="region:phuket">Пхукет</button>
+        <button class="chip" data-filter="region:pattaya">Паттайя</button>
+        <button class="chip" data-filter="strategy:rent">Аренда</button>
+        <button class="chip" data-filter="strategy:resale">Перепродажа</button>
+        <button class="chip" data-filter="strategy:live">Проживание</button>
+        <button class="chip" data-filter="strategy:private">Private Collection</button>
+        <button class="chip" data-filter="budget:0-250000">до $250K</button>
+        <button class="chip" data-filter="budget:250000-1000000">$250K – $1M</button>
+        <button class="chip" data-filter="budget:1000000-">от $1M</button>
+      </div>
+
+      <div class="catalog-count" id="catalog-count"></div>
+      <div class="cards-grid" id="cards-grid"></div>
+    </div>
+  </section>
+
+  <!-- КВИЗ -->
+  <section class="section section--dark" id="quiz">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-head__idx">02 / Подбор</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Персональная подборка</span>
+          <h2 class="h2" data-split>Четыре вопроса — и <em>топ-3</em> проекта под вашу задачу</h2>
+          <p class="sec-head__sub" data-reveal>Алгоритм сопоставит цели со стратегиями всех 18 проектов и покажет самые подходящие варианты с ценами.</p>
+        </div>
+      </div>
+      <div id="quiz-container" data-reveal></div>
+    </div>
+  </section>
+
+  <!-- ПОЧЕМУ ТАИЛАНД -->
+  <section class="section" id="why">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-head__idx">03 / Рынок</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Почему Таиланд</span>
+          <h2 class="h2" data-split>Рынок, который растёт быстрее, чем <em>строятся</em> дома</h2>
+        </div>
+      </div>
+      <div class="why-grid">
+        <div class="why-card" data-reveal>
+          <div class="why-card__media" data-parallax><img src="assets/img/trisara-1.jpg" alt="Виллы Trisara" loading="lazy"></div>
+          <div class="why-card__num">— 01</div>
+          <div class="why-card__title">+7–16% в год</div>
+          <p class="why-card__text">Рост цен в районе Бангтао — самом быстрорастущем на Пхукете. Вход на этапе стройки добавляет ещё 15–30% к моменту сдачи.</p>
+        </div>
+        <div class="why-card" data-reveal data-delay="0.12">
+          <div class="why-card__media" data-parallax><img src="assets/img/andaman-city-6.jpg" alt="Andaman City by Radisson" loading="lazy"></div>
+          <div class="why-card__num">— 02</div>
+          <div class="why-card__title">Отельные бренды</div>
+          <p class="why-card__text">Radisson, Banyan Tree, Minor, Aman — международные операторы управляют арендой и гарантируют заполняемость без вашего участия.</p>
+        </div>
+        <div class="why-card" data-reveal data-delay="0.24">
+          <div class="why-card__media" data-parallax><img src="assets/img/amanpuri-1.jpg" alt="Amanpuri" loading="lazy"></div>
+          <div class="why-card__num">— 03</div>
+          <div class="why-card__title">12 млн туристов</div>
+          <p class="why-card__text">Пхукет — один из самых загруженных курортов мира. Высокий сезон длится 8 месяцев, спрос на аренду стабильно превышает предложение.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПРОЦЕСС -->
+  <section class="section section--panel" id="steps">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-head__idx">04 / Процесс</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Как проходит сделка</span>
+          <h2 class="h2" data-split>Четыре шага до собственности <em>у моря</em></h2>
+        </div>
+      </div>
+      <div class="hair-list" data-reveal-group data-stagger="0.12">
+        <div class="hair-item">
+          <span class="hair-item__idx">01</span>
+          <span class="hair-item__title">Подбор и бронирование</span>
+          <p class="hair-item__text">Выбираем проект и юнит, фиксируем цену депозитом. Полностью дистанционно, за 1–3 дня.</p>
+        </div>
+        <div class="hair-item">
+          <span class="hair-item__idx">02</span>
+          <span class="hair-item__title">Договор и юридическая проверка</span>
+          <p class="hair-item__text">Проверяем застройщика и договор. Freehold или leasehold — подскажем, что выгоднее в вашем случае.</p>
+        </div>
+        <div class="hair-item">
+          <span class="hair-item__idx">03</span>
+          <span class="hair-item__title">Рассрочка 0% до ключей</span>
+          <p class="hair-item__text">Платежи привязаны к этапам строительства. Первый взнос — обычно 30–35% от стоимости.</p>
+        </div>
+        <div class="hair-item">
+          <span class="hair-item__idx">04</span>
+          <span class="hair-item__title">Ключи и пассивный доход</span>
+          <p class="hair-item__text">Принимаем объект, подключаем управляющую компанию — доход приходит на карту в любой точке мира.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-head__idx">05 / FAQ</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Нас часто спрашивают</span>
+          <h2 class="h2" data-split>Вопросы <em>и</em> ответы</h2>
+        </div>
+      </div>
+      <div class="faq" data-reveal>
+        <div class="faq__item">
+          <button class="faq__q">Может ли иностранец владеть недвижимостью в Таиланде?<span class="faq__ico"></span></button>
+          <div class="faq__a"><div class="faq__a-inner">Да. В кондоминиумах иностранцам доступен freehold — полное владение (до 49% площади здания). Виллы оформляются через долгосрочный leasehold на 30+30+30 лет или через компанию. Мы сопровождаем оба варианта.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q">Какие налоги и расходы при покупке?<span class="faq__ico"></span></button>
+          <div class="faq__a"><div class="faq__a-inner">Разовые расходы при регистрации — 1–6% от стоимости (обычно делятся с застройщиком). Ежегодного налога на недвижимость для физлиц в привычном виде нет. Коммунальные платежи — от $1–2 за м² в месяц.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q">Как работает рассрочка от застройщика?<span class="faq__ico"></span></button>
+          <div class="faq__a"><div class="faq__a-inner">Беспроцентная рассрочка на период строительства: бронь $2–5K, далее 30–35% при подписании договора и платежи по этапам стройки. Финальный платёж — при передаче ключей.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q">Кто будет сдавать мою недвижимость в аренду?<span class="faq__ico"></span></button>
+          <div class="faq__a"><div class="faq__a-inner">В проектах с отельным управлением (Radisson, Banyan Tree, Minor) — сам оператор по программе rental pool. В остальных — профессиональная управляющая компания: продвижение на Booking/Airbnb, заселение, уборка, отчётность.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q">Можно ли купить дистанционно?<span class="faq__ico"></span></button>
+          <div class="faq__a"><div class="faq__a-inner">Да, около 70% сделок наших клиентов проходят полностью дистанционно: онлайн-показы, электронное подписание, международные переводы или крипта. Приезжать в Таиланд не обязательно.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--dark cta-final">
+    <div class="cta-final__bg" data-parallax><img src="assets/img/btgr-lagoon-1.jpg" alt=""></div>
+    <div class="container cta-final__inner">
+      <div class="agent agent--center agent--light" style="margin-bottom:26px" data-reveal>
+        <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
+        <div>
+          <div class="agent__name">Kun Ping — эксперт по недвижимости Таиланда</div>
+          <div class="agent__role">Лично подберёт проекты под вашу задачу · <span class="agent__status">онлайн</span></div>
+        </div>
+      </div>
+      <span class="label" data-reveal>Начните с презентации</span>
+      <h2 class="h2" style="margin-top:18px" data-split>Получите полную презентацию <em>всех 18</em> проектов</h2>
+      <p class="sec-head__sub" style="margin:22px auto 0" data-reveal>PDF с ценами, планировками, доходностью и графиками рассрочки — в WhatsApp или Telegram в течение 15 минут.</p>
+      <form data-demo-form data-reveal>
+        <input class="input input--ghost" type="text" placeholder="Ваше имя" required>
+        <input class="input input--ghost" type="tel" placeholder="+7 (___) ___-__-__" required>
+        <button class="btn btn--gold btn--lg" type="submit">Получить презентацию <span class="arr">→</span></button>
+        <span class="form-note">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности. Это демо — данные никуда не отправляются.</span>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__word" data-split>Thai<em>·</em>Estates</div>
+      <div class="footer__row">
+        <span>+66 80 000 00 00</span>
+        <span>info@thai-estates.demo</span>
+        <span>Phuket · Pattaya · 2026</span>
+      </div>
+      <small>Демо-лендинг создан в презентационных целях. Названия проектов и фотографии принадлежат их застройщикам и используются как иллюстрация концепции «единый лендинг с подборкой объектов». Цены и параметры являются ориентировочными и не являются публичной офертой.</small>
+    </div>
+  </footer>
+
+  <!-- Модалка -->
+  <div class="modal" id="lead-modal">
+    <div class="modal__backdrop"></div>
+    <div class="modal__panel">
+      <button class="modal__close" aria-label="Закрыть">✕</button>
+      <span class="label">Заявка</span>
+      <div class="h3">Получить подборку с ценами</div>
+      <p class="form-note" style="font-size:13.5px">Вышлем цены, планировки и условия рассрочки. Раздел: <span data-lead-source>сайт</span></p>
+      <div class="agent" style="margin-top:20px;padding:14px 16px;border:1px solid var(--hair);border-radius:2px">
+        <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
+        <div>
+          <div class="agent__name">Заявку получит Kun Ping</div>
+          <div class="agent__role">Ответит в течение 15 минут · <span class="agent__status">онлайн</span></div>
+        </div>
+      </div>
+      <form data-demo-form>
+        <input class="input" type="text" placeholder="Ваше имя" required>
+        <input class="input" type="tel" placeholder="+7 (___) ___-__-__" required>
+        <button class="btn btn--night btn--block" type="submit">Отправить <span class="arr">→</span></button>
+        <span class="form-note text-center">Это демо — данные никуда не отправляются</span>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script src="assets/js/data.js?v=3"></script>
+  <script src="assets/js/quiz-engine.js?v=3"></script>
+  <script src="assets/js/common.js?v=3"></script>
+  <script src="assets/js/catalog.js?v=3"></script>
+  <script src="assets/js/motion.js?v=3"></script>
+</body>
+</html>

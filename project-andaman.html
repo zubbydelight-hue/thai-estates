@@ -1,0 +1,706 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andaman City by Radisson — апартаменты в 500 м от пляжа Бангтао | Цены, планировки</title>
+  <meta name="description" content="Город-курорт под управлением Radisson 5* на Пхукете. Апартаменты от $190 000, рассрочка 0%, доход до 9% годовых по программе Rental Pool 70/30.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="stylesheet" href="assets/css/base.css?v=3">
+  <style>
+    /* О проекте */
+    .about-media {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 4 / 4.6;
+    }
+    .about-media img { width: 100%; height: 100%; object-fit: cover; }
+    .about-media__caption {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      z-index: 2;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: rgba(11, 16, 12, 0.55);
+      backdrop-filter: blur(12px);
+      color: var(--cream);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 40px;
+      border-top: 1px solid var(--hair);
+      border-left: 1px solid var(--hair);
+    }
+    .about-stat {
+      padding: 26px 26px 24px;
+      border-right: 1px solid var(--hair);
+      border-bottom: 1px solid var(--hair);
+    }
+    .about-stat b {
+      display: block;
+      font-family: var(--ff-d);
+      font-weight: 500;
+      font-size: clamp(30px, 3vw, 42px);
+      line-height: 1;
+      color: var(--ink);
+    }
+    .about-stat span { display: block; font-size: 12.5px; color: var(--stone); margin-top: 8px; line-height: 1.5; }
+
+    /* Оффер */
+    .offer {
+      position: relative;
+      overflow: hidden;
+      background: var(--night);
+      color: var(--cream);
+      border-radius: 4px;
+      padding: clamp(40px, 5vw, 72px);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+    .offer::before {
+      content: "−300 000 THB";
+      position: absolute;
+      right: -20px;
+      bottom: -50px;
+      font-family: var(--ff-d);
+      font-style: italic;
+      font-size: clamp(90px, 14vw, 190px);
+      color: rgba(194, 161, 99, 0.07);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .offer__price {
+      font-family: var(--ff-d);
+      font-weight: 500;
+      font-size: clamp(44px, 6vw, 76px);
+      line-height: 1;
+      color: var(--gold-2);
+      margin-top: 16px;
+    }
+
+    /* Планировки */
+    .plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--hair); }
+    .plan {
+      padding: clamp(28px, 3vw, 44px) clamp(22px, 2.4vw, 36px);
+      border-right: 1px solid var(--hair);
+      display: flex;
+      flex-direction: column;
+      background: transparent;
+      transition: background 0.5s var(--tr);
+    }
+    .plan:last-child { border-right: none; }
+    .plan:hover { background: var(--white); }
+    .plan__type { font-size: 10.5px; font-weight: 800; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold); }
+    .plan__name { font-family: var(--ff-d); font-weight: 500; font-size: clamp(26px, 2.4vw, 34px); margin-top: 10px; }
+    .plan__area { color: var(--stone); font-size: 13.5px; margin-top: 4px; }
+    .plan__divider { height: 1px; background: var(--hair); margin: 22px 0 16px; }
+    .plan__feat { font-size: 13px; color: var(--stone); display: flex; gap: 10px; padding: 4px 0; line-height: 1.55; }
+    .plan__feat::before { content: "—"; color: var(--gold); flex-shrink: 0; }
+    .plan__price { font-family: var(--ff-d); font-weight: 600; font-size: 26px; margin: 20px 0 4px; }
+    .plan__price small { display: block; font-family: var(--ff-t); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone); margin-top: 4px; }
+    .plan .btn { margin-top: 20px; }
+
+    /* Галерея */
+    .gallery-swiper { overflow: visible; }
+    .gallery-swiper .swiper-slide {
+      width: min(900px, 84vw);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 16 / 9;
+    }
+    .gallery-swiper img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-swiper figcaption {
+      position: absolute;
+      left: 22px;
+      bottom: 20px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: rgba(11, 16, 12, 0.6);
+      backdrop-filter: blur(12px);
+      color: var(--cream);
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .gallery-nav { display: flex; gap: 12px; margin-top: 30px; }
+    .gallery-nav button {
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      border: 1px solid var(--hair-l);
+      color: var(--cream);
+      font-size: 19px;
+      transition: all 0.35s var(--tr);
+    }
+    .gallery-nav button:hover { border-color: var(--gold); color: var(--gold-2); transform: scale(1.06); }
+
+    /* Инфраструктура */
+    .infra-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 230px; gap: 14px; }
+    .infra {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      color: var(--cream);
+      display: flex;
+      align-items: flex-end;
+    }
+    .infra--wide { grid-column: span 2; }
+    .infra--tall { grid-row: span 2; }
+    .infra img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--tr); }
+    .infra:hover img { transform: scale(1.06); }
+    .infra::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(11,16,12,0.85)); }
+    .infra span { position: relative; z-index: 2; padding: 22px 24px; font-weight: 700; font-size: 15px; line-height: 1.45; }
+    .infra--text { background: var(--pine); align-items: center; justify-content: center; text-align: center; padding: 28px; }
+    .infra--text span { padding: 0; font-family: var(--ff-d); font-weight: 500; font-style: italic; font-size: 21px; line-height: 1.5; color: var(--gold-2); }
+
+    /* Рассрочка */
+    .pay-table { border-top: 1px solid var(--hair); }
+    .pay-row {
+      display: grid;
+      grid-template-columns: 150px 1fr auto;
+      gap: 20px;
+      align-items: baseline;
+      padding: clamp(20px, 2.4vw, 30px) 6px;
+      border-bottom: 1px solid var(--hair);
+      font-size: 15px;
+    }
+    .pay-row b { font-family: var(--ff-d); font-weight: 500; font-size: clamp(22px, 2.2vw, 30px); color: var(--gold); }
+    .pay-row span:last-child { color: var(--stone); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+
+    /* Локация */
+    .loc-list { display: flex; flex-direction: column; margin-top: 30px; border-top: 1px solid var(--hair-l); }
+    .loc-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 17px 4px;
+      border-bottom: 1px solid var(--hair-l);
+      font-size: 15px;
+    }
+    .loc-item b { font-weight: 600; }
+    .loc-item span { color: var(--gold-2); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+    .loc-map { position: relative; border-radius: 4px; overflow: hidden; min-height: 460px; border: 1px solid var(--hair-l); }
+    .loc-map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: grayscale(0.4) saturate(0.8); }
+
+    /* Доходность */
+    .income-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--hair); }
+    .income { padding: clamp(36px, 4vw, 60px) 30px; text-align: center; border-right: 1px solid var(--hair); }
+    .income:last-child { border-right: none; }
+    .income b { font-family: var(--ff-d); font-weight: 500; font-size: clamp(46px, 5vw, 72px); line-height: 1; color: var(--gold); display: block; }
+    .income span { display: block; margin-top: 14px; font-size: 13.5px; color: var(--stone); max-width: 260px; margin-inline: auto; line-height: 1.65; }
+
+    /* Застройщик */
+    .dev-points { margin-top: 30px; display: flex; flex-direction: column; border-top: 1px solid var(--hair); }
+    .dev-point {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      font-size: 14.5px;
+      line-height: 1.65;
+      padding: 16px 4px;
+      border-bottom: 1px solid var(--hair);
+      color: var(--stone);
+    }
+    .dev-point::before { content: "✦"; color: var(--gold); font-size: 12px; margin-top: 4px; }
+    .dev-media { border-radius: 4px; overflow: hidden; aspect-ratio: 4 / 4.4; }
+    .dev-media img { width: 100%; height: 100%; object-fit: cover; }
+
+    .cta-final { position: relative; overflow: hidden; }
+    .cta-final__bg { position: absolute; inset: 0; }
+    .cta-final__bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.18; }
+    .cta-final__inner { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; text-align: center; }
+    .cta-final form { display: flex; flex-direction: column; gap: 16px; margin-top: 38px; text-align: left; }
+    .cta-final form .btn { margin-top: 12px; }
+    .cta-final .form-note { text-align: center; color: rgba(244,240,230,0.4); }
+
+    @media (max-width: 1080px) {
+      .plans { grid-template-columns: repeat(2, 1fr); }
+      .plan:nth-child(2n) { border-right: none; }
+      .plan:nth-child(-n+2) { border-bottom: 1px solid var(--hair); }
+      .infra-grid { grid-template-columns: repeat(2, 1fr); }
+      .income-grid { grid-template-columns: 1fr; }
+      .income { border-right: none; border-bottom: 1px solid var(--hair); }
+      .income:last-child { border-bottom: none; }
+      .about-media { aspect-ratio: 16 / 10; }
+      .dev-media { aspect-ratio: 16 / 10; }
+    }
+    @media (max-width: 640px) {
+      .plans { grid-template-columns: 1fr; }
+      .plan { border-right: none; border-bottom: 1px solid var(--hair); }
+      .plan:last-child { border-bottom: none; }
+      .infra-grid { grid-template-columns: 1fr; grid-auto-rows: 210px; }
+      .infra--wide { grid-column: span 1; }
+      .pay-row { grid-template-columns: 100px 1fr; }
+      .pay-row span:last-child { grid-column: 2; }
+      .loc-map { min-height: 340px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preloader">
+    <div class="preloader__logo">Andaman<em>·</em>City</div>
+    <div class="preloader__line"></div>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="nav__logo" href="#top">Andaman<em>·</em>City</a>
+      <nav class="nav__links">
+        <a href="#about">О проекте</a>
+        <a href="#plans">Планировки</a>
+        <a href="#gallery">Галерея</a>
+        <a href="#payment">Рассрочка</a>
+        <a href="#location">Локация</a>
+        <a href="#income">Доходность</a>
+        <div class="nav__links-extra">
+          <a class="nav__phone" href="tel:+66800000000"><small>Позвонить нам</small>+66 80 000 00 00</a>
+          <button class="btn btn--gold" data-open-modal="Мобильное меню">Оставить заявку <span class="arr">→</span></button>
+        </div>
+      </nav>
+      <div class="nav__right">
+        <button class="btn btn--line btn--sm nav__cta-desktop" data-open-modal="Шапка сайта">Оставить заявку</button>
+        <button class="nav__burger" aria-label="Меню"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero__bg" data-hero-img><img src="assets/img/andaman-city-6.jpg" alt="Andaman City — лагунный бассейн"></div>
+    <div class="hero__content">
+      <div class="container">
+        <span class="label label--line">Managed by Radisson Hotel Group · 5★</span>
+        <div class="hero__grid">
+          <h1 class="h-hero hero__title" data-split>Город-курорт <em>у пляжа</em> Бангтао</h1>
+          <div class="hero__desc" data-hero-fade>
+            <p>Апартаменты от $190 000 в 500 метрах от моря. Отельный сервис Radisson, лагуна-бассейн и доходная программа Rental Pool 70/30.</p>
+            <button class="btn btn--gold" data-open-modal="Hero — подборка юнитов">Подборка юнитов <span class="arr">→</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="hero__meta" data-hero-fade>
+        <div class="container">
+          <div class="hero__meta-grid">
+            <div class="hero__meta-item"><b data-count="190" data-prefix="$" data-suffix="K">0</b><span>стоимость входа со стартового пула</span></div>
+            <div class="hero__meta-item"><b data-count="9" data-suffix="%">0</b><span>целевая доходность в валюте</span></div>
+            <div class="hero__meta-item"><b data-count="500" data-suffix=" м">0</b><span>до 7-километрового пляжа Бангтао</span></div>
+            <div class="hero__meta-item"><b>IV кв. 2026</b><span>передача ключей очереди Atrium</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <div class="marquee__seq">
+        <span>Radisson 5★</span><i>✦</i><span>500 м до пляжа</span><i>✦</i><span>Rental Pool 70/30</span><i>✦</i><span>Лагуна-бассейн</span><i>✦</i><span>5 ресторанов</span><i>✦</i><span>Отельная лицензия</span><i>✦</i><span>Рассрочка 0%</span><i>✦</i>
+      </div>
+      <div class="marquee__seq">
+        <span>Radisson 5★</span><i>✦</i><span>500 м до пляжа</span><i>✦</i><span>Rental Pool 70/30</span><i>✦</i><span>Лагуна-бассейн</span><i>✦</i><span>5 ресторанов</span><i>✦</i><span>Отельная лицензия</span><i>✦</i><span>Рассрочка 0%</span><i>✦</i>
+      </div>
+    </div>
+  </div>
+
+  <!-- О ПРОЕКТЕ -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="editor-split">
+        <div class="about-media" data-parallax data-reveal>
+          <img src="assets/img/andaman-city-13.jpg" alt="Клубные резиденции Andaman Boutique">
+          <span class="about-media__caption">Boutique Residences</span>
+        </div>
+        <div>
+          <span class="label label--line" data-reveal>01 / О проекте</span>
+          <h2 class="h2" style="margin-top:18px" data-split>Курортный квартал под управлением <em>мировой</em> отельной сети</h2>
+          <p style="margin-top:22px;color:var(--stone);font-size:15.5px;line-height:1.8" data-reveal>
+            Andaman City — масштабный проект из пяти зданий с гигантским бассейном-лагуной, пятью ресторанами
+            и сервисом Radisson Hotel Group. Первая очередь — Andaman Riviera — построена, ключи выданы в 2025 году.
+            Сейчас в продаже юниты строящихся очередей Atrium и Boutique Residences.
+          </p>
+          <div class="about-stats" data-reveal-group data-stagger="0.08">
+            <div class="about-stat"><b data-count="500" data-suffix=" м">0</b><span>до пляжа Бангтао</span></div>
+            <div class="about-stat"><b data-count="311">0</b><span>апартаментов в очереди Atrium</span></div>
+            <div class="about-stat"><b data-count="60" data-suffix="%">0</b><span>территории — инфраструктура</span></div>
+            <div class="about-stat"><b>5★</b><span>управление Radisson Hotel Group</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ОФФЕР -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="offer" data-reveal>
+        <div style="position:relative;z-index:2">
+          <span class="label label--line">Только в этом месяце</span>
+          <div class="offer__price">−300 000 THB</div>
+          <p style="margin-top:14px;color:rgba(244,240,230,0.6);max-width:420px;font-size:14.5px;line-height:1.75">Скидка на юниты из стартового пула Atrium + запись на онлайн-показ шоурума в удобное время.</p>
+        </div>
+        <button class="btn btn--gold btn--lg" style="position:relative;z-index:2" data-open-modal="Оффер — скидка месяца">Забронировать скидку <span class="arr">→</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПЛАНИРОВКИ -->
+  <section class="section section--panel" id="plans" style="padding-top:0">
+    <div class="container" style="padding-top:clamp(88px, 11vw, 170px)">
+      <div class="sec-head">
+        <div class="sec-head__idx">02 / Планировки</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Планировки и цены</span>
+          <h2 class="h2" data-split>От студии у моря до резиденции <em>с бассейном</em></h2>
+          <p class="sec-head__sub" data-reveal>Все юниты передаются с чистовой отделкой и мебельным пакетом — готовы к заселению или сдаче с первого дня.</p>
+        </div>
+      </div>
+      <div class="plans" data-reveal>
+        <div class="plan">
+          <span class="plan__type">Atrium</span>
+          <div class="plan__name">Студия</div>
+          <div class="plan__area">30 – 36 м²</div>
+          <div class="plan__divider"></div>
+          <span class="plan__feat">Панорамное остекление</span>
+          <span class="plan__feat">Мебельный пакет включён</span>
+          <span class="plan__feat">Лучший юнит для аренды</span>
+          <div class="plan__price" style="margin-top:auto;padding-top:20px">от $190 000<small>≈ 6.1 млн THB</small></div>
+          <button class="btn btn--line-dark btn--sm" data-open-modal="Планировка: студия">Узнать стоимость</button>
+        </div>
+        <div class="plan">
+          <span class="plan__type">Atrium</span>
+          <div class="plan__name">1 спальня</div>
+          <div class="plan__area">40 – 52 м²</div>
+          <div class="plan__divider"></div>
+          <span class="plan__feat">Отдельная спальня и лоджия</span>
+          <span class="plan__feat">Вид на лагуну или сад</span>
+          <span class="plan__feat">Оптимум цена / доход</span>
+          <div class="plan__price" style="margin-top:auto;padding-top:20px">от $265 000<small>≈ 8.5 млн THB</small></div>
+          <button class="btn btn--line-dark btn--sm" data-open-modal="Планировка: 1 спальня">Узнать стоимость</button>
+        </div>
+        <div class="plan">
+          <span class="plan__type">Atrium</span>
+          <div class="plan__name">2 спальни</div>
+          <div class="plan__area">56 – 64 м²</div>
+          <div class="plan__divider"></div>
+          <span class="plan__feat">Семейный формат</span>
+          <span class="plan__feat">2 санузла, кухня-гостиная</span>
+          <span class="plan__feat">Угловые виды на курорт</span>
+          <div class="plan__price" style="margin-top:auto;padding-top:20px">от $380 000<small>≈ 12.2 млн THB</small></div>
+          <button class="btn btn--line-dark btn--sm" data-open-modal="Планировка: 2 спальни">Узнать стоимость</button>
+        </div>
+        <div class="plan">
+          <span class="plan__type">Boutique Residences</span>
+          <div class="plan__name">Резиденция</div>
+          <div class="plan__area">245 – 300 м²</div>
+          <div class="plan__divider"></div>
+          <span class="plan__feat">Личный бассейн на террасе</span>
+          <span class="plan__feat">Клубный дом на 8 резиденций</span>
+          <span class="plan__feat">Полная приватность</span>
+          <div class="plan__price" style="margin-top:auto;padding-top:20px">от $670 000<small>≈ 24 млн THB</small></div>
+          <button class="btn btn--line-dark btn--sm" data-open-modal="Планировка: резиденция">Узнать стоимость</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ГАЛЕРЕЯ -->
+  <section class="section section--dark" id="gallery">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-head__idx">03 / Галерея</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Галерея проекта</span>
+          <h2 class="h2" data-split>Как будет выглядеть <em>ваш</em> курорт</h2>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 var(--gutter)">
+      <div class="swiper gallery-swiper" data-reveal>
+        <div class="swiper-wrapper">
+          <figure class="swiper-slide"><img src="assets/img/andaman-city-6.jpg" alt="Лагунный бассейн"><figcaption>Бассейн-лагуна с искусственным пляжем</figcaption></figure>
+          <figure class="swiper-slide"><img src="assets/img/andaman-city-1.jpg" alt="Зона отдыха у бассейна"><figcaption>Зоны отдыха и водные горки</figcaption></figure>
+          <figure class="swiper-slide"><img src="assets/img/andaman-city-3.jpg" alt="Фасад Atrium"><figcaption>Очередь Atrium — 2 здания по 7 этажей</figcaption></figure>
+          <figure class="swiper-slide"><img src="assets/img/andaman-city-13.jpg" alt="Boutique Residences"><figcaption>Клубные дома Boutique Residences</figcaption></figure>
+          <figure class="swiper-slide"><img src="assets/img/andaman-city-12.jpg" alt="Andaman Riviera"><figcaption>Andaman Riviera — ключи выданы в 2025</figcaption></figure>
+          <figure class="swiper-slide"><img src="assets/img/andaman-city-7.jpg" alt="Детская зона"><figcaption>Семейная зона с аквагорками</figcaption></figure>
+          <figure class="swiper-slide"><img src="assets/img/andaman-city-14.jpg" alt="Территория комплекса"><figcaption>Территория курортного квартала</figcaption></figure>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="gallery-nav">
+        <button class="gallery-prev" aria-label="Назад">←</button>
+        <button class="gallery-next" aria-label="Вперёд">→</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ИНФРАСТРУКТУРА -->
+  <section class="section" id="infra">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-head__idx">04 / Инфраструктура</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Инфраструктура</span>
+          <h2 class="h2" data-split>Курорт, из которого не хочется <em>уезжать</em></h2>
+        </div>
+      </div>
+      <div class="infra-grid" data-reveal-group data-stagger="0.09">
+        <div class="infra infra--wide infra--tall">
+          <img src="assets/img/andaman-city-6.jpg" alt="Лагунный бассейн" loading="lazy">
+          <span>Гигантский бассейн-лагуна с песчаными островками</span>
+        </div>
+        <div class="infra">
+          <img src="assets/img/andaman-city-8.png" alt="Рестораны" loading="lazy">
+          <span>5 ресторанов и кафе</span>
+        </div>
+        <div class="infra">
+          <img src="assets/img/andaman-city-11.png" alt="Бары" loading="lazy">
+          <span>Лаунж-бары и руфтоп</span>
+        </div>
+        <div class="infra">
+          <img src="assets/img/andaman-city-7.jpg" alt="Детская зона" loading="lazy">
+          <span>Аквагорки и детский клуб</span>
+        </div>
+        <div class="infra infra--text">
+          <span>Спа-центр, фитнес, коворкинг, консьерж 24/7 и охраняемая территория</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- РАССРОЧКА -->
+  <section class="section section--panel" id="payment">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-head__idx">05 / Оплата</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Условия оплаты</span>
+          <h2 class="h2" data-split>Беспроцентная рассрочка <em>до ключей</em></h2>
+          <p class="sec-head__sub" data-reveal>Платежи привязаны к этапам строительства. Фиксируете цену сегодня — расплачиваетесь по мере готовности.</p>
+        </div>
+      </div>
+      <div class="pay-table" data-reveal-group data-stagger="0.06">
+        <div class="pay-row"><b>200 000 ฿</b><span>Депозит — бронирование юнита и фиксация цены</span><span>при бронировании</span></div>
+        <div class="pay-row"><b>35%</b><span>Первый взнос при подписании договора</span><span>до 30 дней после брони</span></div>
+        <div class="pay-row"><b>15%</b><span>Второй взнос — завершение фундамента</span><span>по этапу стройки</span></div>
+        <div class="pay-row"><b>15%</b><span>Третий взнос — завершение каркаса</span><span>по этапу стройки</span></div>
+        <div class="pay-row"><b>15%</b><span>Четвёртый взнос — фасад и инженерия</span><span>по этапу стройки</span></div>
+        <div class="pay-row"><b>10%</b><span>Пятый взнос — отделка и благоустройство</span><span>по этапу стройки</span></div>
+        <div class="pay-row"><b>10%</b><span>Финальный платёж — при передаче ключей</span><span>IV квартал 2026</span></div>
+      </div>
+      <div style="display:flex;justify-content:center;margin-top:44px" data-reveal>
+        <button class="btn btn--night btn--lg" data-open-modal="Рассрочка — график платежей">Персональный график <span class="arr">→</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЛОКАЦИЯ -->
+  <section class="section section--dark" id="location">
+    <div class="container">
+      <div class="editor-split">
+        <div>
+          <span class="label label--line" data-reveal>06 / Локация</span>
+          <h2 class="h2" style="margin-top:18px" data-split>Бангтао — <em>«золотая миля»</em> Пхукета</h2>
+          <p style="margin-top:20px;color:rgba(244,240,230,0.6);font-size:15px;line-height:1.8" data-reveal>
+            Семикилометровый пляж, лучшие рестораны острова и самый быстрорастущий рынок недвижимости
+            Пхукета: +7–16% к ценам ежегодно.
+          </p>
+          <div class="loc-list" data-reveal-group data-stagger="0.06">
+            <div class="loc-item"><b>Пляж Бангтао</b><span>500 м · 7 мин пешком</span></div>
+            <div class="loc-item"><b>Boat Avenue и Porto de Phuket</b><span>5 мин на авто</span></div>
+            <div class="loc-item"><b>Laguna Golf Club</b><span>7 мин на авто</span></div>
+            <div class="loc-item"><b>Blue Tree Water Park</b><span>10 мин на авто</span></div>
+            <div class="loc-item"><b>Школы UWC / HeadStart</b><span>15 мин на авто</span></div>
+            <div class="loc-item"><b>Аэропорт Пхукета</b><span>25 мин на авто</span></div>
+          </div>
+        </div>
+        <div class="loc-map" data-reveal>
+          <iframe
+            src="https://www.google.com/maps?q=Bang%20Tao%20Beach%2C%20Choeng%20Thale%2C%20Phuket&z=13&output=embed"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Карта: пляж Бангтао, Пхукет"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ДОХОДНОСТЬ -->
+  <section class="section" id="income">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-head__idx">07 / Доходность</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Инвестиционная модель</span>
+          <h2 class="h2" data-split>Сколько зарабатывает <em>владелец</em></h2>
+          <p class="sec-head__sub" data-reveal>Radisson сам находит гостей, заселяет, убирает и отчитывается. Вы получаете доход на карту в любой точке мира.</p>
+        </div>
+      </div>
+      <div class="income-grid" data-reveal>
+        <div class="income"><b>6–9%</b><span>годовых в валюте — целевая доходность программы аренды</span></div>
+        <div class="income"><b>70/30</b><span>Rental Pool: 70% дохода — владельцу, 30% — оператору</span></div>
+        <div class="income"><b data-count="30">0</b><span>дней личного проживания в год — отдыхайте в собственном курорте</span></div>
+      </div>
+      <div style="display:flex;justify-content:center;margin-top:44px" data-reveal>
+        <button class="btn btn--gold btn--lg" data-open-modal="Доходность — расчёт">Расчёт доходности <span class="arr">→</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЗАСТРОЙЩИК -->
+  <section class="section section--panel" id="developer">
+    <div class="container">
+      <div class="editor-split">
+        <div>
+          <span class="label label--line" data-reveal>08 / Застройщик</span>
+          <h2 class="h2" style="margin-top:18px" data-split>AR Group <em>×</em> Radisson Hotel Group</h2>
+          <p style="margin-top:20px;color:var(--stone);font-size:15px;line-height:1.8" data-reveal>
+            Девелопер AR Group строит на Пхукете 8 лет, за плечами — опыт строительства в Австралии.
+            Партнёрство с Radisson подтверждает уровень проекта: бренд ставит своё имя только на объекты,
+            прошедшие международный аудит качества.
+          </p>
+          <div class="dev-points" data-reveal-group data-stagger="0.07">
+            <div class="dev-point">Первая очередь Andaman Riviera построена и заселена — ключи выданы в 2025 году</div>
+            <div class="dev-point">Земля выкуплена, EIA-одобрение и разрешения на строительство получены</div>
+            <div class="dev-point">Отельная лицензия — легальная краткосрочная аренда без ограничений</div>
+            <div class="dev-point">Международная система бронирования и программа Radisson Rewards</div>
+          </div>
+        </div>
+        <div class="dev-media" data-parallax data-reveal>
+          <img src="assets/img/andaman-city-12.jpg" alt="Andaman Riviera — построенная очередь" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-head__idx">09 / FAQ</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Нас часто спрашивают</span>
+          <h2 class="h2" data-split>Вопросы <em>и</em> ответы</h2>
+        </div>
+      </div>
+      <div class="faq" data-reveal>
+        <div class="faq__item">
+          <button class="faq__q">Как иностранцу оформить собственность?<span class="faq__ico"></span></button>
+          <div class="faq__a"><div class="faq__a-inner">В кондоминиуме доступен freehold — полное владение с регистрацией в Земельном департаменте Таиланда (иностранная квота 49%). Альтернатива — leasehold на 30 лет с продлениями. Поможем выбрать оптимальный вариант под вашу задачу.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q">Что входит в цену юнита?<span class="faq__ico"></span></button>
+          <div class="faq__a"><div class="faq__a-inner">Чистовая отделка, встроенная кухня, санузлы «под ключ», кондиционеры и мебельный пакет. Юнит готов к заселению или запуску в аренду сразу после передачи ключей.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q">Как работает Rental Pool 70/30?<span class="faq__ico"></span></button>
+          <div class="faq__a"><div class="faq__a-inner">Все юниты пула сдаются как номера отеля Radisson. Доход распределяется: 70% — владельцам (пропорционально классу юнита), 30% — оператору за управление. Заполняемость усредняется по пулу, поэтому доход стабилен даже в низкий сезон.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q">Можно ли купить дистанционно?<span class="faq__ico"></span></button>
+          <div class="faq__a"><div class="faq__a-inner">Да. Онлайн-показ, электронное подписание договора, оплата международным переводом или в криптовалюте. Регистрацию собственности проведём по доверенности — прилетать не обязательно.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q">Какие расходы после покупки?<span class="faq__ico"></span></button>
+          <div class="faq__a"><div class="faq__a-inner">Взнос в фонд здания (sinking fund) — разово при получении ключей, common fee — от ~$1.5/м² в месяц. При участии в rental pool расходы на обслуживание юнита несёт оператор.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ФИНАЛЬНАЯ ФОРМА -->
+  <section class="section section--dark cta-final">
+    <div class="cta-final__bg" data-parallax><img src="assets/img/andaman-city-1.jpg" alt=""></div>
+    <div class="container cta-final__inner">
+      <div class="agent agent--center agent--light" style="margin-bottom:26px" data-reveal>
+        <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
+        <div>
+          <div class="agent__name">Kun Ping — эксперт по недвижимости Таиланда</div>
+          <div class="agent__role">Лично проведёт онлайн-показ и подберёт юнит · <span class="agent__status">онлайн</span></div>
+        </div>
+      </div>
+      <span class="label" data-reveal>Начните с подборки</span>
+      <h2 class="h2" style="margin-top:18px" data-split>Актуальные цены и свободные юниты <em>Andaman City</em></h2>
+      <p class="sec-head__sub" style="margin:20px auto 0" data-reveal>Пришлём PDF с планировками, этажами, видами и расчётом доходности — в WhatsApp или Telegram.</p>
+      <form data-demo-form data-reveal>
+        <input class="input input--ghost" type="text" placeholder="Ваше имя" required>
+        <input class="input input--ghost" type="tel" placeholder="+7 (___) ___-__-__" required>
+        <button class="btn btn--gold btn--lg" type="submit">Получить подборку юнитов <span class="arr">→</span></button>
+        <span class="form-note">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности. Это демо — данные никуда не отправляются.</span>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__word" data-split>Andaman<em>·</em>City</div>
+      <div class="footer__row">
+        <span>+66 80 000 00 00</span>
+        <span>Cherng Talay, Thalang, Phuket</span>
+        <span><a href="catalog.html" style="border-bottom:1px solid var(--gold)">← Все проекты Таиланда</a></span>
+      </div>
+      <small>Демо-лендинг создан в презентационных целях как пример формата «индивидуальный лендинг проекта». Сайт не принадлежит застройщику Andaman City; фотографии и рендеры принадлежат AR Group и используются как иллюстрация. Цены ориентировочные и не являются публичной офертой.</small>
+    </div>
+  </footer>
+
+  <!-- Модалка -->
+  <div class="modal" id="lead-modal">
+    <div class="modal__backdrop"></div>
+    <div class="modal__panel">
+      <button class="modal__close" aria-label="Закрыть">✕</button>
+      <span class="label">Заявка</span>
+      <div class="h3">Оставьте заявку</div>
+      <p class="form-note" style="font-size:13.5px">Вышлем цены, планировки и свободные юниты. Раздел: <span data-lead-source>сайт</span></p>
+      <div class="agent" style="margin-top:20px;padding:14px 16px;border:1px solid var(--hair);border-radius:2px">
+        <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
+        <div>
+          <div class="agent__name">Заявку получит Kun Ping</div>
+          <div class="agent__role">Ответит в течение 15 минут · <span class="agent__status">онлайн</span></div>
+        </div>
+      </div>
+      <form data-demo-form>
+        <input class="input" type="text" placeholder="Ваше имя" required>
+        <input class="input" type="tel" placeholder="+7 (___) ___-__-__" required>
+        <button class="btn btn--night btn--block" type="submit">Отправить <span class="arr">→</span></button>
+        <span class="form-note text-center">Это демо — данные никуда не отправляются</span>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="assets/js/common.js?v=3"></script>
+  <script src="assets/js/motion.js?v=3"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      new Swiper(".gallery-swiper", {
+        slidesPerView: "auto",
+        centeredSlides: true,
+        spaceBetween: 20,
+        loop: true,
+        speed: 900,
+        autoplay: { delay: 4200, disableOnInteraction: false },
+        navigation: { nextEl: ".gallery-next", prevEl: ".gallery-prev" }
+      });
+    });
+  </script>
+</body>
+</html>

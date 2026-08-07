@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andaman City by Radisson — подберите свой юнит за 5 вопросов</title>
+  <meta name="description" content="Квиз по проекту Andaman City: подберём юнит под вашу цель и бюджет, пришлём цену, планировку и расчёт доходности.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css?v=3">
+  <link rel="stylesheet" href="assets/css/quiz.css?v=3">
+  <style>
+    body { background: var(--night); }
+
+    .quiz-page { min-height: 100svh; display: grid; grid-template-columns: minmax(400px, 46%) 1fr; }
+
+    .quiz-aside {
+      position: relative;
+      color: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(28px, 4vw, 64px);
+      overflow: hidden;
+    }
+    .quiz-aside__bg, .quiz-aside__bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .quiz-aside__bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(200deg, rgba(11,16,12,0.68), rgba(11,16,12,0.96)); }
+    .quiz-aside > *:not(.quiz-aside__bg) { position: relative; z-index: 2; }
+    .quiz-aside__brand {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .quiz-aside__brand::before { content: ""; width: 40px; height: 1px; background: var(--gold-dim); }
+    .quiz-aside__logo {
+      font-family: var(--ff-d);
+      font-weight: 500;
+      font-size: clamp(36px, 3.6vw, 56px);
+      letter-spacing: 0.04em;
+      margin-top: 18px;
+    }
+    .quiz-aside__logo em { font-style: italic; color: var(--gold-2); }
+    .quiz-aside__title { font-size: clamp(15px, 1.4vw, 17px); line-height: 1.75; margin-top: 18px; color: rgba(244,240,230,0.7); max-width: 420px; }
+    .quiz-aside__stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 38px;
+      max-width: 460px;
+      border-top: 1px solid var(--hair-l);
+      border-left: 1px solid var(--hair-l);
+    }
+    .qa-stat { padding: 20px 22px; border-right: 1px solid var(--hair-l); border-bottom: 1px solid var(--hair-l); }
+    .qa-stat b { font-family: var(--ff-d); font-weight: 500; font-size: 28px; color: var(--gold-2); display: block; line-height: 1; }
+    .qa-stat span { font-size: 12px; color: rgba(244,240,230,0.55); display: block; margin-top: 7px; }
+    .quiz-aside__foot { font-size: 11.5px; color: rgba(244,240,230,0.35); margin-top: 40px; letter-spacing: 0.04em; }
+
+    .quiz-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(24px, 4vw, 64px);
+      background: var(--cream);
+    }
+    .quiz-main .quiz { width: 100%; max-width: 780px; box-shadow: none; }
+
+    /* Результат — карточка юнита */
+    .unit-card {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 22px;
+      border: 1px solid var(--hair);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 26px 0 6px;
+      background: var(--white);
+    }
+    .unit-card img { width: 100%; height: 100%; object-fit: cover; }
+    .unit-card__body { padding: 20px 22px 20px 0; }
+    .unit-card__type { font-size: 10.5px; font-weight: 800; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); }
+    .unit-card__name { font-family: var(--ff-d); font-weight: 500; font-size: 28px; margin: 6px 0 2px; line-height: 1.15; }
+    .unit-card__meta { font-size: 13px; color: var(--stone); }
+    .unit-card__row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .unit-card__pill {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(194,161,99,0.45);
+      color: #8a6f3c;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+    .unit-card__price { font-family: var(--ff-d); font-weight: 600; font-size: 24px; margin-top: 16px; }
+
+    @media (max-width: 900px) {
+      .quiz-page { grid-template-columns: 1fr; }
+      .quiz-aside { min-height: 340px; }
+      .unit-card { grid-template-columns: 1fr; }
+      .unit-card__body { padding: 0 20px 20px; }
+      .unit-card img { aspect-ratio: 16/9; }
+      .quiz-main { padding: 28px 16px 48px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="quiz-page">
+    <aside class="quiz-aside">
+      <div class="quiz-aside__bg"><img src="assets/img/andaman-city-6.jpg" alt="Andaman City"></div>
+      <div>
+        <div class="quiz-aside__brand">Managed by Radisson Hotel Group</div>
+        <div class="quiz-aside__logo">Andaman <em>City</em></div>
+        <p class="quiz-aside__title">
+          Ответьте на 5 вопросов — подберём юнит под вашу цель, пришлём цену,
+          планировку и персональный расчёт доходности.
+        </p>
+        <div class="quiz-aside__stats">
+          <div class="qa-stat"><b>500 м</b><span>до пляжа Бангтао</span></div>
+          <div class="qa-stat"><b>от $190K</b><span>студии с отделкой</span></div>
+          <div class="qa-stat"><b>6–9%</b><span>годовых на аренде</span></div>
+          <div class="qa-stat"><b>Q4 2026</b><span>передача ключей</span></div>
+        </div>
+      </div>
+      <div class="quiz-aside__foot">Демо-квиз в презентационных целях · Рендеры принадлежат AR Group</div>
+    </aside>
+
+    <main class="quiz-main">
+      <div class="agent" style="width:100%;max-width:780px;margin-bottom:26px">
+        <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
+        <div>
+          <div class="agent__name">Kun Ping — эксперт по проекту Andaman City</div>
+          <div class="agent__role">Помогу выбрать юнит после квиза · <span class="agent__status">онлайн</span></div>
+        </div>
+      </div>
+      <div id="quiz-container" style="width:100%;max-width:780px"></div>
+    </main>
+  </div>
+
+  <script src="assets/js/quiz-engine.js?v=3"></script>
+  <script>
+    const UNITS = {
+      studio: {
+        type: "Atrium · для инвестиций",
+        name: "Студия 30–36 м²",
+        img: "assets/img/andaman-city-3.jpg",
+        price: "от $190 000",
+        pills: ["Доход до 9% годовых", "Самый ликвидный формат", "Мебель включена"]
+      },
+      br1: {
+        type: "Atrium · универсальный",
+        name: "1 спальня 40–52 м²",
+        img: "assets/img/andaman-city-1.jpg",
+        price: "от $265 000",
+        pills: ["Оптимум цена / доход", "Вид на лагуну", "Для отдыха и аренды"]
+      },
+      br2: {
+        type: "Atrium · семейный",
+        name: "2 спальни 56–64 м²",
+        img: "assets/img/andaman-city-7.jpg",
+        price: "от $380 000",
+        pills: ["Для семьи с детьми", "2 санузла", "30 дней проживания в год"]
+      },
+      residence: {
+        type: "Boutique Residences · приватный",
+        name: "Резиденция 245–300 м² с бассейном",
+        img: "assets/img/andaman-city-13.jpg",
+        price: "от $670 000",
+        pills: ["Личный бассейн", "Клубный дом на 8 резиденций", "Полная приватность"]
+      }
+    };
+
+    function pickUnit(a) {
+      if (a.unit && a.unit !== "help") return UNITS[a.unit];
+      if (a.budget === "b1") return UNITS.studio;
+      if (a.budget === "b2") return a.goal === "family" ? UNITS.br2 : UNITS.br1;
+      if (a.budget === "b3") return UNITS.br2;
+      return UNITS.residence;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      createQuiz(document.getElementById("quiz-container"), {
+        flat: true,
+        questions: [
+          {
+            key: "goal",
+            question: "Для чего рассматриваете Andaman City?",
+            options: [
+              { value: "invest", label: "Чистая инвестиция", sub: "доход с аренды без проживания", icon: "01" },
+              { value: "mix", label: "Отдых + доход", sub: "сам отдыхаю, остальное время сдаю", icon: "02" },
+              { value: "family", label: "Жильё для семьи", sub: "переезд или длинные зимовки", icon: "03" },
+              { value: "resale", label: "Перепродажа к сдаче", sub: "заработать на росте цены", icon: "04" }
+            ]
+          },
+          {
+            key: "unit",
+            question: "Какой формат юнита интересен?",
+            options: [
+              { value: "studio", label: "Студия", sub: "30–36 м², от $190 000", icon: "01" },
+              { value: "br1", label: "1 спальня", sub: "40–52 м², от $265 000", icon: "02" },
+              { value: "br2", label: "2 спальни", sub: "56–64 м², от $380 000", icon: "03" },
+              { value: "residence", label: "Резиденция с бассейном", sub: "245–300 м², от $670 000", icon: "04" },
+              { value: "help", label: "Помогите выбрать", sub: "подберите оптимальный под бюджет", icon: "05" }
+            ]
+          },
+          {
+            key: "budget",
+            question: "Какой бюджет закладываете?",
+            options: [
+              { value: "b1", label: "До $250 000", icon: "01" },
+              { value: "b2", label: "$250 000 – $400 000", icon: "02" },
+              { value: "b3", label: "$400 000 – $700 000", icon: "03" },
+              { value: "b4", label: "Более $700 000", icon: "04" }
+            ]
+          },
+          {
+            key: "payment",
+            question: "Как удобнее оплачивать?",
+            options: [
+              { value: "cash", label: "100% оплата", sub: "дополнительная скидка от застройщика", icon: "01" },
+              { value: "installments", label: "Рассрочка 0% до ключей", sub: "35% первый взнос, далее по этапам", icon: "02" },
+              { value: "discuss", label: "Хочу сравнить варианты", sub: "покажем оба расчёта", icon: "03" }
+            ]
+          },
+          {
+            key: "when",
+            question: "Когда планируете покупку?",
+            options: [
+              { value: "now", label: "В ближайший месяц", sub: "успеваете к скидке −300 000 THB", icon: "01" },
+              { value: "soon", label: "В течение 2–3 месяцев", icon: "02" },
+              { value: "later", label: "Пока изучаю проект", sub: "пришлём презентацию и цены", icon: "03" }
+            ]
+          }
+        ],
+        renderResult(answers) {
+          const u = pickUnit(answers);
+          return (
+            '<div class="quiz__result-badge">Юнит подобран</div>' +
+            '<div class="quiz__question">Ваш вариант в Andaman City</div>' +
+            '<p class="quiz__hint">На основе ответов рекомендуем этот формат. Оставьте контакты — пришлём свободные юниты, планировки, этажи и персональный расчёт доходности.</p>' +
+            '<div class="unit-card">' +
+            '<img src="' + u.img + '" alt="' + u.name + '">' +
+            '<div class="unit-card__body">' +
+            '<div class="unit-card__type">' + u.type + "</div>" +
+            '<div class="unit-card__name">' + u.name + "</div>" +
+            '<div class="unit-card__meta">Andaman City · 500 м до пляжа Бангтао · ключи Q4 2026</div>' +
+            '<div class="unit-card__row">' + u.pills.map((p) => '<span class="unit-card__pill">' + p + "</span>").join("") + "</div>" +
+            '<div class="unit-card__price">' + u.price + "</div>" +
+            "</div></div>" +
+            leadFormHtml("Получить цены и планировки")
+          );
+        }
+      });
+    });
+  </script>
+</body>
+</html>

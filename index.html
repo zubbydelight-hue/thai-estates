@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Лендинги по недвижимости Таиланда — 4 формата · Демо</title>
+  <meta name="description" content="Демонстрация четырёх форматов лендингов: единый каталог с квизом, индивидуальный лендинг проекта, квиз-подборка и квиз по проекту.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css?v=3">
+  <style>
+    body { background: var(--night); color: var(--cream); }
+
+    .hub-head {
+      padding: clamp(70px, 9vw, 130px) 0 clamp(40px, 5vw, 70px);
+      border-bottom: 1px solid var(--hair-l);
+    }
+    .hub-head .h1 { max-width: 20ch; margin-top: 24px; }
+    .hub-head__sub { margin-top: 24px; max-width: 520px; color: rgba(244,240,230,0.55); font-size: 15.5px; line-height: 1.8; }
+
+    .hub-item {
+      display: grid;
+      grid-template-columns: 90px 1.1fr 1fr auto;
+      align-items: center;
+      gap: clamp(20px, 3.4vw, 56px);
+      padding: clamp(30px, 4vw, 52px) 0;
+      border-bottom: 1px solid var(--hair-l);
+      position: relative;
+      transition: padding-left 0.5s var(--tr);
+    }
+    .hub-item:hover { padding-left: 18px; }
+    .hub-item__idx { font-family: var(--ff-d); font-style: italic; font-size: clamp(17px, 1.6vw, 22px); color: var(--gold); }
+    .hub-item__name {
+      font-family: var(--ff-d);
+      font-weight: 500;
+      font-size: clamp(26px, 3.2vw, 46px);
+      line-height: 1.1;
+      transition: color 0.4s;
+    }
+    .hub-item:hover .hub-item__name { color: var(--gold-2); }
+    .hub-item__name em { font-style: italic; }
+    .hub-item__desc { font-size: 13.5px; line-height: 1.75; color: rgba(244,240,230,0.5); max-width: 420px; }
+    .hub-item__go {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 1px solid var(--hair-l);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transform: rotate(-45deg);
+      transition: all 0.5s var(--tr);
+      flex-shrink: 0;
+    }
+    .hub-item:hover .hub-item__go { background: var(--gold); border-color: var(--gold); color: var(--night); transform: rotate(0); }
+
+    /* Превью при ховере */
+    .hub-preview {
+      position: fixed;
+      z-index: 50;
+      width: 340px;
+      aspect-ratio: 4 / 3;
+      border-radius: 4px;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.35s var(--tr), transform 0.45s var(--tr);
+    }
+    .hub-preview.is-visible { opacity: 1; transform: scale(1); }
+    .hub-preview img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.3s; }
+    .hub-preview img.is-active { opacity: 1; }
+
+    .hub-foot { padding: clamp(36px, 5vw, 60px) 0; color: rgba(244,240,230,0.35); font-size: 12px; line-height: 1.8; }
+
+    @media (max-width: 900px) {
+      .hub-item { grid-template-columns: 1fr auto; row-gap: 10px; }
+      .hub-item__idx { grid-column: 1 / -1; }
+      .hub-item__desc { grid-column: 1 / -1; max-width: 100%; }
+      .hub-item__go { width: 52px; height: 52px; }
+      .hub-preview { display: none; }
+      .hub-item:hover { padding-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preloader">
+    <div class="preloader__logo">Thai<em>·</em>Estates</div>
+    <div class="preloader__line"></div>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="hub-head">
+    <div class="container">
+      <span class="label label--line">Демонстрация для заказчика · Недвижимость Таиланда</span>
+      <h1 class="h1" data-split>Четыре формата лендингов <em>под ваши задачи</em></h1>
+      <p class="hub-head__sub" data-reveal>Единая дизайн-система, реальные проекты из вашей таблицы, реальные фотографии застройщиков. Каждый формат — кликабельный рабочий прототип.</p>
+    </div>
+  </header>
+
+  <main class="container" data-reveal-group data-stagger="0.1">
+    <a class="hub-item" href="catalog.html" data-preview="assets/img/btgr-lagoon-1.jpg">
+      <span class="hub-item__idx">01</span>
+      <span class="hub-item__name">Единый лендинг-каталог</span>
+      <span class="hub-item__desc">Все 18 проектов из таблицы с фильтрами по региону, стратегии и бюджету + встроенный квиз-подборщик. Формат «одна точка входа для всего трафика».</span>
+      <span class="hub-item__go">→</span>
+    </a>
+    <a class="hub-item" href="project-andaman.html" data-preview="assets/img/andaman-city-6.jpg">
+      <span class="hub-item__idx">02</span>
+      <span class="hub-item__name">Лендинг проекта <em>· Andaman City</em></span>
+      <span class="hub-item__desc">Индивидуальный продающий лендинг под один проект: планировки, цены, галерея, рассрочка, доходность. Пример — Andaman City by Radisson, тиражируется на любой проект.</span>
+      <span class="hub-item__go">→</span>
+    </a>
+    <a class="hub-item" href="quiz.html" data-preview="assets/img/trisara-1.jpg">
+      <span class="hub-item__idx">03</span>
+      <span class="hub-item__name">Квиз-подборка проектов</span>
+      <span class="hub-item__desc">Отдельная квиз-страница под рекламный трафик: 5 вопросов, алгоритм подбирает топ-3 проекта из всей базы и собирает контакт.</span>
+      <span class="hub-item__go">→</span>
+    </a>
+    <a class="hub-item" href="quiz-project.html" data-preview="assets/img/andaman-city-13.jpg">
+      <span class="hub-item__idx">04</span>
+      <span class="hub-item__name">Квиз по проекту <em>· Andaman City</em></span>
+      <span class="hub-item__desc">Квиз под конкретный объект: подбирает формат юнита под цель и бюджет клиента и передаёт тёплый лид с контекстом ответов.</span>
+      <span class="hub-item__go">→</span>
+    </a>
+  </main>
+
+  <div class="hub-preview" id="hub-preview"></div>
+
+  <section class="container" style="padding-top:clamp(50px,7vw,90px)" data-reveal>
+    <div class="agent agent--center agent--light">
+      <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
+      <div>
+        <div class="agent__name" style="font-family:var(--ff-d);font-size:clamp(22px,2.4vw,30px);font-weight:500">Каждая страница ведёт клиента к живому агенту</div>
+        <div class="agent__role" style="max-width:520px;margin:10px auto 0">Kun Ping — эксперт по недвижимости Таиланда. Его фото и статус «онлайн» встроены в квизы, формы и модальные окна всех четырёх форматов — это повышает доверие и конверсию в заявку.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="hub-foot">
+    <div class="container">
+      Демо-прототипы созданы в презентационных целях. Названия проектов и фотографии принадлежат застройщикам. Формы не отправляют данные.
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script src="assets/js/motion.js?v=3"></script>
+  <script>
+    // Плавающее превью при наведении на пункты
+    (function () {
+      const preview = document.getElementById("hub-preview");
+      const items = document.querySelectorAll(".hub-item[data-preview]");
+      const imgs = {};
+      items.forEach((it) => {
+        const src = it.dataset.preview;
+        const img = document.createElement("img");
+        img.src = src;
+        preview.appendChild(img);
+        imgs[src] = img;
+      });
+      let raf = null;
+      document.addEventListener("mousemove", (e) => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          preview.style.left = Math.min(e.clientX + 30, window.innerWidth - 370) + "px";
+          preview.style.top = Math.min(e.clientY - 120, window.innerHeight - 280) + "px";
+          raf = null;
+        });
+      });
+      items.forEach((it) => {
+        it.addEventListener("mouseenter", () => {
+          preview.classList.add("is-visible");
+          Object.values(imgs).forEach((i) => i.classList.remove("is-active"));
+          imgs[it.dataset.preview].classList.add("is-active");
+        });
+        it.addEventListener("mouseleave", () => preview.classList.remove("is-visible"));
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Подбор недвижимости в Таиланде за 1 минуту — квиз из 5 вопросов</title>
+  <meta name="description" content="Ответьте на 5 вопросов и получите персональную подборку из 18 лучших проектов Пхукета и Паттайи с ценами и расчётом доходности.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css?v=3">
+  <link rel="stylesheet" href="assets/css/quiz.css?v=3">
+  <style>
+    body { background: var(--night); }
+
+    .quiz-page {
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: minmax(400px, 46%) 1fr;
+    }
+
+    /* Левая панель */
+    .quiz-aside {
+      position: relative;
+      color: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(28px, 4vw, 64px);
+      overflow: hidden;
+    }
+    .quiz-aside__bg, .quiz-aside__bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .quiz-aside__bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(200deg, rgba(11,16,12,0.68), rgba(11,16,12,0.96));
+    }
+    .quiz-aside > *:not(.quiz-aside__bg) { position: relative; z-index: 2; }
+    .quiz-aside__logo {
+      font-family: var(--ff-d);
+      font-weight: 500;
+      font-size: 21px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+    .quiz-aside__logo em { font-style: italic; color: var(--gold-2); }
+    .quiz-aside__title {
+      font-family: var(--ff-d);
+      font-weight: 500;
+      font-size: clamp(32px, 3.4vw, 52px);
+      line-height: 1.1;
+      margin-top: 26px;
+      max-width: 480px;
+    }
+    .quiz-aside__title em { font-style: italic; color: var(--gold-2); }
+    .quiz-aside__benefits { margin-top: 40px; max-width: 460px; border-top: 1px solid var(--hair-l); }
+    .quiz-benefit {
+      display: flex;
+      gap: 18px;
+      align-items: baseline;
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(244,240,230,0.7);
+      padding: 16px 0;
+      border-bottom: 1px solid var(--hair-l);
+    }
+    .quiz-benefit__icon {
+      flex-shrink: 0;
+      font-family: var(--ff-d);
+      font-style: italic;
+      font-size: 18px;
+      color: var(--gold-2);
+    }
+    .quiz-aside__foot { font-size: 11.5px; color: rgba(244,240,230,0.35); margin-top: 40px; letter-spacing: 0.04em; }
+
+    /* Правая часть */
+    .quiz-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(24px, 4vw, 64px);
+      background: var(--cream);
+    }
+    .quiz-main .quiz { width: 100%; max-width: 780px; box-shadow: none; }
+
+    @media (max-width: 900px) {
+      .quiz-page { grid-template-columns: 1fr; }
+      .quiz-aside { min-height: 360px; }
+      .quiz-aside__benefits { display: none; }
+      .quiz-aside__foot { margin-top: 26px; }
+      .quiz-main { padding: 28px 16px 48px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="quiz-page">
+    <aside class="quiz-aside">
+      <div class="quiz-aside__bg"><img src="assets/img/trisara-1.jpg" alt="Виллы Пхукета"></div>
+      <div>
+        <div class="quiz-aside__logo">Thai<em>·</em>Estates</div>
+        <h1 class="quiz-aside__title">Недвижимость Таиланда под вашу цель — <em>за 1 минуту</em></h1>
+        <div class="quiz-aside__benefits">
+          <div class="quiz-benefit">
+            <span class="quiz-benefit__icon">01</span>
+            <span>18 проверенных проектов Пхукета и Паттайи: от $85 000 до вилл Amanpuri</span>
+          </div>
+          <div class="quiz-benefit">
+            <span class="quiz-benefit__icon">02</span>
+            <span>Расчёт доходности и график рассрочки по каждому проекту из подборки</span>
+          </div>
+          <div class="quiz-benefit">
+            <span class="quiz-benefit__icon">03</span>
+            <span>Бонус — PDF-гайд «Как купить недвижимость в Таиланде дистанционно»</span>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-aside__foot">Демо-квиз в презентационных целях · Фото принадлежат застройщикам</div>
+    </aside>
+
+    <main class="quiz-main">
+      <div class="agent" style="width:100%;max-width:780px;margin-bottom:26px">
+        <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
+        <div>
+          <div class="agent__name">Kun Ping — эксперт по недвижимости Таиланда</div>
+          <div class="agent__role">Помогу с подборкой после квиза · <span class="agent__status">онлайн</span></div>
+        </div>
+      </div>
+      <div id="quiz-container" style="width:100%;max-width:780px"></div>
+    </main>
+  </div>
+
+  <script src="assets/js/data.js?v=3"></script>
+  <script src="assets/js/quiz-engine.js?v=3"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      createQuiz(document.getElementById("quiz-container"), {
+        flat: true,
+        questions: [
+          {
+            key: "strategy",
+            question: "Зачем вам недвижимость в Таиланде?",
+            hint: "Выберите главную цель — от неё зависит стратегия.",
+            options: [
+              { value: "rent", label: "Пассивный доход с аренды", sub: "до 10% годовых в валюте", icon: "01" },
+              { value: "resale", label: "Заработать на росте цены", sub: "купить на стройке — продать к сдаче", icon: "02" },
+              { value: "live", label: "Для себя: переезд или зимовки", sub: "дом у моря для семьи", icon: "03" },
+              { value: "private", label: "Приватная коллекция", sub: "эксклюзивные виллы от $1.5M", icon: "04" }
+            ]
+          },
+          {
+            key: "region",
+            question: "Где хотите купить?",
+            options: [
+              { value: "phuket", label: "Пхукет", sub: "остров, международные бренды, премиум", icon: "01" },
+              { value: "pattaya", label: "Паттайя", sub: "город у моря, порог входа ниже", icon: "02" },
+              { value: "any", label: "Доверюсь эксперту", sub: "сравним оба региона в подборке", icon: "03" }
+            ]
+          },
+          {
+            key: "type",
+            question: "Какой формат ближе?",
+            options: [
+              { value: "condo", label: "Апартаменты", sub: "ликвидность и простая аренда", icon: "01" },
+              { value: "villa", label: "Вилла", sub: "своя территория и бассейн", icon: "02" },
+              { value: "any", label: "Рассмотрю оба варианта", icon: "03" }
+            ]
+          },
+          {
+            key: "budget",
+            question: "Какой бюджет закладываете?",
+            hint: "Ориентировочно — в подборке покажем варианты рядом с вашей вилкой.",
+            options: [
+              { value: "0-250000", label: "До $250 000", icon: "01" },
+              { value: "250000-500000", label: "$250 000 – $500 000", icon: "02" },
+              { value: "500000-2000000", label: "$500 000 – $2 000 000", icon: "03" },
+              { value: "2000000-", label: "Более $2 000 000", icon: "04" }
+            ]
+          },
+          {
+            key: "when",
+            question: "Когда планируете покупку?",
+            options: [
+              { value: "now", label: "Готов купить в ближайший месяц", sub: "покажем юниты со скидками", icon: "01" },
+              { value: "soon", label: "В течение 2–3 месяцев", icon: "02" },
+              { value: "later", label: "Пока изучаю рынок", sub: "пришлём аналитику и цены", icon: "03" }
+            ]
+          }
+        ],
+        renderResult(answers) {
+          const top = matchProjects(answers, 3);
+          return (
+            '<div class="quiz__result-badge">Подобрано 3 проекта</div>' +
+            '<div class="quiz__question">Ваша персональная подборка готова</div>' +
+            '<p class="quiz__hint">Вот что подходит под вашу цель. Оставьте контакты — пришлём полную подборку с ценами, планировками, доходностью и бонусный PDF-гайд.</p>' +
+            miniCardsHtml(top) +
+            leadFormHtml("Получить подборку и гайд")
+          );
+        }
+      });
+    });
+  </script>
+</body>
+</html>
