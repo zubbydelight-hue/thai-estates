@@ -68,6 +68,10 @@
     }
     gsap.registerPlugin(ScrollTrigger);
 
+    // Элемент уже во вьюпорте при инициализации? Тогда анимируем сразу:
+    // ScrollTrigger со start:0 без события скролла может так и не сработать
+    const inViewNow = (el) => el.getBoundingClientRect().top < window.innerHeight * 0.9;
+
     // Построчные заголовки
     if (window.SplitType && !reduce) {
       document.querySelectorAll("[data-split]").forEach((el) => {
@@ -83,39 +87,39 @@
           // hero анимируется после прелоадера — просто прячем строки
           gsap.set(lines, { yPercent: 115 });
         } else {
-          gsap.fromTo(lines,
-            { yPercent: 115 },
-            {
-              yPercent: 0,
-              duration: 1.15,
-              stagger: 0.09,
-              ease: "power4.out",
-              scrollTrigger: { trigger: el, start: "clamp(top 88%)", once: true }
-            });
+          const cfg = {
+            yPercent: 0,
+            duration: 1.15,
+            stagger: 0.09,
+            ease: "power4.out"
+          };
+          if (inViewNow(el)) cfg.delay = 0.15;
+          else cfg.scrollTrigger = { trigger: el, start: "clamp(top 88%)", once: true };
+          gsap.fromTo(lines, { yPercent: 115 }, cfg);
         }
       });
     }
 
     // Обычные блоки
     document.querySelectorAll("[data-reveal]").forEach((el) => {
-      gsap.fromTo(el,
-        { opacity: 0, y: reduce ? 0 : 44 },
-        {
-          opacity: 1, y: 0, duration: 1.1, ease: "power3.out",
-          delay: parseFloat(el.dataset.delay || 0),
-          scrollTrigger: { trigger: el, start: "clamp(top 90%)", once: true }
-        });
+      const cfg = {
+        opacity: 1, y: 0, duration: 1.1, ease: "power3.out",
+        delay: parseFloat(el.dataset.delay || 0)
+      };
+      if (inViewNow(el)) cfg.delay += 0.2;
+      else cfg.scrollTrigger = { trigger: el, start: "clamp(top 90%)", once: true };
+      gsap.fromTo(el, { opacity: 0, y: reduce ? 0 : 44 }, cfg);
     });
 
     // Каскады
     document.querySelectorAll("[data-reveal-group]").forEach((group) => {
-      gsap.fromTo(group.children,
-        { opacity: 0, y: reduce ? 0 : 44 },
-        {
-          opacity: 1, y: 0, duration: 1, ease: "power3.out",
-          stagger: parseFloat(group.dataset.stagger || 0.1),
-          scrollTrigger: { trigger: group, start: "clamp(top 88%)", once: true }
-        });
+      const cfg = {
+        opacity: 1, y: 0, duration: 1, ease: "power3.out",
+        stagger: parseFloat(group.dataset.stagger || 0.1)
+      };
+      if (inViewNow(group)) cfg.delay = 0.25;
+      else cfg.scrollTrigger = { trigger: group, start: "clamp(top 88%)", once: true };
+      gsap.fromTo(group.children, { opacity: 0, y: reduce ? 0 : 44 }, cfg);
     });
 
     // Параллакс изображений
@@ -138,15 +142,17 @@
       const prefix = el.dataset.prefix || "";
       const decimals = (el.dataset.count.split(".")[1] || "").length;
       const obj = { v: 0 };
-      gsap.to(obj, {
+      const cfg = {
         v: target,
         duration: 1.8,
         ease: "power2.out",
-        scrollTrigger: { trigger: el, start: "clamp(top 92%)", once: true },
         onUpdate() {
           el.textContent = prefix + obj.v.toFixed(decimals).replace(".", ",") + suffix;
         }
-      });
+      };
+      if (inViewNow(el)) cfg.delay = 0.4;
+      else cfg.scrollTrigger = { trigger: el, start: "clamp(top 92%)", once: true };
+      gsap.to(obj, cfg);
     });
 
     // Hero-изображение: медленный zoom
@@ -174,22 +180,30 @@
   /* Страховка: если элемент попал во вьюпорт, но остался прозрачным
      (триггер не сработал по любой причине) — показываем принудительно */
   function initRevealFailsafe() {
+    // hero исключаем: его элементы анимирует таймлайн после прелоадера
     let els = Array.prototype.slice.call(
-      document.querySelectorAll("[data-reveal], [data-reveal-group] > *")
-    );
+      document.querySelectorAll("[data-reveal], [data-reveal-group] > *, [data-split] .line-inner")
+    ).filter((el) => !el.closest(".hero"));
     let checkT = null;
+    const stillHidden = (el) => {
+      const cs = getComputedStyle(el);
+      if (parseFloat(cs.opacity) < 0.05) return true;
+      // строки заголовков прячутся сдвигом, а не прозрачностью
+      const m = cs.transform.match(/matrix\([^)]*,\s*(-?[\d.]+)\)/);
+      return !!(m && Math.abs(parseFloat(m[1])) > 12);
+    };
     function check() {
       const vh = window.innerHeight;
       const now = Date.now();
       els = els.filter((el) => {
         const r = el.getBoundingClientRect();
-        const inView = r.top < vh * 0.96 && r.bottom > 0;
+        const inView = r.top < vh * 0.96 && r.bottom > -vh * 0.5;
         if (!inView) { el.__seenAt = 0; return true; }
-        if (parseFloat(getComputedStyle(el).opacity) > 0.05) return false; // уже показан
+        if (!stillHidden(el)) return false; // уже показан
         if (!el.__seenAt) { el.__seenAt = now; return true; }
         if (now - el.__seenAt > 600) {
           // триггер мёртв — показываем сами
-          if (window.gsap) gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" });
+          if (window.gsap) gsap.to(el, { opacity: 1, y: 0, yPercent: 0, duration: 0.8, ease: "power3.out" });
           else { el.style.opacity = 1; el.style.transform = "none"; }
           return false;
         }
@@ -200,7 +214,9 @@
       clearTimeout(checkT);
       checkT = setTimeout(check, 300);
     }, { passive: true });
-    window.addEventListener("load", () => setTimeout(check, 800));
+    // Без скролла тоже проверяем: нужно два прохода, чтобы отличить
+    // «анимация ещё идёт» от «триггер мёртв»
+    [900, 1700, 2800, 4200].forEach((t) => setTimeout(check, t));
   }
 
   /* Аварийный показ всего скрытого — если инициализация анимаций упала */
