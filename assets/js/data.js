@@ -13,6 +13,8 @@ const PROJECTS = [
     priceUsd: 850000,
     priceLabel: "от $850 000",
     img: "assets/img/hythe-1.jpg",
+    areaLabel: "от 326 м²",
+    perks: ["для прибыли", "рассрочка 0%", "приватный бассейн", "wellness-концепция"],
     desc: "Wellness-виллы с приватными бассейнами от ведущего застройщика вилл на Пхукете. Спа-зоны, сады и полная приватность в 10 минутах от пляжа Бангтао.",
     site: "botanicaluxuryvilla.com"
   },
@@ -27,6 +29,8 @@ const PROJECTS = [
     priceUsd: 210000,
     priceLabel: "от $210 000",
     img: "assets/img/cassia-1.webp",
+    areaLabel: "от 37 м²",
+    perks: ["для прибыли", "арендная программа", "рассрочка 0%", "инфраструктура Laguna"],
     desc: "Апартаменты в курортной экосистеме Laguna Phuket под управлением Banyan Group. Готовая арендная программа и доступ к инфраструктуре курорта.",
     site: "banyangroupresidences.com"
   },
@@ -41,6 +45,8 @@ const PROJECTS = [
     priceUsd: 95000,
     priceLabel: "от $95 000",
     img: "assets/img/santa-monica-3.jpg",
+    areaLabel: "от 25 м²",
+    perks: ["для прибыли", "доход до 10%", "мебельный пакет", "рассрочка 0%"],
     desc: "Курортный комплекс от застройщика №1 в Паттайе: панорамные бассейны, спортивные корты и доходность до 10% годовых на аренде.",
     site: "therivieragroupthailand.com"
   },
@@ -55,6 +61,8 @@ const PROJECTS = [
     priceUsd: 380000,
     priceLabel: "от $380 000",
     img: "assets/img/angsana-1.webp",
+    areaLabel: "от 45 м²",
+    perks: ["для жизни", "вид на море", "отельное управление"],
     desc: "Резиденции с видом на Андаманское море под брендом Angsana. Гибрид личного проживания и отельной аренды с управлением Banyan Group.",
     site: "banyangroupresidences.com"
   },
@@ -69,6 +77,8 @@ const PROJECTS = [
     priceUsd: 500000,
     priceLabel: "от $500 000",
     img: "assets/img/skypark-elara-1.webp",
+    areaLabel: "от 60 м²",
+    perks: ["для прибыли", "старт продаж", "рассрочка 0%"],
     desc: "Новая очередь мастер-плана Laguna Lakelands: озёра, sky-сады и клубная инфраструктура. Флагманская арендная стратегия Laguna Property.",
     site: "lagunaproperty.com"
   },
@@ -83,6 +93,8 @@ const PROJECTS = [
     priceUsd: 115000,
     priceLabel: "от $115 000",
     img: "assets/img/rhea-1.jpg",
+    areaLabel: "от 28 м²",
+    perks: ["рост цены", "600 м до пляжа", "старт продаж", "pet-friendly"],
     desc: "Бутик-кондоминиум «Secret Lagoon» от публичного девелопера Sansiri. Pet-friendly концепция, 600 м до пляжа Сурин, высокий потенциал роста цены.",
     site: "sansiri.com"
   },
@@ -97,6 +109,8 @@ const PROJECTS = [
     priceUsd: 200000,
     priceLabel: "от $200 000",
     img: "assets/img/riviera-malibu-2.jpg",
+    areaLabel: "от 27 м²",
+    perks: ["рост цены", "стадия стройки", "рассрочка 0%", "вид на залив"],
     desc: "Небоскрёб на престижном холме Пратумнак с видами на залив. Стадия активной стройки — идеальная точка входа под перепродажу к сдаче.",
     site: "therivieragroupthailand.com"
   },
@@ -111,6 +125,8 @@ const PROJECTS = [
     priceUsd: 190000,
     priceLabel: "от $190 000",
     img: "assets/img/andaman-city-1.jpg",
+    areaLabel: "от 27 м²",
+    perks: ["рост цены", "Radisson 5*", "500 м до пляжа", "Rental Pool 70/30"],
     desc: "Город-курорт под управлением Radisson 5* в 500 метрах от пляжа Бангтао. Лагуна-бассейн, 5 ресторанов и арендная программа Rental Pool 70/30.",
     site: "andaman.city",
     landing: "project-andaman.html"
@@ -126,6 +142,8 @@ const PROJECTS = [
     priceUsd: 1500000,
     priceLabel: "от $1 500 000",
     img: "assets/img/kiara-1.jpg",
+    areaLabel: "от 231 м²",
+    perks: ["freehold", "Minor Hotels", "рассрочка 0%"],
     desc: "46 freehold-резиденций от Minor International и Kajima под управлением Minor Hotels. Доступ к инфраструктуре Anantara Layan Resort.",
     site: "kiara-reserve.com"
   },
@@ -140,6 +158,8 @@ const PROJECTS = [
     priceUsd: 500000,
     priceLabel: "от $500 000",
     img: "assets/img/btgr-beach-1.webp",
+    areaLabel: "от 94 м²",
+    perks: ["первая линия", "рост цены", "Banyan Tree"],
     desc: "Террасные резиденции на первой линии пляжа Бангтао внутри легендарного курорта Banyan Tree. Ограниченная коллекция, стабильный рост стоимости.",
     site: "banyangroupresidences.com"
   },
@@ -154,6 +174,8 @@ const PROJECTS = [
     priceUsd: 85000,
     priceLabel: "от $85 000",
     img: "assets/img/title-naiyang-1.jpg",
+    areaLabel: "от 24 м²",
+    perks: ["для жизни", "400 м до пляжа", "низкий вход", "рассрочка 0%"],
     desc: "Резортный комплекс в 400 м от пляжа Найянг рядом с национальным парком Сиринат. 814 юнитов, спа, кинотеатр и самая доступная цена входа в подборке.",
     site: "thetitleresidence.com"
   },
@@ -168,6 +190,8 @@ const PROJECTS = [
     priceUsd: 120000,
     priceLabel: "от $120 000",
     img: "assets/img/sun-hills-1.jpg",
+    areaLabel: "от 30 м²",
+    perks: ["для жизни", "у озёр", "KHABIB GYM", "рассрочка 0%"],
     desc: "Резортный кондоминиум у озёр в 5 минутах от пляжа Лаян. Партнёр проекта — Хабиб Нурмагомедов: на территории откроется фирменный KHABIB GYM.",
     site: "sun-hills.com"
   },
@@ -182,6 +206,8 @@ const PROJECTS = [
     priceUsd: 500000,
     priceLabel: "от $500 000",
     img: "assets/img/trisara-1.jpg",
+    areaLabel: "от 120 м²",
+    perks: ["для жизни", "сервис Trisara", "приватная бухта"],
     desc: "Компактные резиденции легендарного курорта Trisara — «третий сад» Пхукета. Сервис уровня лучших отелей мира и приватная бухта.",
     site: "trisara.com"
   },
@@ -196,6 +222,8 @@ const PROJECTS = [
     priceUsd: 3200000,
     priceLabel: "от $3 200 000",
     img: "assets/img/btgr-ocean-1.webp",
+    areaLabel: "от 470 м²",
+    perks: ["первая линия", "выход к океану", "закрытая коллекция"],
     desc: "Виллы на первой береговой линии с прямым выходом к океану. Закрытая коллекция Banyan Tree для приватных инвесторов.",
     site: "banyangroupresidences.com"
   },
@@ -210,6 +238,8 @@ const PROJECTS = [
     priceUsd: 2400000,
     priceLabel: "от $2 400 000",
     img: "assets/img/btgr-lagoon-1.jpg",
+    areaLabel: "от 372 м²",
+    perks: ["у лагуны", "Banyan Tree", "закрытая коллекция"],
     desc: "Виллы с бассейнами на берегу лагуны внутри курорта Banyan Tree Phuket. Сочетание резортной аренды и семейной резиденции.",
     site: "banyangroupresidences.com"
   },
@@ -224,6 +254,8 @@ const PROJECTS = [
     priceUsd: 1800000,
     priceLabel: "от $1 800 000",
     img: "assets/img/botanica-grand-1.jpg",
+    areaLabel: "от 460 м²",
+    perks: ["золотая миля", "ландшафтные сады", "до 1 000 м²"],
     desc: "Флагманская коллекция вилл Botanica на «золотой миле» Бангтао. Гранд-авеню с ландшафтными садами и виллами до 1 000 м².",
     site: "botanicaluxuryvilla.com"
   },
@@ -238,6 +270,8 @@ const PROJECTS = [
     priceUsd: 8000000,
     priceLabel: "от $8 000 000",
     img: "assets/img/amanpuri-1.jpg",
+    areaLabel: "от 780 м²",
+    perks: ["частный пляж", "бренд Aman", "закрытая коллекция"],
     desc: "Виллы легендарного Amanpuri — первого курорта Aman в мире. Частный пляж Пансея и самый закрытый адрес Таиланда.",
     site: "aman.com"
   },
@@ -252,6 +286,8 @@ const PROJECTS = [
     priceUsd: 6500000,
     priceLabel: "от $6 500 000",
     img: "assets/img/trisara-rv5-1.png",
+    areaLabel: "от 900 м²",
+    perks: ["первая линия", "20-м бассейн", "штат персонала"],
     desc: "Резиденция на первой линии океана внутри Trisara: собственный 20-метровый бассейн, штат персонала и закаты над Андаманским морем.",
     site: "trisara.com"
   }

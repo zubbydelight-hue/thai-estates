@@ -12,8 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const mediaClose = p.landing ? "</a>" : "</div>";
     const go = p.landing ? '<span class="pcard__go">→</span>' : "";
     const cta = p.landing
-      ? '<a class="pcard__cta" href="' + p.landing + '">Смотреть проект</a>'
-      : '<button class="pcard__cta" data-open-modal="' + p.name + '">Узнать цену</button>';
+      ? '<a class="pcard__btn" href="' + p.landing + '">Смотреть проект <span>→</span></a>'
+      : '<button class="pcard__btn" data-open-modal="' + p.name + '">Узнать цену и планировки <span>→</span></button>';
+    const perks = (p.perks || [])
+      .map((t) => '<span class="pcard__perk">' + t + "</span>")
+      .join("");
     return (
       '<article class="pcard">' +
       media +
@@ -27,11 +30,13 @@ document.addEventListener("DOMContentLoaded", () => {
       '<div class="pcard__body">' +
       '<div class="pcard__loc">' + p.location + "</div>" +
       '<h3 class="pcard__name">' + p.name + "</h3>" +
+      '<div class="pcard__specs">' +
+      '<div class="pcard__spec"><small>Стоимость</small><b>' + p.priceLabel + "</b></div>" +
+      '<div class="pcard__spec"><small>Площадь</small><b>' + (p.areaLabel || "—") + "</b></div>" +
+      "</div>" +
+      (perks ? '<div class="pcard__perks">' + perks + "</div>" : "") +
       '<p class="pcard__desc">' + p.desc + "</p>" +
-      '<div class="pcard__foot">' +
-      '<div class="pcard__price">' + p.priceLabel + "<small>стоимость входа</small></div>" +
-      cta +
-      "</div></div></article>"
+      '<div class="pcard__foot">' + cta + "</div></div></article>"
     );
   }
 
