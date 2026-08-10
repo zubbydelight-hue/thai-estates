@@ -40,8 +40,22 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  // Врезка-тизер квиза внутри сетки лотов
+  const quizTeaserHtml =
+    '<div class="pcard pcard--teaser">' +
+    '<div class="pcard-teaser__inner">' +
+    '<span class="pcard-teaser__label">Квиз · 1 минута</span>' +
+    '<div class="pcard-teaser__title">Не можете выбрать из 18 проектов?</div>' +
+    '<p class="pcard-teaser__text">Ответьте на 4 вопроса — алгоритм покажет ваш топ-3 с ценами и пришлём подробный расчёт.</p>' +
+    '<a class="btn btn--gold" href="#quiz">Пройти подбор <span class="arr">→</span></a>' +
+    "</div></div>";
+
   function render(list) {
-    grid.innerHTML = list.map(cardHtml).join("");
+    const cardsHtml = list.map(cardHtml);
+    // после 6-й карточки — призыв пройти квиз
+    if (cardsHtml.length > 6) cardsHtml.splice(6, 0, quizTeaserHtml);
+    else cardsHtml.push(quizTeaserHtml);
+    grid.innerHTML = cardsHtml.join("");
     count.textContent = "Показано проектов: " + list.length + " из " + PROJECTS.length;
 
     if (window.gsap) {
@@ -78,6 +92,18 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
   );
+
+  // Плавающая кнопка квиза: появляется после hero, прячется у самого квиза
+  const fab = document.querySelector(".quiz-fab");
+  const quizSec = document.getElementById("quiz");
+  if (fab && quizSec) {
+    window.addEventListener("scroll", () => {
+      const past = window.scrollY > window.innerHeight * 0.8;
+      const r = quizSec.getBoundingClientRect();
+      const nearQuiz = r.top < window.innerHeight && r.bottom > 0;
+      fab.classList.toggle("is-visible", past && !nearQuiz);
+    }, { passive: true });
+  }
 
   // Встроенный квиз
   createQuiz(document.getElementById("quiz-container"), {
