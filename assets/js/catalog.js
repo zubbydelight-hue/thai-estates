@@ -107,39 +107,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Встроенный квиз
   createQuiz(document.getElementById("quiz-container"), {
+    resultImg: "assets/img/trisara-1.jpg",
     questions: [
       {
         key: "strategy",
         question: "Какая у вас цель?",
         hint: "От этого зависит стратегия и тип проекта.",
+        img: "assets/img/santa-monica-7.jpg",
         options: [
-          { value: "rent", label: "Пассивный доход с аренды", sub: "до 10% годовых", icon: "01" },
-          { value: "resale", label: "Заработать на росте цены", sub: "вход на стройке, выход на сдаче", icon: "02" },
-          { value: "live", label: "Жильё для себя и семьи", sub: "переезд или зимовки", icon: "03" },
-          { value: "private", label: "Приватная коллекция", sub: "виллы от $1.5M", icon: "04" }
+          { value: "rent", label: "Пассивный доход с аренды", sub: "до 10% годовых", img: "assets/img/santa-monica-5.jpg" },
+          { value: "resale", label: "Заработать на росте цены", sub: "вход на стройке, выход на сдаче", img: "assets/img/riviera-malibu-2.jpg" },
+          { value: "live", label: "Жильё для себя и семьи", sub: "переезд или зимовки", img: "assets/img/angsana-1.webp" },
+          { value: "private", label: "Приватная коллекция", sub: "виллы от $1.5M", img: "assets/img/amanpuri-1.webp" }
         ]
       },
       {
         key: "region",
         question: "Какой регион вам ближе?",
+        img: "assets/img/trisara-3.jpg",
         options: [
-          { value: "phuket", label: "Пхукет", sub: "остров, премиум-курорты", icon: "01" },
-          { value: "pattaya", label: "Паттайя", sub: "город у моря, низкий порог входа", icon: "02" },
-          { value: "any", label: "Рассмотрю оба варианта", sub: "покажем лучшее из двух регионов", icon: "03" }
+          { value: "phuket", label: "Пхукет", sub: "остров, премиум-курорты", img: "assets/img/trisara-2.jpg" },
+          { value: "pattaya", label: "Паттайя", sub: "город у моря, низкий порог входа", img: "assets/img/riviera-malibu-3.jpg" },
+          { value: "any", label: "Рассмотрю оба варианта", sub: "покажем лучшее из двух регионов", img: "assets/img/btgr-beach-2.webp" }
         ]
       },
       {
         key: "type",
         question: "Апартаменты или вилла?",
+        img: "assets/img/botanica-grand-1.jpg",
         options: [
-          { value: "condo", label: "Апартаменты", sub: "проще сдавать, ниже вход", icon: "01" },
-          { value: "villa", label: "Вилла", sub: "приватность и территория", icon: "02" },
-          { value: "any", label: "Не принципиально", sub: "подберём по бюджету и цели", icon: "03" }
+          { value: "condo", label: "Апартаменты", sub: "проще сдавать, ниже вход", img: "assets/img/cassia-1.webp" },
+          { value: "villa", label: "Вилла", sub: "приватность и территория", img: "assets/img/hythe-1.jpg" },
+          { value: "any", label: "Не принципиально", sub: "подберём по бюджету и цели", img: "assets/img/skypark-elara-1.webp" }
         ]
       },
       {
         key: "budget",
         question: "Какой бюджет рассматриваете?",
+        img: "assets/img/santa-monica-3.jpg",
         options: [
           { value: "0-250000", label: "До $250 000", icon: "01" },
           { value: "250000-500000", label: "$250 000 – $500 000", icon: "02" },

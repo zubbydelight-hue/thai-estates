@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/base.css?v=8">
-  <link rel="stylesheet" href="assets/css/quiz.css?v=8">
+  <link rel="stylesheet" href="assets/css/base.css?v=9">
+  <link rel="stylesheet" href="assets/css/quiz.css?v=9">
   <style>
     body { background: var(--night); }
 
@@ -133,40 +133,41 @@
     </main>
   </div>
 
-  <script src="assets/js/data.js?v=8"></script>
-  <script src="assets/js/quiz-engine.js?v=8"></script>
+  <script src="assets/js/data.js?v=9"></script>
+  <script src="assets/js/quiz-engine.js?v=9"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       createQuiz(document.getElementById("quiz-container"), {
         flat: true,
+        side: false,
         questions: [
           {
             key: "strategy",
             question: "Зачем вам недвижимость в Таиланде?",
             hint: "Выберите главную цель — от неё зависит стратегия.",
             options: [
-              { value: "rent", label: "Пассивный доход с аренды", sub: "до 10% годовых в валюте", icon: "01" },
-              { value: "resale", label: "Заработать на росте цены", sub: "купить на стройке — продать к сдаче", icon: "02" },
-              { value: "live", label: "Для себя: переезд или зимовки", sub: "дом у моря для семьи", icon: "03" },
-              { value: "private", label: "Приватная коллекция", sub: "эксклюзивные виллы от $1.5M", icon: "04" }
+              { value: "rent", label: "Пассивный доход с аренды", sub: "до 10% годовых в валюте", img: "assets/img/santa-monica-5.jpg" },
+              { value: "resale", label: "Заработать на росте цены", sub: "купить на стройке — продать к сдаче", img: "assets/img/riviera-malibu-2.jpg" },
+              { value: "live", label: "Для себя: переезд или зимовки", sub: "дом у моря для семьи", img: "assets/img/angsana-1.webp" },
+              { value: "private", label: "Приватная коллекция", sub: "эксклюзивные виллы от $1.5M", img: "assets/img/amanpuri-1.webp" }
             ]
           },
           {
             key: "region",
             question: "Где хотите купить?",
             options: [
-              { value: "phuket", label: "Пхукет", sub: "остров, международные бренды, премиум", icon: "01" },
-              { value: "pattaya", label: "Паттайя", sub: "город у моря, порог входа ниже", icon: "02" },
-              { value: "any", label: "Доверюсь эксперту", sub: "сравним оба региона в подборке", icon: "03" }
+              { value: "phuket", label: "Пхукет", sub: "остров, международные бренды, премиум", img: "assets/img/trisara-2.jpg" },
+              { value: "pattaya", label: "Паттайя", sub: "город у моря, порог входа ниже", img: "assets/img/riviera-malibu-3.jpg" },
+              { value: "any", label: "Доверюсь эксперту", sub: "сравним оба региона в подборке", img: "assets/img/btgr-beach-2.webp" }
             ]
           },
           {
             key: "type",
             question: "Какой формат ближе?",
             options: [
-              { value: "condo", label: "Апартаменты", sub: "ликвидность и простая аренда", icon: "01" },
-              { value: "villa", label: "Вилла", sub: "своя территория и бассейн", icon: "02" },
-              { value: "any", label: "Рассмотрю оба варианта", icon: "03" }
+              { value: "condo", label: "Апартаменты", sub: "ликвидность и простая аренда", img: "assets/img/cassia-1.webp" },
+              { value: "villa", label: "Вилла", sub: "своя территория и бассейн", img: "assets/img/hythe-1.jpg" },
+              { value: "any", label: "Рассмотрю оба варианта", img: "assets/img/skypark-elara-1.webp" }
             ]
           },
           {

@@ -1,52 +1,98 @@
 /* Универсальный движок квиза.
-   createQuiz(container, { questions, renderResult, flat })
-   Вопрос: { key, label, question, hint, wide, options: [{ value, label, sub, icon }] } */
+   createQuiz(container, { questions, renderResult, flat, side, img, resultImg })
+   Вопрос: { key, question, hint, img, options: [{ value, label, sub, icon, img }] }
+   side: false — без визуальной панели слева (для страниц со своим сайдбаром) */
 
 function createQuiz(container, config) {
   const answers = {};
   let step = 0;
   const total = config.questions.length;
+  const pad = (n) => (n < 10 ? "0" + n : "" + n);
+  const hasSide = config.side !== false;
+  const defaultImg = config.img || (config.questions.find((q) => q.img) || {}).img || "";
 
   container.innerHTML =
-    '<div class="quiz' + (config.flat ? " quiz--flat" : "") + '">' +
+    '<div class="quiz' + (config.flat ? " quiz--flat" : "") + (hasSide ? "" : " quiz--noside") + '">' +
+    (hasSide
+      ? '<aside class="quiz__side">' +
+        '<div class="quiz__side-media"><img alt=""></div>' +
+        '<div class="quiz__side-head"><span class="quiz__side-num"></span><span class="quiz__side-of">из ' + pad(total) + "</span></div>" +
+        '<div class="quiz__side-agent">' +
+        '<img src="assets/img/kun-ping.jpg" alt="Kun Ping">' +
+        "<div><b>Kun Ping</b><span>изучит ответы и подберёт варианты лично</span></div>" +
+        "</div>" +
+        "</aside>"
+      : "") +
+    '<div class="quiz__main">' +
     '<div class="quiz__progress"><div class="quiz__progress-bar"></div></div>' +
     '<div class="quiz__body"></div>' +
-    "</div>";
+    "</div></div>";
 
   const body = container.querySelector(".quiz__body");
   const bar = container.querySelector(".quiz__progress-bar");
+  const sideImg = container.querySelector(".quiz__side-media img");
+  const sideNum = container.querySelector(".quiz__side-num");
+
+  function updateSide(img, num) {
+    if (!hasSide) return;
+    sideNum.textContent = num;
+    const src = img || defaultImg;
+    if (src && sideImg.getAttribute("src") !== src) {
+      sideImg.style.opacity = "0";
+      const pre = new Image();
+      pre.onload = () => {
+        sideImg.src = src;
+        sideImg.style.opacity = "";
+      };
+      pre.src = src;
+    }
+  }
 
   function renderStep() {
     const q = config.questions[step];
-    bar.style.width = (step / total) * 100 + "%";
+    bar.style.width = ((step + 1) / (total + 1)) * 100 + "%";
+    updateSide(q.img, pad(step + 1));
+
+    const isCards = q.options.some((o) => o.img);
+    const optionsHtml = q.options
+      .map((o, i) => {
+        const sel = answers[q.key] === o.value ? " is-selected" : "";
+        if (isCards) {
+          return (
+            '<button type="button" class="quiz-card' + sel + '" data-i="' + i + '">' +
+            (o.img
+              ? '<span class="quiz-card__media"><img src="' + o.img + '" alt="" loading="lazy"></span>'
+              : '<span class="quiz-card__media quiz-card__media--empty"><i>' + (o.icon || "") + "</i></span>") +
+            '<span class="quiz-card__label">' + o.label + (o.sub ? "<small>" + o.sub + "</small>" : "") + "</span>" +
+            '<span class="quiz-card__check">✓</span>' +
+            "</button>"
+          );
+        }
+        return (
+          '<button type="button" class="quiz-opt' + sel + '" data-i="' + i + '">' +
+          (o.icon ? '<span class="quiz-opt__icon">' + o.icon + "</span>" : "") +
+          '<span class="quiz-opt__label">' + o.label + (o.sub ? "<small>" + o.sub + "</small>" : "") + "</span>" +
+          "</button>"
+        );
+      })
+      .join("");
 
     body.innerHTML =
-      '<div class="quiz__step-label">Шаг ' + (step + 1) + " из " + total + "</div>" +
+      '<div class="quiz__step">' +
+      '<div class="quiz__step-label">Вопрос ' + (step + 1) + " из " + total + "</div>" +
       '<div class="quiz__question">' + q.question + "</div>" +
       (q.hint ? '<p class="quiz__hint">' + q.hint + "</p>" : "") +
-      '<div class="quiz__options' + (q.wide ? " quiz__options--wide" : "") + '">' +
-      q.options
-        .map(
-          (o, i) =>
-            '<button type="button" class="quiz-opt' +
-            (answers[q.key] === o.value ? " is-selected" : "") +
-            '" data-i="' + i + '">' +
-            (o.icon ? '<span class="quiz-opt__icon">' + o.icon + "</span>" : "") +
-            '<span class="quiz-opt__label">' + o.label +
-            (o.sub ? "<small>" + o.sub + "</small>" : "") +
-            "</span></button>"
-        )
-        .join("") +
-      "</div>" +
+      '<div class="quiz__options' + (isCards ? " quiz__options--cards" : "") + '">' + optionsHtml + "</div>" +
       '<div class="quiz__nav">' +
       '<button type="button" class="quiz__back"' + (step === 0 ? " hidden" : "") + ">&larr; Назад</button>" +
       '<span class="form-note">Займёт меньше минуты</span>' +
-      "</div>";
+      "</div></div>";
 
-    body.querySelectorAll(".quiz-opt").forEach((btn) =>
+    body.querySelectorAll(".quiz-opt, .quiz-card").forEach((btn) =>
       btn.addEventListener("click", () => {
         const opt = q.options[+btn.dataset.i];
         answers[q.key] = opt.value;
+        body.querySelectorAll(".is-selected").forEach((b) => b.classList.remove("is-selected"));
         btn.classList.add("is-selected");
         setTimeout(() => {
           if (step < total - 1) {
@@ -55,7 +101,7 @@ function createQuiz(container, config) {
           } else {
             renderResult();
           }
-        }, 250);
+        }, 350);
       })
     );
     body.querySelector(".quiz__back")?.addEventListener("click", () => {
@@ -68,7 +114,8 @@ function createQuiz(container, config) {
 
   function renderResult() {
     bar.style.width = "100%";
-    body.innerHTML = config.renderResult(answers);
+    updateSide(config.resultImg, "✓");
+    body.innerHTML = '<div class="quiz__step">' + config.renderResult(answers) + "</div>";
 
     const form = body.querySelector("form");
     if (form) {
