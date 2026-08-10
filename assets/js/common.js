@@ -29,8 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const open = (source) => {
       modal.classList.add("is-open");
       document.body.style.overflow = "hidden";
-      const src = modal.querySelector("[data-lead-source]");
-      if (src && source) src.textContent = source;
+      // источник заявки пишем в скрытое поле формы, а не в видимый текст
+      const src = modal.querySelector("input[data-lead-source]");
+      if (src && source) src.value = source;
     };
     const close = () => {
       modal.classList.remove("is-open");
