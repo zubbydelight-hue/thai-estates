@@ -299,3 +299,39 @@ const STRATEGY_LABELS = {
   live: "Проживание",
   private: "Private Collection"
 };
+
+/* Галереи для модалки проекта — только фотографии, уже лежащие в assets/img */
+const GALLERIES = {
+  hythe: ["assets/img/hythe-1.jpg", "assets/img/hythe-2.jpg", "assets/img/hythe-3.jpg", "assets/img/hythe-4.jpg"],
+  cassia: ["assets/img/cassia-1.webp", "assets/img/cassia-2.webp", "assets/img/cassia-3.webp"],
+  "santa-monica": ["assets/img/santa-monica-3.jpg", "assets/img/santa-monica-5.jpg", "assets/img/santa-monica-7.jpg", "assets/img/santa-monica-10.jpg"],
+  angsana: ["assets/img/angsana-1.webp", "assets/img/angsana-2.webp", "assets/img/angsana-3.webp"],
+  "skypark-elara": ["assets/img/skypark-elara-1.webp", "assets/img/skypark-elara-3.webp", "assets/img/skypark-elara-4.webp"],
+  rhea: ["assets/img/rhea-1.jpg", "assets/img/rhea-2.jpg", "assets/img/rhea-3.jpg"],
+  "riviera-malibu": ["assets/img/riviera-malibu-2.jpg", "assets/img/riviera-malibu-3.jpg", "assets/img/riviera-malibu-1.png"],
+  "andaman-city": ["assets/img/andaman-city-1.jpg", "assets/img/andaman-city-6.jpg", "assets/img/andaman-city-7.jpg", "assets/img/andaman-city-3.jpg"],
+  kiara: ["assets/img/kiara-1.jpg", "assets/img/kiara-2.jpg", "assets/img/kiara-3.jpg"],
+  "btgr-beach": ["assets/img/btgr-beach-1.webp", "assets/img/btgr-beach-2.webp", "assets/img/btgr-beach-3.webp"],
+  "title-naiyang": ["assets/img/title-naiyang-1.jpg", "assets/img/title-naiyang-2.jpg", "assets/img/title-naiyang-3.jpg"],
+  "sun-hills": ["assets/img/sun-hills-1.jpg", "assets/img/sun-hills-2.webp", "assets/img/sun-hills-3.jpg"],
+  trisara: ["assets/img/trisara-1.jpg", "assets/img/trisara-2.jpg", "assets/img/trisara-3.jpg"],
+  "btgr-ocean": ["assets/img/btgr-ocean-1.webp", "assets/img/btgr-ocean-2.png", "assets/img/btgr-ocean-3.png"],
+  "btgr-lagoon": ["assets/img/btgr-lagoon-1.jpg"],
+  "botanica-grand": ["assets/img/botanica-grand-1.jpg", "assets/img/botanica-grand-2.jpg", "assets/img/botanica-grand-3.jpg"],
+  amanpuri: ["assets/img/amanpuri-1.webp", "assets/img/amanpuri-2.webp", "assets/img/amanpuri-3.webp"],
+  "trisara-rv5": ["assets/img/trisara-rv5-1.png", "assets/img/trisara-rv5-2.jpg", "assets/img/trisara-rv5-3.jpg"]
+};
+PROJECTS.forEach((p) => { p.gallery = GALLERIES[p.id] || [p.img]; });
+
+/* WAITING_FOR_CLIENT_DATA:
+   Модалка проекта (catalog.html) готова выводить дополнительные поля,
+   как только клиент пришлёт данные. Для этого добавьте проекту объект:
+   details: {
+     sea: "500 м",            // расстояние до моря
+     yield: "до 10% годовых", // доходность
+     installment: "0% до ключей",
+     discounts: "…",          // скидки застройщика
+     payment: "…",            // варианты оплаты
+     layouts: "…"             // доступные планировки
+   }
+   Поля без данных на странице не показываются. */

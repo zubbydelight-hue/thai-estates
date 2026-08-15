@@ -8,9 +8,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/base.css?v=9">
-  <link rel="stylesheet" href="assets/css/quiz.css?v=9">
+  <link rel="stylesheet" href="assets/css/base.css?v=10">
+  <link rel="stylesheet" href="assets/css/quiz.css?v=10">
   <style>
+    /* Нет layout shift при открытии модалок: место под скроллбар зарезервировано */
+    html { scrollbar-gutter: stable; }
+
     /* Почему Таиланд — редакционные карточки */
     .why-grid {
       display: grid;
@@ -243,7 +246,7 @@
       position: fixed;
       right: 22px;
       bottom: 22px;
-      z-index: 900;
+      z-index: 120; /* ниже модалок (200+), выше контента */
       display: inline-flex;
       align-items: center;
       gap: 10px;
@@ -302,6 +305,399 @@
     .case-card__text { margin-top: 12px; font-size: 14px; line-height: 1.75; color: var(--stone); max-width: 360px; }
     .cases-cta { margin-top: clamp(36px, 4.4vw, 60px); text-align: center; }
 
+    /* FIX-01: hero во floating-рамке */
+    .hero {
+      min-height: 0;
+      display: block;
+      background: var(--night);
+      overflow: visible;
+      padding: clamp(86px, 12vh, 112px) clamp(14px, 2.4vw, 32px) clamp(14px, 2.4vw, 32px);
+    }
+    .hero__frame {
+      position: relative;
+      overflow: hidden;
+      border-radius: clamp(18px, 2.2vw, 30px);
+      min-height: min(740px, calc(100svh - 132px));
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      box-shadow: 0 40px 110px -40px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(244, 240, 230, 0.08);
+    }
+    .hero__content { padding: clamp(46px, 7vw, 90px) 0 0; }
+    .hero__meta { margin-top: clamp(28px, 4vw, 52px); background: rgba(11, 16, 12, 0.55); }
+    .hero__title { max-width: 17ch; }
+    .h-hero { font-size: clamp(36px, 5.4vw, 82px); }
+
+    /* FIX-04: единая типографика — без «странных» курсивных начертаний,
+       ровные строки, ограниченная ширина текста */
+    .h-hero em, .h2 em, .h3 em, .pcard-teaser__title em { font-style: normal; color: var(--gold-2); }
+    .h-hero, .h2, .cases-cta__title, .why-card__title, .quiz__question { text-wrap: balance; }
+    p, .sec-head__sub { text-wrap: pretty; }
+    .sec-head__idx, .why-card__num, .quiz__step-label, .quiz__side-num, .quiz-opt__icon,
+    .quiz-card__media--empty i { font-style: normal; }
+    .sec-head__sub, .case-card__text, .why-card__text { max-width: 52ch; }
+
+    /* FIX-03: компактные буллеты вместо бегущей строки */
+    .benefits-strip { background: var(--night); border-top: 1px solid var(--hair-l); }
+    .benefits-strip__row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 36px;
+      padding: 15px 0;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      color: rgba(244, 240, 230, 0.68);
+      white-space: nowrap;
+    }
+    .benefits-strip__row i { font-style: normal; color: var(--gold-2); margin-right: 9px; }
+
+    /* FIX-02: полоса брендов заметнее */
+    .brands__row { padding: 30px 0; justify-content: space-between; }
+    .brands__label { color: var(--ink); }
+    .brands__list span { font-size: clamp(21px, 1.9vw, 27px); opacity: 1; }
+
+    /* FIX-06: больше воздуха после заголовка каталога */
+    .sec-head--catalog { margin-bottom: clamp(44px, 5vw, 68px); }
+
+    /* FIX-07: фильтры тремя смысловыми группами */
+    .filters-panel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 18px 44px;
+      margin-bottom: 22px;
+      padding: 18px 22px 20px;
+      border: 1px solid var(--hair);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.55);
+    }
+    .filters-group { display: flex; flex-direction: column; gap: 10px; }
+    .filters-group__label {
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+    .filters-group__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filters-select {
+      height: 42px;
+      padding: 0 38px 0 16px;
+      border: 1px solid rgba(20, 23, 15, 0.25);
+      border-radius: 999px;
+      background: transparent url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2314170f' fill='none'/%3E%3C/svg%3E") no-repeat right 16px center;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      appearance: none;
+    }
+
+    /* FIX-08: компактные карточки */
+    .pcard { cursor: pointer; }
+    .pcard--teaser { cursor: default; }
+    .pcard__specs { margin-top: 13px; padding: 11px 0; }
+    .pcard__perks { margin-top: 12px; }
+    .pcard__foot { padding-top: 15px; }
+
+    /* FIX-10: компактный тизер в сетке */
+    .pcard--teaser { min-height: 0; }
+    .pcard-teaser__inner { padding: 28px 24px; text-align: center; }
+    .pcard-teaser__title { font-size: clamp(21px, 1.9vw, 26px); margin-top: 12px; }
+    .pcard-teaser__note {
+      margin: 10px 0 22px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(244, 240, 230, 0.6);
+    }
+
+    /* FIX-12: компактный блок эксперта */
+    .expert-cta { padding-top: clamp(46px, 6vw, 72px) !important; padding-bottom: clamp(46px, 6vw, 72px) !important; }
+    .expert-cta .h2 { font-size: clamp(25px, 2.6vw, 38px); }
+    .expert-cta .sec-head__sub { margin-top: 14px !important; max-width: 46ch; font-size: 14.5px; }
+    .expert-cta__grid { gap: clamp(28px, 4vw, 64px); }
+    .expert-cta__stats { margin-top: 20px; padding-top: 16px; gap: 12px 36px; }
+    .expert-cta__stats b { font-size: clamp(22px, 2.1vw, 30px); }
+    .expert-cta__form { margin-top: 20px; }
+    .expert-cta__card { padding: 24px 20px; }
+    .expert-cta__photo { width: 108px; height: 108px; }
+    .expert-cta__name { font-size: 23px; margin-top: 13px; }
+    .expert-cta__role { font-size: 12.5px; margin-top: 5px; }
+
+    /* FIX-13: компактный квиз */
+    #quiz { padding-top: clamp(46px, 6vw, 72px) !important; padding-bottom: clamp(50px, 6vw, 76px) !important; }
+    #quiz .sec-head { margin-bottom: 22px; }
+    .quiz-badges { margin-bottom: 16px; gap: 8px 10px; }
+    .quiz-badges span { font-size: 11.5px; padding: 7px 13px; }
+    .quiz-spotlight .quiz__side { min-height: 420px; padding: 22px 20px; }
+    .quiz-spotlight .quiz__side-num { font-size: 46px; }
+    .quiz-spotlight .quiz__body { padding: clamp(22px, 3vw, 34px); }
+    .quiz-spotlight .quiz__step-label { font-size: 13px; margin-bottom: 8px; }
+    .quiz-spotlight .quiz__question { font-size: clamp(21px, 2.1vw, 28px); margin-bottom: 4px; }
+    .quiz-spotlight .quiz__hint { margin-bottom: 14px; font-size: 13.5px; }
+    .quiz-spotlight .quiz__question + .quiz__options { margin-top: 16px; }
+    .quiz-spotlight .quiz__options--cards { gap: 10px; }
+    .quiz-spotlight .quiz-card__media { aspect-ratio: 16 / 8; }
+    .quiz-spotlight .quiz-card__label { padding: 11px 13px 13px; font-size: 14px; }
+    .quiz-spotlight .quiz-card__label small { font-size: 12px; margin-top: 2px; }
+    .quiz-spotlight .quiz-opt { padding: 12px 46px 12px 13px; gap: 13px; }
+    .quiz-spotlight .quiz-opt__icon { width: 33px; height: 33px; font-size: 13px; }
+    .quiz-spotlight .quiz-opt__label { font-size: 14.5px; }
+    .quiz-spotlight .quiz__nav { margin-top: 18px; }
+
+    /* FIX-16: процесс — компактная горизонтальная инфографика */
+    #steps { padding-top: clamp(46px, 6vw, 72px) !important; padding-bottom: clamp(46px, 6vw, 72px) !important; }
+    #steps .sec-head { margin-bottom: clamp(28px, 3.4vw, 44px); }
+    .steps-line { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(18px, 2.4vw, 34px); }
+    .step-item { position: relative; }
+    .step-item::after {
+      content: "";
+      position: absolute;
+      top: 23px;
+      left: 60px;
+      right: -8px;
+      height: 1px;
+      background: var(--hair);
+    }
+    .step-item:last-child::after { display: none; }
+    .step-item__num {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--night);
+      color: var(--gold-2);
+      font-family: var(--ff-d);
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .step-item__title { margin-top: 15px; font-weight: 700; font-size: 15px; line-height: 1.35; }
+    .step-item__text { margin-top: 7px; font-size: 13px; line-height: 1.65; color: var(--stone); max-width: 30ch; }
+
+    /* FIX-17: FAQ сеткой 3×2 */
+    #faq { padding-top: clamp(46px, 6vw, 72px) !important; padding-bottom: clamp(46px, 6vw, 72px) !important; }
+    #faq .sec-head { margin-bottom: clamp(28px, 3.4vw, 44px); }
+    .faq--grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; align-items: start; border: none; }
+    .faq--grid .faq__item { border: 1px solid var(--hair); border-radius: 5px; background: rgba(255, 255, 255, 0.55); }
+    .faq--grid .faq__q {
+      padding: 15px 17px;
+      font-family: var(--ff-b, inherit);
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.45;
+      gap: 12px;
+    }
+    .faq--grid .faq__ico { width: 34px; height: 34px; }
+    .faq--grid .faq__a-inner { padding: 0 17px 15px; font-size: 13px; line-height: 1.65; }
+
+    /* FIX-05: попап — способ связи, телефон с кодом страны, согласие */
+    .lead-methods { display: flex; gap: 8px; }
+    .lead-method { flex: 1; position: relative; }
+    .lead-method input { position: absolute; opacity: 0; pointer-events: none; }
+    .lead-method span {
+      display: block;
+      text-align: center;
+      padding: 11px 6px;
+      border: 1px solid rgba(20, 23, 15, 0.22);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s, border-color 0.25s;
+      white-space: nowrap;
+    }
+    .lead-method input:checked + span { background: var(--night); border-color: var(--night); color: var(--cream); }
+    .phone-row { display: flex; gap: 10px; }
+    .phone-row .input { flex: 1; min-width: 0; }
+    .phone-cc { position: relative; flex-shrink: 0; }
+    .phone-cc__btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 100%;
+      min-height: 50px;
+      padding: 0 12px;
+      border: 1px solid rgba(20, 23, 15, 0.25);
+      border-radius: 2px;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .phone-cc__btn img { width: 20px; height: auto; border-radius: 2px; display: block; }
+    .phone-cc__btn i { font-style: normal; font-size: 9px; color: var(--stone); }
+    .phone-cc__list {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      width: 264px;
+      max-height: 236px;
+      overflow-y: auto;
+      background: #fff;
+      border: 1px solid var(--hair);
+      border-radius: 5px;
+      box-shadow: 0 24px 54px -18px rgba(0, 0, 0, 0.3);
+      display: none;
+      z-index: 6;
+    }
+    .phone-cc.is-open .phone-cc__list { display: block; }
+    .phone-cc__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 9px 13px;
+      font-size: 13.5px;
+      text-align: left;
+      color: var(--ink);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    .phone-cc__item:hover { background: rgba(194, 161, 99, 0.12); }
+    .phone-cc__item img { width: 20px; border-radius: 2px; }
+    .phone-cc__item .code { margin-left: auto; color: var(--stone); }
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--stone);
+      cursor: pointer;
+    }
+    .consent input { margin-top: 2px; width: 15px; height: 15px; accent-color: var(--gold); flex-shrink: 0; }
+
+    /* FIX-09: модалка проекта */
+    .pmodal {
+      position: fixed;
+      inset: 0;
+      z-index: 220;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 32px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s var(--tr);
+    }
+    .pmodal.is-open { opacity: 1; pointer-events: auto; }
+    .pmodal__backdrop { position: absolute; inset: 0; background: rgba(11, 16, 12, 0.72); backdrop-filter: blur(7px); }
+    .pmodal__panel {
+      position: relative;
+      z-index: 1;
+      width: min(1100px, calc(100vw - 64px));
+      max-height: calc(100vh - 80px);
+      background: var(--cream);
+      color: var(--ink);
+      border-radius: 10px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      transform: translateY(16px) scale(0.985);
+      transition: transform 0.4s var(--tr);
+    }
+    .pmodal.is-open .pmodal__panel { transform: none; }
+    .pmodal__close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 4;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(11, 16, 12, 0.55);
+      color: var(--cream);
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      transition: background 0.3s;
+    }
+    .pmodal__close:hover { background: var(--night); }
+    .pmodal__gallery { position: relative; background: var(--night); min-height: 100%; }
+    .pmodal__gallery img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .pmodal__nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(11, 16, 12, 0.55);
+      color: var(--cream);
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      transition: background 0.3s, color 0.3s;
+    }
+    .pmodal__nav:hover { background: var(--gold); color: var(--night); }
+    .pmodal__nav--prev { left: 14px; }
+    .pmodal__nav--next { right: 14px; }
+    .pmodal__count {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      z-index: 3;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(11, 16, 12, 0.55);
+      color: rgba(244, 240, 230, 0.85);
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      backdrop-filter: blur(4px);
+    }
+    .pmodal__body { padding: clamp(24px, 3vw, 40px); overflow-y: auto; }
+    .pmodal__loc {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+    .pmodal__name {
+      font-family: var(--ff-d);
+      font-weight: 500;
+      font-size: clamp(25px, 2.5vw, 33px);
+      line-height: 1.12;
+      margin-top: 8px;
+      text-wrap: balance;
+    }
+    .pmodal__rows { margin-top: 18px; border-top: 1px solid var(--hair); }
+    .pmodal__row {
+      display: grid;
+      grid-template-columns: 158px 1fr;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--hair);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .pmodal__row small {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--stone);
+      padding-top: 2px;
+    }
+    .pmodal__row b { font-weight: 700; }
+    .pmodal__desc { margin-top: 15px; font-size: 13.5px; line-height: 1.7; color: var(--stone); }
+    .pmodal__perks { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+    .pmodal__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+
     @media (max-width: 1080px) {
       .why-grid { grid-template-columns: 1fr; max-width: 560px; }
       .why-card:nth-child(2) { transform: none; }
@@ -320,8 +716,50 @@
       .expert-cta__form { grid-template-columns: 1fr; }
       .cases-cta__form { grid-template-columns: 1fr; }
       .cases-cta__form .btn { justify-content: center; }
-      .pcard--teaser { min-height: 340px; }
       .quiz-fab { right: 14px; bottom: 14px; padding: 14px 20px; font-size: 11px; }
+    }
+
+    /* Адаптив новых блоков */
+    @media (max-width: 1024px) {
+      .faq--grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-line { grid-template-columns: repeat(2, 1fr); gap: 26px 20px; }
+      .step-item::after { display: none; }
+    }
+    @media (max-width: 900px) {
+      .pmodal { padding: 16px 12px; }
+      .pmodal__panel {
+        grid-template-columns: 1fr;
+        width: calc(100vw - 24px);
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
+        display: block;
+      }
+      .pmodal__gallery { position: relative; aspect-ratio: 16 / 10; min-height: 0; }
+      .pmodal__body { overflow: visible; }
+    }
+    @media (max-width: 720px) {
+      .hero { padding: 76px 10px 10px; }
+      .hero__frame { min-height: min(680px, calc(100svh - 90px)); border-radius: 16px; }
+      .benefits-strip__row { gap: 7px 22px; font-size: 11.5px; }
+      .filters-panel { gap: 14px 26px; padding: 15px 16px 17px; }
+      .steps-line { grid-template-columns: 1fr; gap: 0; }
+      .step-item { display: grid; grid-template-columns: 46px 1fr; gap: 2px 15px; padding-bottom: 22px; }
+      .step-item::after {
+        display: block;
+        top: 52px;
+        left: 23px;
+        right: auto;
+        width: 1px;
+        height: calc(100% - 58px);
+      }
+      .step-item:last-child { padding-bottom: 0; }
+      .step-item__body { grid-column: 2; }
+      .step-item__title { margin-top: 12px; }
+      .step-item__text { max-width: none; }
+      .faq--grid { grid-template-columns: 1fr; }
+      .lead-methods { flex-wrap: wrap; }
+      .lead-method { flex: 1 1 30%; }
+      .pmodal__row { grid-template-columns: 1fr; gap: 3px; padding: 9px 0; }
     }
   </style>
 </head>
@@ -348,7 +786,7 @@
         </div>
       </nav>
       <div class="nav__right">
-        <button class="btn btn--line btn--sm nav__cta-desktop" data-open-modal="Шапка сайта">Оставить заявку</button>
+        <button class="btn btn--gold btn--sm nav__cta-desktop" data-open-modal="Шапка сайта">Оставить заявку</button>
         <button class="nav__burger" aria-label="Меню"><span></span><span></span></button>
       </div>
     </div>
@@ -356,42 +794,43 @@
 
   <!-- HERO -->
   <section class="hero" id="top">
-    <div class="hero__bg" data-hero-img><img src="assets/img/trisara-1.jpg" alt="Вилла у побережья Пхукета"></div>
-    <div class="hero__content">
-      <div class="container">
-        <span class="label label--line">Актуально · август 2026 · Пхукет и Паттайя</span>
-        <div class="hero__grid">
-          <h1 class="h-hero hero__title" data-split>Подборка инвестиционных проектов Таиланда — <em>август 2026</em></h1>
-          <div class="hero__desc" data-hero-fade>
-            <p>18 проверенных объектов с доходностью до 10% годовых в валюте: апартаменты от $85 000 и виллы закрытых коллекций. Цены, планировки и расчёт прибыли — в одной подборке.</p>
-            <div class="hero__cta-row">
-              <button class="btn btn--gold" data-open-modal="Hero — получить подборку">Получить подборку с ценами <span class="arr">→</span></button>
-              <a class="btn btn--line" href="#catalog">Смотреть 18 проектов</a>
+    <div class="hero__frame">
+      <div class="hero__bg" data-hero-img><img src="assets/img/trisara-1.jpg" alt="Вилла у побережья Пхукета"></div>
+      <div class="hero__content">
+        <div class="container">
+          <span class="label label--line">Актуально · август 2026</span>
+          <div class="hero__grid">
+            <h1 class="h-hero hero__title" data-split>Инвестиционные проекты недвижимости на Пхукете — <em>август 2026</em></h1>
+            <div class="hero__desc" data-hero-fade>
+              <p>18 проверенных объектов с доходностью до 10% годовых в валюте: апартаменты от $85 000 и виллы закрытых коллекций. Цены, планировки и расчёт прибыли — в одной подборке.</p>
+              <div class="hero__cta-row">
+                <button class="btn btn--gold" data-open-modal="Hero — получить подборку">Получить подборку с ценами <span class="arr">→</span></button>
+                <a class="btn btn--line" href="#catalog">Смотреть 18 проектов</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="hero__meta" data-hero-fade>
-        <div class="container">
-          <div class="hero__meta-grid">
-            <div class="hero__meta-item"><b data-count="18">0</b><span>проектов от проверенных застройщиков</span></div>
-            <div class="hero__meta-item"><b data-count="85" data-prefix="$" data-suffix="K">0</b><span>минимальный порог входа</span></div>
-            <div class="hero__meta-item"><b data-count="10" data-suffix="%">0</b><span>целевая доходность на аренде</span></div>
-            <div class="hero__meta-item"><b data-count="4">0</b><span>инвестиционные стратегии</span></div>
+        <div class="hero__meta" data-hero-fade>
+          <div class="container">
+            <div class="hero__meta-grid">
+              <div class="hero__meta-item"><b data-count="18">0</b><span>проектов от проверенных застройщиков</span></div>
+              <div class="hero__meta-item"><b data-count="85" data-prefix="$" data-suffix="K">0</b><span>минимальный порог входа</span></div>
+              <div class="hero__meta-item"><b data-count="10" data-suffix="%">0</b><span>целевая доходность на аренде</span></div>
+              <div class="hero__meta-item"><b data-count="30" data-prefix="до " data-suffix="%">0</b><span>рост стоимости к сдаче</span></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee__track">
-      <div class="marquee__seq">
-        <span>Бангтао</span><i>✦</i><span>Лагуна</span><i>✦</i><span>Лаян</span><i>✦</i><span>Сурин</span><i>✦</i><span>Найянг</span><i>✦</i><span>Пансея</span><i>✦</i><span>Чернгталай</span><i>✦</i><span>Джомтьен</span><i>✦</i><span>Пратумнак</span><i>✦</i>
-      </div>
-      <div class="marquee__seq">
-        <span>Бангтао</span><i>✦</i><span>Лагуна</span><i>✦</i><span>Лаян</span><i>✦</i><span>Сурин</span><i>✦</i><span>Найянг</span><i>✦</i><span>Пансея</span><i>✦</i><span>Чернгталай</span><i>✦</i><span>Джомтьен</span><i>✦</i><span>Пратумнак</span><i>✦</i>
-      </div>
+  <!-- Компактные буллеты вместо бегущей строки -->
+  <div class="benefits-strip" aria-hidden="false">
+    <div class="container benefits-strip__row">
+      <span><i>✦</i>От $85 000</span>
+      <span><i>✦</i>Рассрочка 0% до ключей</span>
+      <span><i>✦</i>70% сделок — дистанционно</span>
+      <span><i>✦</i>18 проверенных проектов</span>
     </div>
   </div>
 
@@ -408,26 +847,41 @@
   <!-- КАТАЛОГ -->
   <section class="section" id="catalog">
     <div class="container">
-      <div class="sec-head">
+      <div class="sec-head sec-head--catalog">
         <div class="sec-head__idx">01 / Подборка</div>
         <div class="sec-head__main">
           <span class="label" data-reveal>Подборка · август 2026</span>
-          <h2 class="h2" data-split>ТОП-18 проектов от <em>$85 000</em> для прибыли и жизни у моря</h2>
+          <h2 class="h2" data-split>ТОП-18 проектов для жизни и инвестиций у моря <em>Пхукета</em></h2>
           <p class="sec-head__sub" data-reveal>Реальные фотографии, цены и площади по каждому объекту. Фильтруйте по региону, стратегии или бюджету — и запрашивайте расчёт по понравившимся лотам.</p>
         </div>
       </div>
 
-      <div class="filters" id="filters" data-reveal-group data-stagger="0.04">
-        <button class="chip is-active" data-filter="all">Все проекты</button>
-        <button class="chip" data-filter="region:phuket">Пхукет</button>
-        <button class="chip" data-filter="region:pattaya">Паттайя</button>
-        <button class="chip" data-filter="strategy:rent">Аренда</button>
-        <button class="chip" data-filter="strategy:resale">Перепродажа</button>
-        <button class="chip" data-filter="strategy:live">Проживание</button>
-        <button class="chip" data-filter="strategy:private">Private Collection</button>
-        <button class="chip" data-filter="budget:0-250000">до $250K</button>
-        <button class="chip" data-filter="budget:250000-1000000">$250K – $1M</button>
-        <button class="chip" data-filter="budget:1000000-">от $1M</button>
+      <div class="filters-panel" id="filters" data-reveal>
+        <div class="filters-group">
+          <span class="filters-group__label">Регион</span>
+          <div class="filters-group__chips">
+            <button class="chip is-active" data-region="">Все проекты</button>
+            <button class="chip" data-region="phuket">Пхукет</button>
+          </div>
+        </div>
+        <div class="filters-group">
+          <span class="filters-group__label">Стратегия</span>
+          <div class="filters-group__chips">
+            <button class="chip" data-strategy="live">Для проживания</button>
+            <button class="chip" data-strategy="rent">Аренда</button>
+            <button class="chip" data-strategy="invest">Инвестиции</button>
+            <button class="chip" data-strategy="resale">Перепродажа</button>
+          </div>
+        </div>
+        <div class="filters-group">
+          <span class="filters-group__label">Стоимость</span>
+          <select class="filters-select" id="budget-select" aria-label="Стоимость">
+            <option value="">Любая</option>
+            <option value="0-250000">до $250K</option>
+            <option value="250000-1000000">$250K – $1M</option>
+            <option value="1000000-">от $1M</option>
+          </select>
+        </div>
       </div>
 
       <div class="catalog-count" id="catalog-count"></div>
@@ -469,16 +923,15 @@
       <div class="sec-head">
         <div class="sec-head__idx">02 / Подбор</div>
         <div class="sec-head__main">
-          <span class="label" data-reveal>Квиз-подбор · 1 минута</span>
-          <h2 class="h2" data-split>Ответьте на 4 вопроса — получите <em>топ-3 проекта</em> с ценами</h2>
-          <p class="sec-head__sub" data-reveal>Алгоритм сопоставит цели со стратегиями всех 18 проектов и покажет самые подходящие варианты с ценами.</p>
+          <span class="label" data-reveal>Квиз · 1 минута</span>
+          <h2 class="h2" data-split>Ответьте на 4 вопроса и получите <em>ТОП-3 проекта</em></h2>
+          <p class="sec-head__sub" data-reveal>С ценами, планировками, расчётом стоимости и доходности</p>
         </div>
       </div>
-      <div class="quiz-badges" data-reveal-group data-stagger="0.08">
-        <span>✓ 4 вопроса</span>
-        <span>✓ Меньше минуты</span>
-        <span>✓ Топ-3 проекта с ценами</span>
-        <span>✓ PDF-подборка в подарок</span>
+      <div class="quiz-badges" data-reveal>
+        <span>✓ ТОП-3 проекта</span>
+        <span>✓ Цены и планировки</span>
+        <span>✓ Расчёт стоимости и доходности</span>
       </div>
       <div id="quiz-container" class="quiz-spotlight" data-reveal></div>
     </div>
@@ -568,26 +1021,34 @@
           <h2 class="h2" data-split>Четыре шага до собственности <em>у моря</em></h2>
         </div>
       </div>
-      <div class="hair-list" data-reveal-group data-stagger="0.12">
-        <div class="hair-item">
-          <span class="hair-item__idx">01</span>
-          <span class="hair-item__title">Подбор и бронирование</span>
-          <p class="hair-item__text">Выбираем проект и юнит, фиксируем цену депозитом. Полностью дистанционно, за 1–3 дня.</p>
+      <div class="steps-line" data-reveal>
+        <div class="step-item">
+          <div class="step-item__num">01</div>
+          <div class="step-item__body">
+            <div class="step-item__title">Подбор и бронирование</div>
+            <p class="step-item__text">Выбираем проект и юнит, фиксируем цену депозитом. Полностью дистанционно, за 1–3 дня.</p>
+          </div>
         </div>
-        <div class="hair-item">
-          <span class="hair-item__idx">02</span>
-          <span class="hair-item__title">Договор и юридическая проверка</span>
-          <p class="hair-item__text">Проверяем застройщика и договор. Freehold или leasehold — подскажем, что выгоднее в вашем случае.</p>
+        <div class="step-item">
+          <div class="step-item__num">02</div>
+          <div class="step-item__body">
+            <div class="step-item__title">Договор и юридическая проверка</div>
+            <p class="step-item__text">Проверяем застройщика и договор. Freehold или leasehold — подскажем, что выгоднее в вашем случае.</p>
+          </div>
         </div>
-        <div class="hair-item">
-          <span class="hair-item__idx">03</span>
-          <span class="hair-item__title">Рассрочка 0% до ключей</span>
-          <p class="hair-item__text">Платежи привязаны к этапам строительства. Первый взнос — обычно 30–35% от стоимости.</p>
+        <div class="step-item">
+          <div class="step-item__num">03</div>
+          <div class="step-item__body">
+            <div class="step-item__title">Рассрочка до ключей</div>
+            <p class="step-item__text">Платежи привязаны к этапам строительства. Первый взнос — обычно 30–35% от стоимости.</p>
+          </div>
         </div>
-        <div class="hair-item">
-          <span class="hair-item__idx">04</span>
-          <span class="hair-item__title">Ключи и пассивный доход</span>
-          <p class="hair-item__text">Принимаем объект, подключаем управляющую компанию — доход приходит на карту в любой точке мира.</p>
+        <div class="step-item">
+          <div class="step-item__num">04</div>
+          <div class="step-item__body">
+            <div class="step-item__title">Ключи и пассивный доход</div>
+            <p class="step-item__text">Принимаем объект, подключаем управляющую компанию — доход приходит на карту в любой точке мира.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -603,7 +1064,7 @@
           <h2 class="h2" data-split>Вопросы <em>и</em> ответы</h2>
         </div>
       </div>
-      <div class="faq" data-reveal>
+      <div class="faq faq--grid" data-reveal>
         <div class="faq__item">
           <button class="faq__q">Может ли иностранец владеть недвижимостью в Таиланде?<span class="faq__ico"></span></button>
           <div class="faq__a"><div class="faq__a-inner">Да. В кондоминиумах иностранцам доступен freehold — полное владение (до 49% площади здания). Виллы оформляются через долгосрочный leasehold на 30+30+30 лет или через компанию. Мы сопровождаем оба варианта.</div></div>
@@ -624,6 +1085,8 @@
           <button class="faq__q">Можно ли купить дистанционно?<span class="faq__ico"></span></button>
           <div class="faq__a"><div class="faq__a-inner">Да, около 70% сделок наших клиентов проходят полностью дистанционно: онлайн-показы, электронное подписание, международные переводы или крипта. Приезжать в Таиланд не обязательно.</div></div>
         </div>
+        <!-- WAITING_FOR_CLIENT_DATA: шестой вопрос FAQ. Когда клиент пришлёт текст,
+             скопируйте блок .faq__item выше и подставьте вопрос/ответ. -->
       </div>
     </div>
   </section>
@@ -646,7 +1109,7 @@
         <input class="input input--ghost" type="text" placeholder="Ваше имя" required>
         <input class="input input--ghost" type="tel" placeholder="+7 (___) ___-__-__" required>
         <button class="btn btn--gold btn--lg" type="submit">Получить презентацию <span class="arr">→</span></button>
-        <span class="form-note">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности. Это демо — данные никуда не отправляются.</span>
+        <span class="form-note">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности. Это демо — данные никуда не отправляются</span>
       </form>
     </div>
   </section>
@@ -669,39 +1132,72 @@
     Подбор за 1 минуту
   </a>
 
-  <!-- Модалка -->
+  <!-- Модалка получения подборки -->
   <div class="modal" id="lead-modal">
     <div class="modal__backdrop"></div>
     <div class="modal__panel">
       <button class="modal__close" aria-label="Закрыть">✕</button>
-      <span class="label">Заявка</span>
-      <div class="h3">Получить подборку с ценами</div>
-      <p class="form-note" style="font-size:13.5px">Вышлем цены, планировки и условия рассрочки в WhatsApp или Telegram.</p>
-      <div class="agent" style="margin-top:20px;padding:14px 16px;border:1px solid var(--hair);border-radius:2px">
+      <span class="label">Подборка</span>
+      <div class="h3">Получить подборку</div>
+      <p class="form-note" style="font-size:13.5px">Мы вышлем подборку доступных квартир и ответим на ваш вопрос в течение 15 минут</p>
+      <div class="agent" style="margin-top:18px;padding:13px 15px;border:1px solid var(--hair);border-radius:2px">
         <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
         <div>
-          <div class="agent__name">Заявку получит Kun Ping</div>
+          <div class="agent__name">Подборку отправит Kun Ping</div>
           <div class="agent__role">Ответит в течение 15 минут · <span class="agent__status">онлайн</span></div>
         </div>
       </div>
       <form data-demo-form>
         <input type="hidden" name="lead_source" value="сайт" data-lead-source>
-        <input class="input" type="text" placeholder="Ваше имя" required>
-        <input class="input" type="tel" placeholder="+7 (___) ___-__-__" required>
-        <button class="btn btn--night btn--block" type="submit">Отправить <span class="arr">→</span></button>
+        <input class="input" type="text" name="name" placeholder="Ваше имя" required>
+        <div class="lead-methods" role="radiogroup" aria-label="Предпочтительный способ связи">
+          <label class="lead-method"><input type="radio" name="method" value="WhatsApp" checked><span>WhatsApp</span></label>
+          <label class="lead-method"><input type="radio" name="method" value="Telegram"><span>Telegram</span></label>
+          <label class="lead-method"><input type="radio" name="method" value="Телефон"><span>Телефон</span></label>
+        </div>
+        <div class="phone-row">
+          <div class="phone-cc" id="phone-cc">
+            <button type="button" class="phone-cc__btn" aria-haspopup="listbox">
+              <img src="https://flagcdn.com/w20/ru.png" alt="Россия" width="20">
+              <span class="phone-cc__code">+7</span>
+              <i>▾</i>
+            </button>
+            <div class="phone-cc__list" role="listbox"></div>
+          </div>
+          <input class="input" type="tel" name="phone" placeholder="900 000-00-00" autocomplete="tel" required>
+        </div>
+        <label class="consent">
+          <input type="checkbox" name="consent" required>
+          <span>Соглашаюсь с политикой обработки персональных данных</span>
+        </label>
+        <button class="btn btn--gold btn--block" type="submit">Получить подборку <span class="arr">→</span></button>
         <span class="form-note text-center">Это демо — данные никуда не отправляются</span>
       </form>
+    </div>
+  </div>
+
+  <!-- Модалка проекта -->
+  <div class="pmodal" id="project-modal" aria-hidden="true">
+    <div class="pmodal__backdrop" data-pmodal-close></div>
+    <div class="pmodal__panel" role="dialog" aria-modal="true">
+      <button class="pmodal__close" data-pmodal-close aria-label="Закрыть">✕</button>
+      <div class="pmodal__gallery">
+        <img id="pmodal-img" src="" alt="">
+        <button class="pmodal__nav pmodal__nav--prev" aria-label="Предыдущее фото">←</button>
+        <button class="pmodal__nav pmodal__nav--next" aria-label="Следующее фото">→</button>
+        <span class="pmodal__count" id="pmodal-count"></span>
+      </div>
+      <div class="pmodal__body" id="pmodal-body"></div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
-  <script src="assets/js/data.js?v=9"></script>
-  <script src="assets/js/quiz-engine.js?v=9"></script>
-  <script src="assets/js/common.js?v=9"></script>
-  <script src="assets/js/catalog.js?v=9"></script>
-  <script src="assets/js/motion.js?v=9"></script>
+  <script src="assets/js/data.js?v=10"></script>
+  <script src="assets/js/quiz-engine.js?v=10"></script>
+  <script src="assets/js/common.js?v=10"></script>
+  <script src="assets/js/catalog.js?v=10"></script>
+  <script src="assets/js/motion.js?v=10"></script>
 </body>
 </html>
