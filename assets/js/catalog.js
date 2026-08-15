@@ -1,4 +1,4 @@
-/* Каталог: рендер карточек, фильтры, модалка проекта, встроенный квиз */
+/* Каталог: рендер карточек, фильтры, встроенный квиз */
 
 document.addEventListener("DOMContentLoaded", () => {
   const grid = document.getElementById("cards-grid");
@@ -6,18 +6,27 @@ document.addEventListener("DOMContentLoaded", () => {
   let firstRender = true;
 
   function cardHtml(p) {
+    const media = p.landing
+      ? '<a class="pcard__media" data-parallax-skip href="' + p.landing + '">'
+      : '<div class="pcard__media">';
+    const mediaClose = p.landing ? "</a>" : "</div>";
+    const go = p.landing ? '<span class="pcard__go">→</span>' : "";
+    const cta = p.landing
+      ? '<a class="pcard__btn" href="' + p.landing + '">Смотреть проект <span>→</span></a>'
+      : '<button class="pcard__btn" data-open-modal="' + p.name + '">Узнать цену и планировки <span>→</span></button>';
     const perks = (p.perks || [])
       .map((t) => '<span class="pcard__perk">' + t + "</span>")
       .join("");
     return (
-      '<article class="pcard" data-project="' + p.id + '">' +
-      '<div class="pcard__media">' +
+      '<article class="pcard">' +
+      media +
       '<div class="pcard__tags">' +
       '<span class="pcard__tag">' + p.strategyLabel + "</span>" +
       '<span class="pcard__tag">' + (p.type === "villa" ? "Виллы" : "Апартаменты") + "</span>" +
       "</div>" +
       '<img src="' + p.img + '" alt="' + p.name + '" loading="lazy">' +
-      "</div>" +
+      go +
+      mediaClose +
       '<div class="pcard__body">' +
       '<div class="pcard__loc">' + p.location + "</div>" +
       '<h3 class="pcard__name">' + p.name + "</h3>" +
@@ -26,23 +35,24 @@ document.addEventListener("DOMContentLoaded", () => {
       '<div class="pcard__spec"><small>Площадь</small><b>' + (p.areaLabel || "—") + "</b></div>" +
       "</div>" +
       (perks ? '<div class="pcard__perks">' + perks + "</div>" : "") +
-      '<div class="pcard__foot"><button class="pcard__btn" type="button">Подробнее о проекте <span>→</span></button></div>' +
-      "</div></article>"
+      '<p class="pcard__desc">' + p.desc + "</p>" +
+      '<div class="pcard__foot">' + cta + "</div></div></article>"
     );
   }
 
-  // Компактная врезка-CTA внутри сетки лотов (открывает лид-попап)
+  // Врезка-тизер квиза внутри сетки лотов
   const quizTeaserHtml =
     '<div class="pcard pcard--teaser">' +
     '<div class="pcard-teaser__inner">' +
-    '<span class="pcard-teaser__label">Нужна помощь?</span>' +
+    '<span class="pcard-teaser__label">Квиз · 1 минута</span>' +
     '<div class="pcard-teaser__title">Не можете выбрать из 18 проектов?</div>' +
-    '<p class="pcard-teaser__note">Оставьте заявку — поможем с выбором</p>' +
-    '<button class="btn btn--gold" data-open-modal="Врезка в каталоге">Получить подборку <span class="arr">→</span></button>' +
+    '<p class="pcard-teaser__text">Ответьте на 4 вопроса — алгоритм покажет ваш топ-3 с ценами и пришлём подробный расчёт.</p>' +
+    '<a class="btn btn--gold" href="#quiz">Пройти подбор <span class="arr">→</span></a>' +
     "</div></div>";
 
   function render(list) {
     const cardsHtml = list.map(cardHtml);
+    // после 6-й карточки — призыв пройти квиз
     if (cardsHtml.length > 6) cardsHtml.splice(6, 0, quizTeaserHtml);
     else cardsHtml.push(quizTeaserHtml);
     grid.innerHTML = cardsHtml.join("");
@@ -67,200 +77,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   render(PROJECTS);
 
-  /* ---------- Фильтры: регион + стратегия + стоимость ---------- */
-  const filterState = { region: "", strategy: "", budget: "" };
-
-  function applyFilters() {
-    let list = PROJECTS.slice();
-    if (filterState.region) list = list.filter((p) => p.region === filterState.region);
-    if (filterState.strategy) {
-      list =
-        filterState.strategy === "invest"
-          ? list.filter((p) => p.strategy.includes("rent") || p.strategy.includes("resale"))
-          : list.filter((p) => p.strategy.includes(filterState.strategy));
-    }
-    if (filterState.budget) {
-      const [min, max] = filterState.budget.split("-").map(Number);
-      list = list.filter((p) => p.priceUsd >= min && (max ? p.priceUsd <= max : true));
-    }
-    render(list);
-  }
-
-  document.querySelectorAll("#filters .chip[data-region]").forEach((chip) =>
+  document.querySelectorAll("#filters .chip").forEach((chip) =>
     chip.addEventListener("click", () => {
-      document.querySelectorAll("#filters .chip[data-region]").forEach((c) => c.classList.remove("is-active"));
+      document.querySelectorAll("#filters .chip").forEach((c) => c.classList.remove("is-active"));
       chip.classList.add("is-active");
-      filterState.region = chip.dataset.region;
-      applyFilters();
+      const f = chip.dataset.filter;
+      if (f === "all") return render(PROJECTS);
+      const [kind, val] = f.split(":");
+      if (kind === "region") return render(PROJECTS.filter((p) => p.region === val));
+      if (kind === "strategy") return render(PROJECTS.filter((p) => p.strategy.includes(val)));
+      if (kind === "budget") {
+        const [min, max] = val.split("-").map(Number);
+        return render(PROJECTS.filter((p) => p.priceUsd >= min && (max ? p.priceUsd <= max : true)));
+      }
     })
   );
 
-  document.querySelectorAll("#filters .chip[data-strategy]").forEach((chip) =>
-    chip.addEventListener("click", () => {
-      const wasActive = chip.classList.contains("is-active");
-      document.querySelectorAll("#filters .chip[data-strategy]").forEach((c) => c.classList.remove("is-active"));
-      if (!wasActive) chip.classList.add("is-active");
-      filterState.strategy = wasActive ? "" : chip.dataset.strategy;
-      applyFilters();
-    })
-  );
-
-  const budgetSelect = document.getElementById("budget-select");
-  if (budgetSelect) {
-    budgetSelect.addEventListener("change", () => {
-      filterState.budget = budgetSelect.value;
-      applyFilters();
-    });
-  }
-
-  /* ---------- Модалка проекта: галерея + данные ---------- */
-  const pmodal = document.getElementById("project-modal");
-  const pmImg = document.getElementById("pmodal-img");
-  const pmBody = document.getElementById("pmodal-body");
-  const pmCount = document.getElementById("pmodal-count");
-  const pmPrev = pmodal.querySelector(".pmodal__nav--prev");
-  const pmNext = pmodal.querySelector(".pmodal__nav--next");
-  let gal = [];
-  let gi = 0;
-
-  function showImg() {
-    pmImg.src = gal[gi];
-    pmCount.textContent = gi + 1 + " / " + gal.length;
-    const single = gal.length < 2;
-    pmPrev.style.display = single ? "none" : "";
-    pmNext.style.display = single ? "none" : "";
-    pmCount.style.display = single ? "none" : "";
-  }
-
-  function openProject(id) {
-    const p = PROJECTS.find((x) => x.id === id);
-    if (!p) return;
-    gal = p.gallery && p.gallery.length ? p.gallery : [p.img];
-    gi = 0;
-    showImg();
-
-    // Поля выводим только при наличии реальных данных.
-    // d.* — структура под данные клиента (см. data.js, WAITING_FOR_CLIENT_DATA)
-    const d = p.details || {};
-    const rows = [];
-    const row = (label, val) =>
-      val && rows.push('<div class="pmodal__row"><small>' + label + "</small><b>" + val + "</b></div>");
-    row("Тип", p.type === "villa" ? "Виллы" : "Апартаменты");
-    row("Стоимость", p.priceLabel);
-    row("Площадь", p.areaLabel);
-    row("Стратегии", p.strategyLabel);
-    row("До моря", d.sea);
-    row("Доходность", d.yield);
-    row("Рассрочка", d.installment);
-    row("Скидки застройщика", d.discounts);
-    row("Варианты оплаты", d.payment);
-    row("Планировки", d.layouts);
-
-    const perks = (p.perks || []).map((t) => '<span class="pcard__perk">' + t + "</span>").join("");
-    pmBody.innerHTML =
-      '<div class="pmodal__loc">' + p.location + "</div>" +
-      '<div class="pmodal__name">' + p.name + "</div>" +
-      '<div class="pmodal__rows">' + rows.join("") + "</div>" +
-      (p.desc ? '<p class="pmodal__desc">' + p.desc + "</p>" : "") +
-      (perks ? '<div class="pmodal__perks">' + perks + "</div>" : "") +
-      '<div class="pmodal__cta">' +
-      '<button class="btn btn--gold" data-open-modal="Проект: ' + p.name + '">Получить подборку <span class="arr">→</span></button>' +
-      (p.landing ? '<a class="btn btn--line-dark" href="' + p.landing + '">Лендинг проекта</a>' : "") +
-      "</div>";
-
-    pmodal.classList.add("is-open");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeProject(keepScrollLock) {
-    pmodal.classList.remove("is-open");
-    if (!keepScrollLock) document.body.style.overflow = "";
-  }
-
-  grid.addEventListener("click", (e) => {
-    if (e.target.closest("[data-open-modal]")) return; // врезка ведёт в лид-попап
-    const card = e.target.closest(".pcard[data-project]");
-    if (card) openProject(card.dataset.project);
-  });
-
-  pmPrev.addEventListener("click", () => { gi = (gi - 1 + gal.length) % gal.length; showImg(); });
-  pmNext.addEventListener("click", () => { gi = (gi + 1) % gal.length; showImg(); });
-  pmodal.querySelectorAll("[data-pmodal-close]").forEach((el) => el.addEventListener("click", () => closeProject()));
-  document.addEventListener("keydown", (e) => {
-    if (!pmodal.classList.contains("is-open")) return;
-    if (e.key === "Escape") closeProject();
-    if (e.key === "ArrowLeft") { gi = (gi - 1 + gal.length) % gal.length; showImg(); }
-    if (e.key === "ArrowRight") { gi = (gi + 1) % gal.length; showImg(); }
-  });
-  // CTA внутри модалки проекта открывает лид-попап (обрабатывается в common.js) —
-  // модалку проекта закрываем, блокировку скролла оставляем лид-попапу
-  document.addEventListener("click", (e) => {
-    if (e.target.closest("#project-modal [data-open-modal]")) closeProject(true);
-  });
-  // Свайп по галерее на тач-устройствах
-  let touchX = null;
-  const galEl = pmodal.querySelector(".pmodal__gallery");
-  galEl.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
-  galEl.addEventListener("touchend", (e) => {
-    if (touchX === null) return;
-    const dx = e.changedTouches[0].clientX - touchX;
-    if (Math.abs(dx) > 40 && gal.length > 1) {
-      gi = (gi + (dx < 0 ? 1 : -1) + gal.length) % gal.length;
-      showImg();
-    }
-    touchX = null;
-  }, { passive: true });
-
-  /* ---------- Телефон в лид-попапе: код страны с флагом ---------- */
-  const CC = [
-    ["ru", "Россия", "+7"], ["kz", "Казахстан", "+7"], ["by", "Беларусь", "+375"], ["ua", "Украина", "+380"],
-    ["uz", "Узбекистан", "+998"], ["kg", "Кыргызстан", "+996"], ["az", "Азербайджан", "+994"], ["am", "Армения", "+374"],
-    ["ge", "Грузия", "+995"], ["th", "Таиланд", "+66"], ["ae", "ОАЭ", "+971"], ["tr", "Турция", "+90"],
-    ["il", "Израиль", "+972"], ["de", "Германия", "+49"], ["gb", "Великобритания", "+44"], ["us", "США", "+1"]
-  ];
-  const cc = document.getElementById("phone-cc");
-  if (cc) {
-    const btn = cc.querySelector(".phone-cc__btn");
-    const btnImg = btn.querySelector("img");
-    const btnCode = cc.querySelector(".phone-cc__code");
-    const list = cc.querySelector(".phone-cc__list");
-    const phoneInput = cc.closest(".phone-row").querySelector("input[type=tel]");
-
-    list.innerHTML = CC.map(
-      (c, i) =>
-        '<button type="button" class="phone-cc__item" data-i="' + i + '">' +
-        '<img src="https://flagcdn.com/w20/' + c[0] + '.png" alt="' + c[1] + '">' +
-        "<span>" + c[1] + "</span>" +
-        '<span class="code">' + c[2] + "</span></button>"
-    ).join("");
-
-    const setCountry = (i) => {
-      btnImg.src = "https://flagcdn.com/w20/" + CC[i][0] + ".png";
-      btnImg.alt = CC[i][1];
-      btnCode.textContent = CC[i][2];
-    };
-    btn.addEventListener("click", (e) => { e.stopPropagation(); cc.classList.toggle("is-open"); });
-    list.addEventListener("click", (e) => {
-      const it = e.target.closest(".phone-cc__item");
-      if (!it) return;
-      setCountry(+it.dataset.i);
-      cc.classList.remove("is-open");
-      phoneInput.focus();
-    });
-    document.addEventListener("click", (e) => { if (!cc.contains(e.target)) cc.classList.remove("is-open"); });
-    // Ввод международного кода в поле телефона обновляет страну
-    phoneInput.addEventListener("input", () => {
-      const v = phoneInput.value.trim();
-      if (!v.startsWith("+")) return;
-      let best = -1, bestLen = 0;
-      CC.forEach((c, i) => {
-        if (v.startsWith(c[2]) && c[2].length > bestLen) { best = i; bestLen = c[2].length; }
-      });
-      if (best >= 0) setCountry(best);
-    });
-  }
-
-  /* ---------- Плавающая кнопка квиза ---------- */
+  // Плавающая кнопка квиза: появляется после hero, прячется у самого квиза
   const fab = document.querySelector(".quiz-fab");
   const quizSec = document.getElementById("quiz");
   if (fab && quizSec) {
@@ -272,14 +105,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { passive: true });
   }
 
-  /* ---------- Встроенный квиз ---------- */
+  // Встроенный квиз
   createQuiz(document.getElementById("quiz-container"), {
     resultImg: "assets/img/trisara-1.jpg",
     questions: [
       {
         key: "strategy",
         question: "Какая у вас цель?",
-        hint: "От этого зависит стратегия и тип проекта",
+        hint: "От этого зависит стратегия и тип проекта.",
         img: "assets/img/santa-monica-7.jpg",
         options: [
           { value: "rent", label: "Пассивный доход с аренды", sub: "до 10% годовых", img: "assets/img/santa-monica-5.jpg" },
@@ -325,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return (
         '<div class="quiz__result-badge">Подборка готова</div>' +
         '<div class="quiz__question">Вам подходят эти проекты</div>' +
-        '<p class="quiz__hint">Оставьте контакты — пришлём полную подборку с ценами, планировками и расчётом доходности по каждому проекту</p>' +
+        '<p class="quiz__hint">Оставьте контакты — пришлём полную подборку с ценами, планировками и расчётом доходности по каждому проекту.</p>' +
         miniCardsHtml(top) +
         leadFormHtml("Получить подборку с ценами")
       );
