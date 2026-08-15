@@ -663,7 +663,6 @@
     <div class="modal__backdrop"></div>
     <div class="modal__panel">
       <button class="modal__close" aria-label="Закрыть">✕</button>
-      <span class="label">Заявка</span>
       <div class="h3">Оставьте заявку</div>
       <p class="form-note" style="font-size:13.5px">Вышлем цены, планировки и свободные юниты в WhatsApp или Telegram.</p>
       <div class="agent" style="margin-top:20px;padding:14px 16px;border:1px solid var(--hair);border-radius:2px">
@@ -677,6 +676,10 @@
         <input type="hidden" name="lead_source" value="сайт" data-lead-source>
         <input class="input" type="text" placeholder="Ваше имя" required>
         <input class="input" type="tel" placeholder="+7 (___) ___-__-__" required>
+        <label style="display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.5;color:var(--stone);cursor:pointer">
+          <input type="checkbox" name="consent" required style="margin-top:2px;width:15px;height:15px;accent-color:var(--gold);flex-shrink:0">
+          <span>Соглашаюсь с <a href="privacy.html" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:2px;color:inherit">политикой обработки персональных данных</a></span>
+        </label>
         <button class="btn btn--night btn--block" type="submit">Отправить <span class="arr">→</span></button>
         <span class="form-note text-center">Это демо — данные никуда не отправляются</span>
       </form>

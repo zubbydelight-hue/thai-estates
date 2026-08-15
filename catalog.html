@@ -374,6 +374,99 @@
     }
     .cases-cta .form-note { display: block; margin-top: 14px; }
 
+    /* ---------- Лид-попап: способ связи, телефон с кодом страны, согласие ---------- */
+    .lead-methods-label {
+      margin: 4px 0 -2px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+    .lead-methods { display: flex; gap: 8px; }
+    .lead-method { flex: 1; position: relative; }
+    .lead-method input { position: absolute; opacity: 0; pointer-events: none; }
+    .lead-method span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 11px 6px;
+      border: 1px solid rgba(20, 23, 15, 0.22);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s, border-color 0.25s;
+      white-space: nowrap;
+    }
+    .lead-method svg { width: 15px; height: 15px; flex: none; }
+    .lead-method input:checked + span { background: var(--night); border-color: var(--night); color: var(--cream); }
+    .lead-method input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .phone-row { display: flex; gap: 10px; }
+    .phone-row .input { flex: 1; min-width: 0; }
+    .phone-cc { position: relative; flex-shrink: 0; }
+    .phone-cc__btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 100%;
+      min-height: 50px;
+      padding: 0 12px;
+      border: 1px solid rgba(20, 23, 15, 0.25);
+      border-radius: 2px;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .phone-cc__btn img { width: 20px; height: auto; border-radius: 2px; display: block; }
+    .phone-cc__btn i { font-style: normal; font-size: 9px; color: var(--stone); }
+    .phone-cc__list {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      width: 264px;
+      max-height: 236px;
+      overflow-y: auto;
+      background: #fff;
+      border: 1px solid var(--hair);
+      border-radius: 5px;
+      box-shadow: 0 24px 54px -18px rgba(0, 0, 0, 0.3);
+      display: none;
+      z-index: 6;
+    }
+    .phone-cc.is-open .phone-cc__list { display: block; }
+    .phone-cc__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 9px 13px;
+      font-size: 13.5px;
+      text-align: left;
+      color: var(--ink);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    .phone-cc__item:hover { background: rgba(194, 161, 99, 0.12); }
+    .phone-cc__item img { width: 20px; border-radius: 2px; }
+    .phone-cc__item .code { margin-left: auto; color: var(--stone); }
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--stone);
+      cursor: pointer;
+    }
+    .consent input { margin-top: 2px; width: 15px; height: 15px; accent-color: var(--gold); flex-shrink: 0; }
+    .consent a { text-decoration: underline; text-underline-offset: 2px; color: inherit; transition: color 0.25s; }
+    .consent a:hover { color: var(--gold); }
+
     /* Плавающая кнопка квиза */
     .quiz-fab {
       position: fixed;
@@ -877,21 +970,49 @@
     <div class="modal__backdrop"></div>
     <div class="modal__panel">
       <button class="modal__close" aria-label="Закрыть">✕</button>
-      <span class="label">Заявка</span>
       <div class="h3">Получить подборку с ценами</div>
-      <p class="form-note" style="font-size:13.5px">Вышлем цены, планировки и условия рассрочки в WhatsApp или Telegram.</p>
-      <div class="agent" style="margin-top:20px;padding:14px 16px;border:1px solid var(--hair);border-radius:2px">
+      <p class="form-note" style="font-size:13.5px">Мы вышлем вам подборку доступных квартир, планировки этажей и ответим на ваши вопросы в течение 15 минут</p>
+      <div class="agent" style="margin-top:18px;padding:13px 15px;border:1px solid var(--hair);border-radius:2px">
         <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
         <div>
-          <div class="agent__name">Заявку получит Kun Ping</div>
+          <div class="agent__name">Подборку отправит Kun Ping</div>
           <div class="agent__role">Ответит в течение 15 минут · <span class="agent__status">онлайн</span></div>
         </div>
       </div>
       <form data-demo-form>
         <input type="hidden" name="lead_source" value="сайт" data-lead-source>
-        <input class="input" type="text" placeholder="Ваше имя" required>
-        <input class="input" type="tel" placeholder="+7 (___) ___-__-__" required>
-        <button class="btn btn--night btn--block" type="submit">Отправить <span class="arr">→</span></button>
+        <input class="input" type="text" name="name" placeholder="Ваше имя" required>
+        <div class="lead-methods-label">Удобный способ связи</div>
+        <div class="lead-methods" role="radiogroup" aria-label="Удобный способ связи">
+          <label class="lead-method">
+            <input type="radio" name="method" value="Telegram" checked>
+            <span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.6 18.9 19c-.2 1-.8 1.2-1.6.8l-4.5-3.3-2.2 2.1c-.2.2-.4.4-.9.4l.3-4.5 8.3-7.5c.4-.3-.1-.5-.6-.2l-10.2 6.4-4.4-1.4c-1-.3-1-1 .2-1.4l17.2-6.6c.8-.3 1.5.2 1.4 1.2Z"/></svg>Telegram</span>
+          </label>
+          <label class="lead-method">
+            <input type="radio" name="method" value="WhatsApp">
+            <span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.3A10 10 0 1 0 12 2Zm5.4 13.8c-.2.6-1.3 1.2-1.8 1.3-.5.1-1 .2-1.7 0-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.3-.3.6-.3.8-.3h.5c.2 0 .4-.1.6.5.2.6.8 1.9.8 2 .1.2.1.3 0 .5l-.4.7c-.2.2-.3.4-.1.7.1.3.7 1.1 1.4 1.8.9.9 1.7 1.1 2 1.3.2.1.4.1.6-.1l.8-1c.2-.3.4-.2.7-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .7-.2 1.3Z"/></svg>WhatsApp</span>
+          </label>
+          <label class="lead-method">
+            <input type="radio" name="method" value="Телефон">
+            <span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.5 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.3 1l-2.2 2.2Z"/></svg>Телефон</span>
+          </label>
+        </div>
+        <div class="phone-row">
+          <div class="phone-cc" id="phone-cc">
+            <button type="button" class="phone-cc__btn" aria-haspopup="listbox" aria-label="Код страны">
+              <img src="https://flagcdn.com/w20/ru.png" alt="Россия" width="20">
+              <span class="phone-cc__code">+7</span>
+              <i>▾</i>
+            </button>
+            <div class="phone-cc__list" role="listbox"></div>
+          </div>
+          <input class="input" type="tel" name="phone" placeholder="900 000-00-00" autocomplete="tel" required>
+        </div>
+        <label class="consent">
+          <input type="checkbox" name="consent" required>
+          <span>Соглашаюсь с <a href="privacy.html" target="_blank" rel="noopener">политикой обработки персональных данных</a></span>
+        </label>
+        <button class="btn btn--gold btn--block" type="submit">Получить подборку <span class="arr">→</span></button>
         <span class="form-note text-center">Это демо — данные никуда не отправляются</span>
       </form>
     </div>
@@ -904,7 +1025,7 @@
   <script src="assets/js/data.js?v=9"></script>
   <script src="assets/js/quiz-engine.js?v=9"></script>
   <script src="assets/js/common.js?v=9"></script>
-  <script src="assets/js/catalog.js?v=9"></script>
+  <script src="assets/js/catalog.js?v=10"></script>
   <script src="assets/js/motion.js?v=9"></script>
 </body>
 </html>

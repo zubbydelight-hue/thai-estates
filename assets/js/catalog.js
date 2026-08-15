@@ -93,6 +93,71 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   );
 
+  /* ---------- Телефон в лид-попапе: код страны с флагом + маска ---------- */
+  const CC = [
+    ["ru", "Россия", "+7"], ["kz", "Казахстан", "+7"], ["by", "Беларусь", "+375"], ["ua", "Украина", "+380"],
+    ["uz", "Узбекистан", "+998"], ["kg", "Кыргызстан", "+996"], ["az", "Азербайджан", "+994"], ["am", "Армения", "+374"],
+    ["ge", "Грузия", "+995"], ["th", "Таиланд", "+66"], ["ae", "ОАЭ", "+971"], ["tr", "Турция", "+90"],
+    ["il", "Израиль", "+972"], ["de", "Германия", "+49"], ["gb", "Великобритания", "+44"], ["us", "США", "+1"]
+  ];
+  const cc = document.getElementById("phone-cc");
+  if (cc) {
+    const btn = cc.querySelector(".phone-cc__btn");
+    const btnImg = btn.querySelector("img");
+    const btnCode = cc.querySelector(".phone-cc__code");
+    const list = cc.querySelector(".phone-cc__list");
+    const phoneInput = cc.closest(".phone-row").querySelector("input[type=tel]");
+
+    list.innerHTML = CC.map(
+      (c, i) =>
+        '<button type="button" class="phone-cc__item" data-i="' + i + '">' +
+        '<img src="https://flagcdn.com/w20/' + c[0] + '.png" alt="' + c[1] + '">' +
+        "<span>" + c[1] + "</span>" +
+        '<span class="code">' + c[2] + "</span></button>"
+    ).join("");
+
+    const setCountry = (i) => {
+      btnImg.src = "https://flagcdn.com/w20/" + CC[i][0] + ".png";
+      btnImg.alt = CC[i][1];
+      btnCode.textContent = CC[i][2];
+    };
+    btn.addEventListener("click", (e) => { e.stopPropagation(); cc.classList.toggle("is-open"); });
+    list.addEventListener("click", (e) => {
+      const it = e.target.closest(".phone-cc__item");
+      if (!it) return;
+      setCountry(+it.dataset.i);
+      cc.classList.remove("is-open");
+      phoneInput.focus();
+    });
+    document.addEventListener("click", (e) => { if (!cc.contains(e.target)) cc.classList.remove("is-open"); });
+
+    // маска: цифры группами 3 3-2-2; ввод «+кода» автоматически переключает страну и флаг
+    const fmt = (d) => {
+      let out = d.slice(0, 3);
+      if (d.length > 3) out += " " + d.slice(3, 6);
+      if (d.length > 6) out += "-" + d.slice(6, 8);
+      if (d.length > 8) out += "-" + d.slice(8, 12);
+      return out;
+    };
+    phoneInput.addEventListener("input", () => {
+      const v = phoneInput.value.trim();
+      if (v.startsWith("+")) {
+        let best = -1, bestLen = 0;
+        CC.forEach((c, i) => {
+          if (v.startsWith(c[2]) && c[2].length > bestLen) { best = i; bestLen = c[2].length; }
+        });
+        // переключаем страну, только когда после кода пошли цифры номера;
+        // до этого значение не трогаем, чтобы «+» не съедался при вводе кода
+        if (best >= 0 && v.length > bestLen) {
+          setCountry(best);
+          phoneInput.value = fmt(v.slice(bestLen).replace(/\D/g, ""));
+        }
+        return;
+      }
+      phoneInput.value = fmt(v.replace(/\D/g, ""));
+    });
+  }
+
   // Плавающая кнопка квиза: появляется после hero, прячется у самого квиза
   const fab = document.querySelector(".quiz-fab");
   const quizSec = document.getElementById("quiz");
