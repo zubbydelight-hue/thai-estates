@@ -100,63 +100,52 @@ document.addEventListener("DOMContentLoaded", () => {
     ["ge", "Грузия", "+995"], ["th", "Таиланд", "+66"], ["ae", "ОАЭ", "+971"], ["tr", "Турция", "+90"],
     ["il", "Израиль", "+972"], ["de", "Германия", "+49"], ["gb", "Великобритания", "+44"], ["us", "США", "+1"]
   ];
-  const cc = document.getElementById("phone-cc");
-  if (cc) {
-    const btn = cc.querySelector(".phone-cc__btn");
-    const btnImg = btn.querySelector("img");
-    const btnCode = cc.querySelector(".phone-cc__code");
-    const list = cc.querySelector(".phone-cc__list");
-    const phoneInput = cc.closest(".phone-row").querySelector("input[type=tel]");
+  // страна по умолчанию — из региона браузера, флаг живёт прямо в поле
+  const region = ((navigator.language || "ru-RU").split("-")[1] || "ru").toLowerCase();
+  const defCountry = CC.find((c) => c[0] === region) || CC[0];
+  const flagUrl = (iso) => "https://flagcdn.com/w40/" + iso + ".png";
 
-    list.innerHTML = CC.map(
-      (c, i) =>
-        '<button type="button" class="phone-cc__item" data-i="' + i + '">' +
-        '<img src="https://flagcdn.com/w20/' + c[0] + '.png" alt="' + c[1] + '">' +
-        "<span>" + c[1] + "</span>" +
-        '<span class="code">' + c[2] + "</span></button>"
-    ).join("");
+  const fmtNat = (d) => {
+    let out = d.slice(0, 3);
+    if (d.length > 3) out += " " + d.slice(3, 6);
+    if (d.length > 6) out += "-" + d.slice(6, 8);
+    if (d.length > 8) out += "-" + d.slice(8, 12);
+    return out;
+  };
 
-    const setCountry = (i) => {
-      btnImg.src = "https://flagcdn.com/w20/" + CC[i][0] + ".png";
-      btnImg.alt = CC[i][1];
-      btnCode.textContent = CC[i][2];
-    };
-    btn.addEventListener("click", (e) => { e.stopPropagation(); cc.classList.toggle("is-open"); });
-    list.addEventListener("click", (e) => {
-      const it = e.target.closest(".phone-cc__item");
-      if (!it) return;
-      setCountry(+it.dataset.i);
-      cc.classList.remove("is-open");
-      phoneInput.focus();
+  document.querySelectorAll('form input[type="tel"]').forEach((input) => {
+    const wrap = document.createElement("span");
+    wrap.className = "phone-field";
+    input.parentNode.insertBefore(wrap, input);
+    wrap.appendChild(input);
+    const img = document.createElement("img");
+    img.src = flagUrl(defCountry[0]);
+    img.alt = defCountry[1];
+    wrap.appendChild(img);
+    input.placeholder = defCountry[2] + " 900 000-00-00";
+
+    input.addEventListener("focus", () => {
+      if (!input.value.trim()) input.value = defCountry[2] + " ";
     });
-    document.addEventListener("click", (e) => { if (!cc.contains(e.target)) cc.classList.remove("is-open"); });
-
-    // маска: цифры группами 3 3-2-2; ввод «+кода» автоматически переключает страну и флаг
-    const fmt = (d) => {
-      let out = d.slice(0, 3);
-      if (d.length > 3) out += " " + d.slice(3, 6);
-      if (d.length > 6) out += "-" + d.slice(6, 8);
-      if (d.length > 8) out += "-" + d.slice(8, 12);
-      return out;
-    };
-    phoneInput.addEventListener("input", () => {
-      const v = phoneInput.value.trim();
-      if (v.startsWith("+")) {
-        let best = -1, bestLen = 0;
-        CC.forEach((c, i) => {
-          if (v.startsWith(c[2]) && c[2].length > bestLen) { best = i; bestLen = c[2].length; }
-        });
-        // переключаем страну, только когда после кода пошли цифры номера;
-        // до этого значение не трогаем, чтобы «+» не съедался при вводе кода
-        if (best >= 0 && v.length > bestLen) {
-          setCountry(best);
-          phoneInput.value = fmt(v.slice(bestLen).replace(/\D/g, ""));
-        }
-        return;
-      }
-      phoneInput.value = fmt(v.replace(/\D/g, ""));
+    input.addEventListener("blur", () => {
+      if (input.value.trim() === defCountry[2] || input.value.trim() === "+") input.value = "";
     });
-  }
+    input.addEventListener("input", () => {
+      let raw = input.value.replace(/[^\d+]/g, "");
+      if (!raw) { input.value = ""; return; }
+      if (!raw.startsWith("+")) raw = defCountry[2] + raw; // авто-подстановка кода региона
+      let best = null;
+      CC.forEach((c) => {
+        if (raw.startsWith(c[2]) && (!best || c[2].length > best[2].length)) best = c;
+      });
+      if (!best) { input.value = raw.slice(0, 5); return; } // код ещё набирается
+      img.src = flagUrl(best[0]);
+      img.alt = best[1];
+      const nat = raw.slice(best[2].length).replace(/\D/g, "").slice(0, 12);
+      // без хвостового пробела, иначе backspace не сможет стереть код
+      input.value = best[2] + (nat ? " " + fmtNat(nat) : "");
+    });
+  });
 
   // Плавающая кнопка квиза: появляется после hero, прячется у самого квиза
   const fab = document.querySelector(".quiz-fab");
