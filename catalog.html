@@ -11,6 +11,45 @@
   <link rel="stylesheet" href="assets/css/base.css?v=9">
   <link rel="stylesheet" href="assets/css/quiz.css?v=9">
   <style>
+    /* ---------- Хедер: liquid glass «таблетка» в духе Dynamic Island ----------
+       Стекло лежит на псевдоэлементе .nav__inner::before: если повесить
+       backdrop-filter на сам .nav__inner, он станет containing block
+       для fixed-оверлея мобильного меню и обрежет его. */
+    .nav { padding: 14px 0; border-bottom: none; }
+    .nav::before { display: none; } /* старая полоса на всю ширину не нужна */
+    .nav.is-scrolled { padding: 10px 0; }
+    .nav__inner {
+      position: relative;
+      border-radius: 999px;
+      padding: 9px 10px 9px 26px;
+    }
+    .nav__inner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background:
+        linear-gradient(115deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.035) 34%, rgba(255, 255, 255, 0) 62%),
+        linear-gradient(rgba(13, 18, 14, 0.4), rgba(13, 18, 14, 0.4));
+      border: 1px solid rgba(244, 240, 230, 0.16);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+        0 14px 44px -14px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(22px) saturate(1.6);
+      -webkit-backdrop-filter: blur(22px) saturate(1.6);
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+    /* при скролле по светлым секциям стекло чуть плотнее, чтобы текст читался */
+    .nav.is-scrolled .nav__inner::before {
+      background:
+        linear-gradient(115deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03) 34%, rgba(255, 255, 255, 0) 62%),
+        linear-gradient(rgba(11, 16, 12, 0.68), rgba(11, 16, 12, 0.68));
+    }
+    /* открытое мобильное меню перекрывает всё — таблетку прячем */
+    body.menu-open .nav__inner::before { opacity: 0; }
+
     /* Почему Таиланд — редакционные карточки */
     .why-grid {
       display: grid;
