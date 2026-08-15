@@ -150,8 +150,10 @@
           el.textContent = prefix + obj.v.toFixed(decimals).replace(".", ",") + suffix;
         }
       };
-      if (inViewNow(el)) cfg.delay = 0.4;
-      else cfg.scrollTrigger = { trigger: el, start: "clamp(top 92%)", once: true };
+      // всё, что видно на первом экране (включая самый низ), считаем сразу,
+      // иначе пользователь открывает сайт и видит нули до первого скролла
+      if (el.getBoundingClientRect().top < window.innerHeight) cfg.delay = 0.2;
+      else cfg.scrollTrigger = { trigger: el, start: "clamp(top 97%)", once: true };
       gsap.to(obj, cfg);
     });
 
