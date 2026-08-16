@@ -730,6 +730,8 @@
     .pmodal__cta { display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
     /* содержимое не должно распирать колонки грида (кнопки, nowrap-спеки) */
     .pmodal__gallery, .pmodal__info { min-width: 0; }
+    /* плавающая кнопка квиза не должна перекрывать открытые попапы */
+    body:has(.modal.is-open) .quiz-fab { opacity: 0 !important; pointer-events: none !important; }
     .pmodal__cta .btn { white-space: normal; height: auto; min-height: 54px; padding-block: 13px; text-align: center; }
     @media (max-width: 900px) {
       .modal--project { padding: 10px; }
@@ -743,6 +745,17 @@
       .pmodal__main img { position: absolute; }
       .pmodal__info { overflow: visible; }
       .pmodal__specs b { white-space: normal; }
+      /* кнопки всегда на виду: липкая панель у нижнего края, скроллится только контент */
+      .pmodal__cta {
+        position: sticky;
+        bottom: 0;
+        z-index: 3;
+        margin: 20px calc(-1 * clamp(26px, 3vw, 40px)) calc(-1 * clamp(26px, 3vw, 40px));
+        padding: 12px clamp(26px, 3vw, 40px) 14px;
+        background: var(--cream);
+        border-top: 1px solid var(--hair);
+        box-shadow: 0 -14px 26px -20px rgba(0, 0, 0, 0.4);
+      }
     }
 
     /* ---------- Лид-попап: способ связи, телефон с кодом страны, согласие ---------- */
