@@ -7,10 +7,24 @@
   <meta name="description" content="Актуальная подборка 18 инвестиционных проектов Пхукета и Паттайи: цены от $85 000, доходность до 10% годовых, беспроцентная рассрочка. Аренда, перепродажа, проживание.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Alegreya:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/base.css?v=9">
   <link rel="stylesheet" href="assets/css/quiz.css?v=9">
   <style>
+    /* ---------- Шрифт заголовков: Book Antiqua / Palatino ----------
+       На устройствах без системной Palatino подхватывается Alegreya (Google Fonts) —
+       ближайший по характеру гуманистический серифф */
+    :root {
+      --ff-d: "Book Antiqua", "Palatino Linotype", Palatino, "Alegreya", Georgia, serif;
+    }
+
+    /* ---------- Заголовки секций: всё у левого края вёрстки ----------
+       Индекс («02 / Подбор») над заголовком, а не сбоку */
+    .sec-head { grid-template-columns: 1fr; gap: 0; align-items: start; }
+    .sec-head__idx { padding-bottom: 18px; }
+    .sec-head--row { grid-template-columns: 1fr auto; }
+    .sec-head--row .sec-head__idx { grid-column: 1 / -1; }
+
     /* ---------- Хедер: liquid glass «таблетка» в духе Dynamic Island ----------
        Стекло лежит на псевдоэлементе .nav__inner::before: если повесить
        backdrop-filter на сам .nav__inner, он станет containing block
@@ -146,6 +160,14 @@
     }
     .hero__desc p { margin: 20px 0 auto; }
     .hero__desc .hero__cta-row { margin-top: 26px; position: relative; z-index: 1; }
+
+    /* Palatino шире Cormorant: снимаем cap 15ch (слово «инвестиционных»
+       не влезало и обрезалось маской анимации) и калибруем размер */
+    .hero__title { max-width: none; }
+    .hero .h-hero { font-size: clamp(40px, 6.9vw, 104px); }
+    @media (max-width: 760px) {
+      .hero .h-hero { font-size: clamp(32px, 10.4vw, 46px); }
+    }
 
     /* Невысокие экраны (ноутбуки): ужимаем hero, чтобы полоса метрик
        всегда помещалась на первый экран без скролла */
