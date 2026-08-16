@@ -295,7 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     ],
     renderResult(answers) {
-      const top = matchProjects(answers, 3);
+      const top = matchProjects(answers, 3, CATALOG); // без проектов Паттайи
       return (
         '<div class="quiz__result-badge">Подборка готова</div>' +
         '<div class="quiz__question">Вам подходят эти проекты</div>' +

@@ -398,3 +398,19 @@
   .quiz-opt__label { font-size: 14.5px; }
   .quiz-opt__label small { font-size: 12.5px; }
 }
+
+/* Чекбокс согласия в форме квиза (единый вид с формами каталога).
+   Тройной селектор перебивает .section--dark .consent: панель квиза
+   светлая даже внутри тёмной секции */
+.quiz .quiz__form .consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--stone, #7d7a68);
+  cursor: pointer;
+  text-align: left;
+}
+.quiz .quiz__form .consent input { margin-top: 2px; width: 15px; height: 15px; accent-color: var(--gold, #c2a163); flex-shrink: 0; }
+.quiz .quiz__form .consent a { text-decoration: underline; text-underline-offset: 2px; color: inherit; }

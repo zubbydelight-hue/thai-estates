@@ -170,7 +170,8 @@ function createQuiz(container, config) {
 
 /* Подбор проектов по ответам квиза (для каталога и квиза-подборки).
    Скоринг вместо жёстких фильтров — всегда возвращает `limit` проектов. */
-function matchProjects(answers, limit) {
+function matchProjects(answers, limit, pool) {
+  const source = pool || PROJECTS;
   let budgetMin = 0, budgetMax = Infinity;
   if (answers.budget) {
     const parts = answers.budget.split("-");
@@ -179,7 +180,7 @@ function matchProjects(answers, limit) {
   }
   const budgetMid = budgetMax === Infinity ? budgetMin * 1.5 || 3000000 : (budgetMin + budgetMax) / 2;
 
-  const scored = PROJECTS.map((p) => {
+  const scored = source.map((p) => {
     let score = 0;
     if (answers.strategy && p.strategy.includes(answers.strategy)) score += 40;
     if (answers.region && answers.region !== "any" && p.region === answers.region) score += 25;
@@ -222,7 +223,7 @@ function leadFormHtml(buttonText) {
     '<form class="quiz__form">' +
     '<input class="input" type="tel" name="phone" placeholder="+7 900 000-00-00" autocomplete="tel" required>' +
     '<button class="btn btn--gold btn--lg btn--block" type="submit">' + (buttonText || "Получить подборку") + "</button>" +
-    '<span class="form-note text-center">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</span>' +
+    '<label class="consent"><input type="checkbox" name="consent" required><span>Соглашаюсь с <a href="privacy.html" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>' +
     "</form>"
   );
 }
