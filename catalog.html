@@ -512,6 +512,11 @@
     /* ---------- Карточка проекта: кликабельна целиком, открывает попап ---------- */
     .pcard { cursor: pointer; }
     .pcard .pcard__go { opacity: 1; transform: translateY(0); }
+    /* одинаковая высота карточек: резерв под две строки названия,
+       спеки прижаты к резерву, теги — к низу карточки */
+    .pcard__name { min-height: 2.3em; }
+    .pcard__specs { margin-top: auto; }
+    .pcard__body .pcard__perks { margin-top: 14px; min-height: 62px; align-content: flex-start; }
 
     /* ---------- Попап проекта: галерея + подробности ---------- */
     .modal__panel--project {
