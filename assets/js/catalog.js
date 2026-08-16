@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     '<div class="pcard-teaser__inner">' +
     '<span class="pcard-teaser__label">Квиз · 1 минута</span>' +
     '<div class="pcard-teaser__title">Не можете выбрать из ' + CATALOG.length + ' проектов?</div>' +
-    '<p class="pcard-teaser__text">Ответьте на 4 вопроса — алгоритм покажет ваш топ-3 с ценами и пришлём подробный расчёт.</p>' +
+    '<p class="pcard-teaser__text">Ответьте на 4 вопроса — алгоритм покажет ваш топ-3 с ценами и пришлём подробный расчёт</p>' +
     '<a class="btn btn--gold" href="#quiz">Пройти подбор <span class="arr">→</span></a>' +
     "</div></div>";
 
@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         key: "strategy",
         question: "Какая у вас цель?",
-        hint: "От этого зависит стратегия и тип проекта.",
+        hint: "От этого зависит стратегия и тип проекта",
         img: "assets/img/santa-monica-7.jpg",
         options: [
           { value: "rent", label: "Пассивный доход с аренды", sub: "до 10% годовых", img: "assets/img/santa-monica-5.jpg" },
@@ -295,7 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return (
         '<div class="quiz__result-badge">Подборка готова</div>' +
         '<div class="quiz__question">Вам подходят эти проекты</div>' +
-        '<p class="quiz__hint">Оставьте контакты — пришлём полную подборку с ценами, планировками и расчётом доходности по каждому проекту.</p>' +
+        '<p class="quiz__hint">Оставьте контакты — пришлём полную подборку с ценами, планировками и расчётом доходности по каждому проекту</p>' +
         miniCardsHtml(top) +
         leadFormHtml("Получить подборку с ценами")
       );

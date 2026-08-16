@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
           '<div style="text-align:center;padding:26px 6px">' +
           '<div style="font-family:var(--ff-d);font-size:46px;line-height:1;color:var(--gold)">✓</div>' +
           '<div class="h3" style="margin:16px 0 10px">Заявка отправлена</div>' +
-          '<p class="form-note" style="font-size:14px">Менеджер свяжется с вами в течение 15 минут и вышлет подборку с ценами и планировками.</p>' +
+          '<p class="form-note" style="font-size:14px">Менеджер свяжется с вами в течение 15 минут и вышлет подборку с ценами и планировками</p>' +
           "</div>";
       }, 900);
     });

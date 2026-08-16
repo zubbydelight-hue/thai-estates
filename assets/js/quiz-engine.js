@@ -128,7 +128,7 @@ function createQuiz(container, config) {
           '<div style="text-align:center;padding:40px 10px">' +
           '<div style="font-size:52px;line-height:1">✓</div>' +
           '<div class="quiz__question" style="margin:18px 0 10px">Спасибо! Подборка уже готовится</div>' +
-          '<p class="quiz__hint" style="margin-bottom:0">Менеджер свяжется с вами в течение 15 минут и отправит персональную подборку с ценами, планировками и условиями рассрочки.</p>' +
+          '<p class="quiz__hint" style="margin-bottom:0">Менеджер свяжется с вами в течение 15 минут и отправит персональную подборку с ценами, планировками и условиями рассрочки</p>' +
           "</div>";
       });
     }
@@ -194,7 +194,7 @@ function leadFormHtml(buttonText) {
     '<input class="input" type="tel" name="phone" placeholder="+7 (___) ___-__-__" required>' +
     "</div>" +
     '<button class="btn btn--gold btn--lg btn--block" type="submit">' + (buttonText || "Получить подборку") + "</button>" +
-    '<span class="form-note text-center">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности. Это демо — данные никуда не отправляются.</span>' +
+    '<span class="form-note text-center">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности. Это демо — данные никуда не отправляются</span>' +
     "</form>"
   );
 }
