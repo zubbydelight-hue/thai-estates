@@ -176,8 +176,21 @@
        не влезало и обрезалось маской анимации) и калибруем размер */
     .hero__title { max-width: none; }
     .hero .h-hero { font-size: clamp(40px, 6.9vw, 104px); }
+    /* Мобильный hero: заголовок мельче (правый край не режется),
+       плашка компактная — кнопки попадают в первый экран */
     @media (max-width: 760px) {
-      .hero .h-hero { font-size: clamp(32px, 10.4vw, 46px); }
+      .hero__content { padding-top: 96px; }
+      .hero .h-hero { font-size: clamp(27px, 8.4vw, 36px); }
+      .hero__title { margin-top: 14px; }
+      .hero__content > .container { padding-bottom: 20px; }
+      .hero__desc { max-width: 100%; padding: 18px 18px 20px; border-radius: 18px; }
+      .hero__desc-head b { font-size: 28px; }
+      .hero__desc p { margin-top: 11px; font-size: 13px; line-height: 1.58; }
+      .hero__desc .hero__cta-row { margin-top: 14px; gap: 10px; }
+      .hero__desc .hero__cta-row .btn { height: 50px; padding: 0 16px; font-size: 10.5px; letter-spacing: 0.14em; }
+      .hero__meta-item { padding: 12px 14px 14px; }
+      .hero__meta-item b { font-size: 22px; }
+      .hero__meta-item span { margin-top: 4px; font-size: 10.5px; }
     }
 
     /* Невысокие экраны (ноутбуки): ужимаем hero, чтобы полоса метрик
