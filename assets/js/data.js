@@ -1,4 +1,4 @@
-/* Каталог из 18 проектов (по сводной таблице, июль 2026).
+﻿/* Каталог из 18 проектов (по сводной таблице, июль 2026).
    Цены и часть описаний — демо-данные для презентации. */
 
 const PROJECTS = [
@@ -217,7 +217,7 @@ const PROJECTS = [
     location: "Бангтао / Лагуна, Пхукет",
     region: "phuket",
     strategy: ["private"],
-    strategyLabel: "Private Collection",
+    strategyLabel: "Инвестиции",
     type: "villa",
     priceUsd: 3200000,
     priceLabel: "от $3 200 000",
@@ -233,7 +233,7 @@ const PROJECTS = [
     location: "Бангтао / Лагуна, Пхукет",
     region: "phuket",
     strategy: ["private"],
-    strategyLabel: "Private Collection",
+    strategyLabel: "Инвестиции",
     type: "villa",
     priceUsd: 2400000,
     priceLabel: "от $2 400 000",
@@ -249,7 +249,7 @@ const PROJECTS = [
     location: "Бангтао / Лагуна, Пхукет",
     region: "phuket",
     strategy: ["private"],
-    strategyLabel: "Private Collection",
+    strategyLabel: "Инвестиции",
     type: "villa",
     priceUsd: 1800000,
     priceLabel: "от $1 800 000",
@@ -265,7 +265,7 @@ const PROJECTS = [
     location: "Пансея Бич, Пхукет",
     region: "phuket",
     strategy: ["private"],
-    strategyLabel: "Private Collection",
+    strategyLabel: "Инвестиции",
     type: "villa",
     priceUsd: 8000000,
     priceLabel: "от $8 000 000",
@@ -281,7 +281,7 @@ const PROJECTS = [
     location: "Чернгталай, Пхукет",
     region: "phuket",
     strategy: ["private"],
-    strategyLabel: "Private Collection",
+    strategyLabel: "Инвестиции",
     type: "villa",
     priceUsd: 6500000,
     priceLabel: "от $6 500 000",
@@ -297,5 +297,139 @@ const STRATEGY_LABELS = {
   rent: "Аренда",
   resale: "Перепродажа",
   live: "Проживание",
-  private: "Private Collection"
+  private: "Инвестиции"
 };
+
+/* Детали для попапа проекта: галерея и факты (демо-данные) */
+const PROJECT_DETAILS = {
+  hythe: {
+    photos: ["assets/img/hythe-1.jpg", "assets/img/hythe-2.jpg", "assets/img/hythe-3.jpg", "assets/img/hythe-4.jpg"],
+    sea: "10 минут до пляжа Бангтао",
+    yieldLabel: "до 8% годовых на аренде",
+    discount: "5% при 100% оплате",
+    payment: "Рассрочка 0% до передачи ключей",
+    plans: "Виллы 3–4 спальни · 326–540 м²"
+  },
+  cassia: {
+    photos: ["assets/img/cassia-1.webp", "assets/img/cassia-2.webp", "assets/img/cassia-3.webp"],
+    sea: "700 м до пляжа Бангтао",
+    yieldLabel: "до 7% по арендной программе",
+    discount: "Мебельный пакет в подарок",
+    payment: "30/70 · рассрочка 0% до сдачи",
+    plans: "Студии и 1–2 спальни · 37–104 м²"
+  },
+  angsana: {
+    photos: ["assets/img/angsana-1.webp", "assets/img/angsana-2.webp", "assets/img/angsana-3.webp"],
+    sea: "Первая линия лагуны, 300 м до моря",
+    yieldLabel: "до 7% через отельную аренду",
+    discount: "До 7% на старте очереди",
+    payment: "50/50 до завершения стройки",
+    plans: "1–3 спальни · 45–178 м²"
+  },
+  "skypark-elara": {
+    photos: ["assets/img/skypark-elara-1.webp", "assets/img/skypark-elara-2.png", "assets/img/skypark-elara-3.webp", "assets/img/skypark-elara-4.webp"],
+    sea: "5 минут до пляжа Бангтао",
+    yieldLabel: "до 7% годовых на аренде",
+    discount: "Цены старта продаж",
+    payment: "Рассрочка 0% до сдачи",
+    plans: "1–3 спальни · 60–140 м²"
+  },
+  rhea: {
+    photos: ["assets/img/rhea-1.jpg", "assets/img/rhea-2.jpg", "assets/img/rhea-3.jpg"],
+    sea: "600 м до пляжа Сурин",
+    yieldLabel: "рост цены до 25% к сдаче",
+    discount: "5% на предстарте продаж",
+    payment: "20/80 · рассрочка 0%",
+    plans: "Студии и 1–2 спальни · 28–67 м²"
+  },
+  "andaman-city": {
+    photos: ["assets/img/andaman-city-1.jpg", "assets/img/andaman-city-3.jpg", "assets/img/andaman-city-6.jpg", "assets/img/andaman-city-7.jpg"],
+    sea: "500 м до пляжа Бангтао",
+    yieldLabel: "Rental Pool 70/30 · до 10% годовых",
+    discount: "До 10% на старте продаж",
+    payment: "Рассрочка 0% до конца стройки",
+    plans: "Студии и 1–2 спальни · 27–75 м²"
+  },
+  kiara: {
+    photos: ["assets/img/kiara-1.jpg", "assets/img/kiara-2.jpg", "assets/img/kiara-3.jpg"],
+    sea: "3 минуты до пляжа Лаян",
+    yieldLabel: "до 6% под управлением Minor",
+    discount: "Freehold без надбавки",
+    payment: "Поэтапно по готовности стройки",
+    plans: "2–4 спальни · 231–512 м²"
+  },
+  "btgr-beach": {
+    photos: ["assets/img/btgr-beach-1.webp", "assets/img/btgr-beach-2.webp", "assets/img/btgr-beach-3.webp"],
+    sea: "Первая линия пляжа Бангтао",
+    yieldLabel: "рост стоимости до 30%",
+    discount: "Индивидуальные условия",
+    payment: "50/50",
+    plans: "2–3 спальни · 94–210 м²"
+  },
+  "title-naiyang": {
+    photos: ["assets/img/title-naiyang-1.jpg", "assets/img/title-naiyang-2.jpg", "assets/img/title-naiyang-3.jpg"],
+    sea: "400 м до пляжа Найянг",
+    yieldLabel: "до 7% годовых на аренде",
+    discount: "Цены старта продаж",
+    payment: "Рассрочка 0% до сдачи",
+    plans: "Студии и 1 спальня · 24–47 м²"
+  },
+  "sun-hills": {
+    photos: ["assets/img/sun-hills-1.jpg", "assets/img/sun-hills-2.webp", "assets/img/sun-hills-3.jpg"],
+    sea: "5 минут до пляжа Лаян",
+    yieldLabel: "до 7% годовых на аренде",
+    discount: "5% при 100% оплате",
+    payment: "Рассрочка 0% до сдачи",
+    plans: "Студии и 1–2 спальни · 30–70 м²"
+  },
+  trisara: {
+    photos: ["assets/img/trisara-1.jpg", "assets/img/trisara-2.jpg", "assets/img/trisara-3.jpg"],
+    sea: "Приватная бухта курорта",
+    yieldLabel: "аренда через оператора Trisara",
+    discount: "По запросу",
+    payment: "Индивидуальный график",
+    plans: "1–2 спальни · 120–200 м²"
+  },
+  "btgr-ocean": {
+    photos: ["assets/img/btgr-ocean-1.webp", "assets/img/btgr-ocean-2.png", "assets/img/btgr-ocean-3.png"],
+    sea: "Первая береговая линия, выход к океану",
+    yieldLabel: "резортная аренда Banyan Tree",
+    discount: "По запросу",
+    payment: "Индивидуальный график",
+    plans: "Виллы 3–5 спален · 470–800 м²"
+  },
+  "btgr-lagoon": {
+    photos: ["assets/img/btgr-lagoon-1.jpg", "assets/img/btgr-beach-2.webp", "assets/img/btgr-beach-3.webp"],
+    sea: "Берег лагуны, 900 м до пляжа Бангтао",
+    yieldLabel: "резортная аренда Banyan Tree",
+    discount: "По запросу",
+    payment: "Индивидуальный график",
+    plans: "Виллы 3–4 спальни · 372–520 м²"
+  },
+  "botanica-grand": {
+    photos: ["assets/img/botanica-grand-1.jpg", "assets/img/botanica-grand-2.jpg", "assets/img/botanica-grand-3.jpg"],
+    sea: "10 минут до пляжа Бангтао",
+    yieldLabel: "рост стоимости коллекции",
+    discount: "Предстартовые цены",
+    payment: "Поэтапная оплата",
+    plans: "Виллы 4–5 спален · 460–1 000 м²"
+  },
+  amanpuri: {
+    photos: ["assets/img/amanpuri-1.jpg", "assets/img/amanpuri-2.webp", "assets/img/amanpuri-3.webp"],
+    sea: "Частный пляж Пансея",
+    yieldLabel: "аренда через оператора Aman",
+    discount: "По запросу",
+    payment: "Индивидуальный график",
+    plans: "Виллы 4–8 спален · 780–2 000 м²"
+  },
+  "trisara-rv5": {
+    photos: ["assets/img/trisara-rv5-1.png", "assets/img/trisara-rv5-2.jpg", "assets/img/trisara-rv5-3.jpg"],
+    sea: "Первая линия океана",
+    yieldLabel: "аренда через оператора Trisara",
+    discount: "По запросу",
+    payment: "Индивидуальный график",
+    plans: "Резиденция 6 спален · 900 м²"
+  }
+};
+
+PROJECTS.forEach((p) => Object.assign(p, PROJECT_DETAILS[p.id] || {}));

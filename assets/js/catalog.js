@@ -5,38 +5,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const count = document.getElementById("catalog-count");
   let firstRender = true;
 
+  // Паттайя исключена из каталога — показываем только Пхукет
+  const CATALOG = PROJECTS.filter((p) => p.region !== "pattaya");
+
+  // Карточка: только название, стоимость, площадь и теги; клик открывает попап
   function cardHtml(p) {
-    const media = p.landing
-      ? '<a class="pcard__media" data-parallax-skip href="' + p.landing + '">'
-      : '<div class="pcard__media">';
-    const mediaClose = p.landing ? "</a>" : "</div>";
-    const go = p.landing ? '<span class="pcard__go">→</span>' : "";
-    const cta = p.landing
-      ? '<a class="pcard__btn" href="' + p.landing + '">Смотреть проект <span>→</span></a>'
-      : '<button class="pcard__btn" data-open-modal="' + p.name + '">Узнать цену и планировки <span>→</span></button>';
     const perks = (p.perks || [])
       .map((t) => '<span class="pcard__perk">' + t + "</span>")
       .join("");
     return (
-      '<article class="pcard">' +
-      media +
+      '<article class="pcard" data-project="' + p.id + '">' +
+      '<div class="pcard__media">' +
       '<div class="pcard__tags">' +
       '<span class="pcard__tag">' + p.strategyLabel + "</span>" +
       '<span class="pcard__tag">' + (p.type === "villa" ? "Виллы" : "Апартаменты") + "</span>" +
       "</div>" +
       '<img src="' + p.img + '" alt="' + p.name + '" loading="lazy">' +
-      go +
-      mediaClose +
+      '<span class="pcard__go">→</span>' +
+      "</div>" +
       '<div class="pcard__body">' +
-      '<div class="pcard__loc">' + p.location + "</div>" +
       '<h3 class="pcard__name">' + p.name + "</h3>" +
       '<div class="pcard__specs">' +
       '<div class="pcard__spec"><small>Стоимость</small><b>' + p.priceLabel + "</b></div>" +
       '<div class="pcard__spec"><small>Площадь</small><b>' + (p.areaLabel || "—") + "</b></div>" +
       "</div>" +
       (perks ? '<div class="pcard__perks">' + perks + "</div>" : "") +
-      '<p class="pcard__desc">' + p.desc + "</p>" +
-      '<div class="pcard__foot">' + cta + "</div></div></article>"
+      "</div></article>"
     );
   }
 
@@ -45,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     '<div class="pcard pcard--teaser">' +
     '<div class="pcard-teaser__inner">' +
     '<span class="pcard-teaser__label">Квиз · 1 минута</span>' +
-    '<div class="pcard-teaser__title">Не можете выбрать из 18 проектов?</div>' +
+    '<div class="pcard-teaser__title">Не можете выбрать из ' + CATALOG.length + ' проектов?</div>' +
     '<p class="pcard-teaser__text">Ответьте на 4 вопроса — алгоритм покажет ваш топ-3 с ценами и пришлём подробный расчёт.</p>' +
     '<a class="btn btn--gold" href="#quiz">Пройти подбор <span class="arr">→</span></a>' +
     "</div></div>";
@@ -56,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cardsHtml.length > 6) cardsHtml.splice(6, 0, quizTeaserHtml);
     else cardsHtml.push(quizTeaserHtml);
     grid.innerHTML = cardsHtml.join("");
-    count.textContent = "Показано проектов: " + list.length + " из " + PROJECTS.length;
+    count.textContent = "Показано проектов: " + list.length + " из " + CATALOG.length;
 
     if (window.gsap) {
       const cards = grid.querySelectorAll(".pcard");
@@ -75,23 +69,111 @@ document.addEventListener("DOMContentLoaded", () => {
     firstRender = false;
   }
 
-  render(PROJECTS);
+  render(CATALOG);
 
   document.querySelectorAll("#filters .chip").forEach((chip) =>
     chip.addEventListener("click", () => {
       document.querySelectorAll("#filters .chip").forEach((c) => c.classList.remove("is-active"));
       chip.classList.add("is-active");
       const f = chip.dataset.filter;
-      if (f === "all") return render(PROJECTS);
+      if (f === "all") return render(CATALOG);
       const [kind, val] = f.split(":");
-      if (kind === "region") return render(PROJECTS.filter((p) => p.region === val));
-      if (kind === "strategy") return render(PROJECTS.filter((p) => p.strategy.includes(val)));
+      if (kind === "region") return render(CATALOG.filter((p) => p.region === val));
+      if (kind === "strategy") return render(CATALOG.filter((p) => p.strategy.includes(val)));
       if (kind === "budget") {
         const [min, max] = val.split("-").map(Number);
-        return render(PROJECTS.filter((p) => p.priceUsd >= min && (max ? p.priceUsd <= max : true)));
+        return render(CATALOG.filter((p) => p.priceUsd >= min && (max ? p.priceUsd <= max : true)));
       }
     })
   );
+
+  /* ---------- Попап проекта: галерея + подробности ---------- */
+  const pm = document.getElementById("project-modal");
+  if (pm) {
+    const mainImg = pm.querySelector(".pmodal__main img");
+    const counter = pm.querySelector(".pmodal__counter");
+    const thumbs = pm.querySelector(".pmodal__thumbs");
+    const info = pm.querySelector(".pmodal__info");
+    let photos = [];
+    let idx = 0;
+
+    const show = (i) => {
+      idx = (i + photos.length) % photos.length;
+      mainImg.src = photos[idx];
+      counter.textContent = (idx + 1) + " / " + photos.length;
+      thumbs.querySelectorAll(".pmodal__thumb").forEach((t, n) => t.classList.toggle("is-active", n === idx));
+    };
+
+    const openProject = (p) => {
+      photos = (p.photos && p.photos.length ? p.photos : [p.img]);
+      thumbs.innerHTML = photos
+        .map((src, n) => '<button class="pmodal__thumb" data-i="' + n + '"><img src="' + src + '" alt=""></button>')
+        .join("");
+      mainImg.alt = p.name;
+
+      const tags = [p.strategyLabel, p.type === "villa" ? "Виллы" : "Апартаменты"]
+        .map((t) => "<span>" + t + "</span>").join("");
+      const fact = (label, val) =>
+        val ? '<div class="pmodal__fact"><small>' + label + "</small><b>" + val + "</b></div>" : "";
+      info.innerHTML =
+        '<div class="pmodal__loc">' + p.location + "</div>" +
+        '<div class="pmodal__name">' + p.name + "</div>" +
+        '<div class="pmodal__tags">' + tags + "</div>" +
+        '<div class="pmodal__specs">' +
+        "<div><small>Стоимость</small><b>" + p.priceLabel + "</b></div>" +
+        "<div><small>Площадь</small><b>" + (p.areaLabel || "—") + "</b></div>" +
+        "</div>" +
+        '<p class="pmodal__desc">' + p.desc + "</p>" +
+        '<div class="pmodal__facts">' +
+        fact("До моря", p.sea) +
+        fact("Доходность", p.yieldLabel) +
+        fact("Скидки", p.discount) +
+        fact("Оплата", p.payment) +
+        fact("Планировки", p.plans) +
+        "</div>" +
+        '<div class="pmodal__cta">' +
+        '<button class="btn btn--gold btn--block" data-open-modal="Проект — ' + p.name + '">Получить цены и планировки <span class="arr">→</span></button>' +
+        '<a class="btn btn--line btn--block" href="#quiz" data-close-project>Подобрать похожие проекты</a>' +
+        "</div>";
+
+      show(0);
+      pm.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    };
+
+    const closeProject = () => {
+      pm.classList.remove("is-open");
+      document.body.style.overflow = "";
+    };
+
+    // клик по карточке (кроме тизера квиза)
+    grid.addEventListener("click", (e) => {
+      const card = e.target.closest(".pcard[data-project]");
+      if (!card) return;
+      const p = CATALOG.find((x) => x.id === card.dataset.project);
+      if (p) openProject(p);
+    });
+
+    pm.querySelector(".pmodal__arrow--prev").addEventListener("click", () => show(idx - 1));
+    pm.querySelector(".pmodal__arrow--next").addEventListener("click", () => show(idx + 1));
+    thumbs.addEventListener("click", (e) => {
+      const t = e.target.closest(".pmodal__thumb");
+      if (t) show(+t.dataset.i);
+    });
+    pm.querySelector(".modal__backdrop").addEventListener("click", closeProject);
+    pm.querySelector(".modal__close").addEventListener("click", closeProject);
+    document.addEventListener("keydown", (e) => {
+      if (!pm.classList.contains("is-open")) return;
+      if (e.key === "Escape") closeProject();
+      if (e.key === "ArrowLeft") show(idx - 1);
+      if (e.key === "ArrowRight") show(idx + 1);
+    });
+    // CTA внутри попапа: закрываем попап проекта (лид-модалку откроет common.js),
+    // якорь «подобрать похожие» просто закрывает попап
+    info.addEventListener("click", (e) => {
+      if (e.target.closest("[data-open-modal]") || e.target.closest("[data-close-project]")) closeProject();
+    });
+  }
 
   /* ---------- Телефон в лид-попапе: код страны с флагом + маска ---------- */
   const CC = [
