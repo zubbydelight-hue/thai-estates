@@ -138,11 +138,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       show(0);
       pm.classList.add("is-open");
+      // блокируем и html, и body: на мобильных overflow одного body не
+      // останавливает прокрутку страницы под попапом
+      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
     };
 
     const closeProject = () => {
       pm.classList.remove("is-open");
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
 

@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (modal) {
     const open = (source) => {
       modal.classList.add("is-open");
+      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
       // источник заявки пишем в скрытое поле формы, а не в видимый текст
       const src = modal.querySelector("input[data-lead-source]");
@@ -81,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     const close = () => {
       modal.classList.remove("is-open");
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
     document.addEventListener("click", (e) => {

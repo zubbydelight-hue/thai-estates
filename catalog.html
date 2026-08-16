@@ -745,6 +745,10 @@
     .pmodal__gallery, .pmodal__info { min-width: 0; }
     /* плавающая кнопка квиза не должна перекрывать открытые попапы */
     body:has(.modal.is-open) .quiz-fab { opacity: 0 !important; pointer-events: none !important; }
+    /* скролл попапа не передаётся странице, когда упирается в край */
+    .modal__panel,
+    .modal__panel--project,
+    .pmodal__info { overscroll-behavior: contain; }
     .pmodal__cta .btn { white-space: normal; height: auto; min-height: 48px; padding-block: 10px; text-align: center; line-height: 1.4; }
     @media (max-width: 900px) {
       .modal--project { padding: 10px; }
@@ -1447,8 +1451,8 @@
   <!-- Lenis убран: прокрутка нативная, без инерции -->
   <script src="assets/js/data.js?v=11"></script>
   <script src="assets/js/quiz-engine.js?v=13"></script>
-  <script src="assets/js/common.js?v=12"></script>
-  <script src="assets/js/catalog.js?v=17"></script>
+  <script src="assets/js/common.js?v=13"></script>
+  <script src="assets/js/catalog.js?v=18"></script>
   <script src="assets/js/motion.js?v=10"></script>
 </body>
 </html>
