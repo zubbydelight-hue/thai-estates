@@ -244,6 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Встроенный квиз
   createQuiz(document.getElementById("quiz-container"), {
     resultImg: "assets/img/trisara-1.jpg",
+    bullets: ["4 вопроса", "Меньше минуты", "Топ-3 проекта с ценами", "PDF-подборка в подарок"],
     questions: [
       {
         key: "strategy",

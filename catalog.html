@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Alegreya:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/base.css?v=9">
-  <link rel="stylesheet" href="assets/css/quiz.css?v=9">
+  <link rel="stylesheet" href="assets/css/quiz.css?v=10">
   <style>
     /* ---------- Шрифт заголовков: Book Antiqua / Palatino ----------
        На устройствах без системной Palatino подхватывается Alegreya (Google Fonts) —
@@ -333,6 +333,8 @@
     .brandwall__cell:hover::after { opacity: 1; transform: rotate(0) scale(1); }
 
     /* Баннер эксперта */
+    /* компактнее по вертикали: секция и внутренние отступы ужаты */
+    .expert-cta { padding: clamp(52px, 6.5vw, 96px) 0; }
     .expert-cta__grid {
       display: grid;
       grid-template-columns: 1.5fr 1fr;
@@ -342,9 +344,9 @@
     .expert-cta__stats {
       display: flex;
       flex-wrap: wrap;
-      gap: 18px 48px;
-      margin-top: 36px;
-      padding-top: 28px;
+      gap: 16px 44px;
+      margin-top: 26px;
+      padding-top: 22px;
       border-top: 1px solid var(--hair-l);
     }
     .expert-cta__stats b {
@@ -363,14 +365,14 @@
     }
     .expert-cta__card {
       text-align: center;
-      padding: clamp(30px, 3.4vw, 52px) clamp(24px, 3vw, 44px);
+      padding: clamp(24px, 2.8vw, 40px) clamp(22px, 2.6vw, 38px);
       border: 1px solid var(--hair-l);
       border-radius: 4px;
       background: rgba(244, 240, 230, 0.03);
     }
     .expert-cta__photo {
-      width: clamp(130px, 12vw, 176px);
-      height: clamp(130px, 12vw, 176px);
+      width: clamp(110px, 10vw, 148px);
+      height: clamp(110px, 10vw, 148px);
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid var(--gold);
@@ -394,7 +396,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px 18px;
-      margin-top: 34px;
+      margin-top: 26px;
       max-width: 560px;
     }
     .expert-cta__form .btn { grid-column: 1 / -1; justify-content: center; }
@@ -447,26 +449,16 @@
       color: rgba(244, 240, 230, 0.6);
     }
 
-    /* Бейджи и подсветка квиза */
-    .quiz-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 14px;
-      margin-bottom: 26px;
-    }
-    .quiz-badges span {
-      font-size: 12.5px;
-      font-weight: 700;
-      padding: 9px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(194, 161, 99, 0.35);
-      color: var(--gold-2);
-      background: rgba(194, 161, 99, 0.08);
-      white-space: nowrap;
-    }
+    /* Подсветка квиза; панель с буллитами и консультантом — справа (как в Marquiz) */
     .quiz-spotlight .quiz {
       border: 1px solid rgba(194, 161, 99, 0.45);
       box-shadow: 0 0 0 1px rgba(194, 161, 99, 0.12), 0 44px 110px -40px rgba(194, 161, 99, 0.28);
+      grid-template-columns: 1fr 300px;
+    }
+    .quiz-spotlight .quiz__side { order: 2; }
+    @media (max-width: 860px) {
+      .quiz-spotlight .quiz { grid-template-columns: 1fr; }
+      .quiz-spotlight .quiz__side { order: 0; }
     }
 
     /* Форма после кейсов */
@@ -1019,7 +1011,7 @@
       <div class="expert-cta__main" data-reveal>
         <span class="label">Личный эксперт</span>
         <h2 class="h2" style="margin-top:18px" data-split>Хотите вложить деньги под <em>10% годовых</em> в валюте?</h2>
-        <p class="sec-head__sub" style="margin-top:22px">Kun Ping выслушает вашу задачу, разработает инвестиционную стратегию и подберёт объекты под бюджет — бесплатно и без обязательств.</p>
+        <p class="sec-head__sub" style="margin-top:18px">Kun Ping выслушает вашу задачу, разработает инвестиционную стратегию и подберёт объекты под бюджет — бесплатно и без обязательств в течение 15 минут.</p>
         <div class="expert-cta__stats" data-reveal-group data-stagger="0.1">
           <div><b>$12M+</b><span>инвестировано клиентами</span></div>
           <div><b>9 лет</b><span>на рынке Таиланда</span></div>
@@ -1047,15 +1039,8 @@
         <div class="sec-head__idx">02 / Подбор</div>
         <div class="sec-head__main">
           <span class="label" data-reveal>Квиз-подбор · 1 минута</span>
-          <h2 class="h2" data-split>Ответьте на 4 вопроса — получите <em>топ-3 проекта</em> с ценами</h2>
-          <p class="sec-head__sub" data-reveal>Алгоритм сопоставит цели со стратегиями всех 18 проектов и покажет самые подходящие варианты с ценами.</p>
+          <h2 class="h2" data-split>Ответьте на 4 вопроса — получите <em>топ-3 проекта</em> с ценами, планировками, расчётом стоимости и доходности на проекте</h2>
         </div>
-      </div>
-      <div class="quiz-badges" data-reveal-group data-stagger="0.08">
-        <span>✓ 4 вопроса</span>
-        <span>✓ Меньше минуты</span>
-        <span>✓ Топ-3 проекта с ценами</span>
-        <span>✓ PDF-подборка в подарок</span>
       </div>
       <div id="quiz-container" class="quiz-spotlight" data-reveal></div>
     </div>
@@ -1309,9 +1294,9 @@
   <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
   <!-- Lenis убран: прокрутка нативная, без инерции -->
   <script src="assets/js/data.js?v=10"></script>
-  <script src="assets/js/quiz-engine.js?v=9"></script>
+  <script src="assets/js/quiz-engine.js?v=10"></script>
   <script src="assets/js/common.js?v=9"></script>
-  <script src="assets/js/catalog.js?v=13"></script>
+  <script src="assets/js/catalog.js?v=14"></script>
   <script src="assets/js/motion.js?v=10"></script>
 </body>
 </html>
