@@ -122,14 +122,45 @@ function createQuiz(container, config) {
 
     const form = body.querySelector("form");
     if (form) {
+      if (window.enhancePhone) window.enhancePhone(form.querySelector('input[type="tel"]'));
       form.addEventListener("submit", (e) => {
         e.preventDefault();
-        body.innerHTML =
-          '<div style="text-align:center;padding:40px 10px">' +
-          '<div style="font-size:52px;line-height:1">✓</div>' +
-          '<div class="quiz__question" style="margin:18px 0 10px">Спасибо! Подборка уже готовится</div>' +
-          '<p class="quiz__hint" style="margin-bottom:0">Менеджер свяжется с вами в течение 15 минут и отправит персональную подборку с ценами, планировками и условиями рассрочки</p>' +
-          "</div>";
+        const btn = form.querySelector("button[type=submit]");
+        const btnHtml = btn.innerHTML;
+        // письмо: телефон + читаемые ответы квиза (лейблы выбранных опций)
+        const fields = {
+          "Источник": "Квиз — подбор проектов",
+          "Телефон": form.querySelector('input[type="tel"]')?.value.trim() || "",
+          "Страница": location.href
+        };
+        (config.questions || []).forEach((q, i) => {
+          const opt = q.options.find((o) => o.value === answers[q.key]);
+          if (opt) fields["Квиз " + (i + 1) + ". " + q.question] = opt.label;
+        });
+
+        btn.textContent = "Отправляем…";
+        btn.disabled = true;
+        form.querySelector(".form-send-error")?.remove();
+
+        const send = window.sendLead ? window.sendLead(fields) : Promise.resolve();
+        send
+          .then(() => {
+            body.innerHTML =
+              '<div style="text-align:center;padding:40px 10px">' +
+              '<div style="font-size:52px;line-height:1">✓</div>' +
+              '<div class="quiz__question" style="margin:18px 0 10px">Спасибо! Подборка уже готовится</div>' +
+              '<p class="quiz__hint" style="margin-bottom:0">Менеджер свяжется с вами в течение 15 минут и отправит персональную подборку с ценами, планировками и условиями рассрочки</p>' +
+              "</div>";
+          })
+          .catch(() => {
+            btn.innerHTML = btnHtml;
+            btn.disabled = false;
+            const err = document.createElement("span");
+            err.className = "form-note text-center form-send-error";
+            err.style.color = "#c96f5b";
+            err.textContent = "Не получилось отправить — попробуйте ещё раз или позвоните: +66 80 000 00 00";
+            btn.insertAdjacentElement("afterend", err);
+          });
       });
     }
   }
@@ -189,12 +220,9 @@ function miniCardsHtml(projects) {
 function leadFormHtml(buttonText) {
   return (
     '<form class="quiz__form">' +
-    '<div class="quiz__form-row">' +
-    '<input class="input" type="text" name="name" placeholder="Ваше имя" required>' +
-    '<input class="input" type="tel" name="phone" placeholder="+7 (___) ___-__-__" required>' +
-    "</div>" +
+    '<input class="input" type="tel" name="phone" placeholder="+7 900 000-00-00" autocomplete="tel" required>' +
     '<button class="btn btn--gold btn--lg btn--block" type="submit">' + (buttonText || "Получить подборку") + "</button>" +
-    '<span class="form-note text-center">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности. Это демо — данные никуда не отправляются</span>' +
+    '<span class="form-note text-center">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</span>' +
     "</form>"
   );
 }

@@ -195,7 +195,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return out;
   };
 
-  document.querySelectorAll('form input[type="tel"]').forEach((input) => {
+  const enhancePhone = (input) => {
+    if (!input || input.closest(".phone-field")) return;
     const wrap = document.createElement("span");
     wrap.className = "phone-field";
     input.parentNode.insertBefore(wrap, input);
@@ -227,7 +228,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // без хвостового пробела, иначе backspace не сможет стереть код
       input.value = best[2] + (nat ? " " + fmtNat(nat) : "");
     });
-  });
+  };
+  document.querySelectorAll('form input[type="tel"]').forEach(enhancePhone);
+  // для динамических форм (результат квиза)
+  window.enhancePhone = enhancePhone;
 
   // Плавающая кнопка квиза: появляется после hero, прячется у самого квиза
   const fab = document.querySelector(".quiz-fab");

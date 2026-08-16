@@ -1,5 +1,47 @@
 /* Общая логика: бургер, модалка заявки, формы, FAQ */
 
+/* ============================================================
+   ЗАЯВКИ НА ПОЧТУ (для интеграции с amoCRM)
+
+   Заявки отправляются письмом через сервис formsubmit.co
+   на адрес LEAD_EMAIL. Тема письма собирается по шаблону
+   «Заявка ALVO | <источник> | <телефон>» — из неё интегратор
+   вытаскивает данные для идентификации заявки в amoCRM.
+   В теле письма — таблица: источник, телефон (+7 …),
+   способ связи, ответы квиза, страница.
+
+   Как включить:
+   1. Впишите почту для заявок в LEAD_EMAIL ниже.
+   2. Отправьте первую заявку с сайта — formsubmit.co пришлёт
+      на эту почту письмо со ссылкой активации. Подтвердите
+      один раз, дальше заявки идут автоматически.
+   Пока LEAD_EMAIL пустой, формы работают в демо-режиме.
+   ============================================================ */
+const LEAD_EMAIL = ""; // ← почта для заявок, например "leads@alvo.com"
+
+window.sendLead = function (fields) {
+  if (!LEAD_EMAIL) {
+    console.warn("LEAD_EMAIL не указан — заявка не отправлена (демо-режим)", fields);
+    return new Promise((resolve) => setTimeout(() => resolve({ demo: true }), 700));
+  }
+  const payload = Object.assign(
+    {
+      _subject: "Заявка ALVO | " + (fields["Источник"] || "сайт") + " | " + (fields["Телефон"] || ""),
+      _template: "table",
+      _captcha: "false"
+    },
+    fields
+  );
+  return fetch("https://formsubmit.co/ajax/" + LEAD_EMAIL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(payload)
+  }).then((r) => {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  });
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   // Бургер
   const burger = document.querySelector(".nav__burger");
@@ -46,21 +88,43 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("keydown", (e) => e.key === "Escape" && close());
   }
 
-  // Демо-отправка форм
+  // Отправка форм: собираем источник + телефон и шлём письмо (см. sendLead выше)
   document.querySelectorAll("form[data-demo-form]").forEach((form) => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const btn = form.querySelector("button[type=submit]");
+      const btnHtml = btn.innerHTML;
+      const fields = {
+        "Источник": form.querySelector('input[name="lead_source"]')?.value || "Сайт",
+        "Телефон": form.querySelector('input[type="tel"]')?.value.trim() || "",
+        "Страница": location.href
+      };
+      const method = form.querySelector('input[name="method"]:checked')?.value;
+      if (method) fields["Способ связи"] = method;
+
       btn.textContent = "Отправляем…";
       btn.disabled = true;
-      setTimeout(() => {
-        form.innerHTML =
-          '<div style="text-align:center;padding:26px 6px">' +
-          '<div style="font-family:var(--ff-d);font-size:46px;line-height:1;color:var(--gold)">✓</div>' +
-          '<div class="h3" style="margin:16px 0 10px">Заявка отправлена</div>' +
-          '<p class="form-note" style="font-size:14px">Менеджер свяжется с вами в течение 15 минут и вышлет подборку с ценами и планировками</p>' +
-          "</div>";
-      }, 900);
+      form.querySelector(".form-send-error")?.remove();
+
+      window
+        .sendLead(fields)
+        .then(() => {
+          form.innerHTML =
+            '<div style="text-align:center;padding:26px 6px">' +
+            '<div style="font-family:var(--ff-d);font-size:46px;line-height:1;color:var(--gold)">✓</div>' +
+            '<div class="h3" style="margin:16px 0 10px">Заявка отправлена</div>' +
+            '<p class="form-note" style="font-size:14px">Менеджер свяжется с вами в течение 15 минут и вышлет подборку с ценами и планировками</p>' +
+            "</div>";
+        })
+        .catch(() => {
+          btn.innerHTML = btnHtml;
+          btn.disabled = false;
+          const err = document.createElement("span");
+          err.className = "form-note form-send-error";
+          err.style.color = "#c96f5b";
+          err.textContent = "Не получилось отправить — попробуйте ещё раз или позвоните: +66 80 000 00 00";
+          btn.insertAdjacentElement("afterend", err);
+        });
     });
   });
 
