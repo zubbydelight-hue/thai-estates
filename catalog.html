@@ -147,6 +147,27 @@
     .hero__desc p { margin: 20px 0 auto; }
     .hero__desc .hero__cta-row { margin-top: 26px; position: relative; z-index: 1; }
 
+    /* Невысокие экраны (ноутбуки): ужимаем hero, чтобы полоса метрик
+       всегда помещалась на первый экран без скролла */
+    @media (max-height: 960px) and (min-width: 761px) {
+      .hero__content { padding-top: 88px; }
+      .hero .h-hero { font-size: clamp(38px, 9vmin, 84px); }
+      .hero__title { margin-top: 14px; }
+      .hero__desc { max-width: 400px; padding: clamp(18px, 2.2vmin, 26px) clamp(20px, 2.4vmin, 28px); }
+      .hero__desc p { margin-top: 13px; font-size: 13.5px; line-height: 1.65; }
+      .hero__desc .hero__cta-row { margin-top: 16px; }
+      .hero__desc-head b { font-size: 34px; }
+      .hero__meta-item { padding: 14px 18px 16px; }
+      .hero__meta-item b { font-size: clamp(22px, 3.6vmin, 30px); }
+      .hero__meta-item span { margin-top: 5px; font-size: 11px; }
+    }
+    @media (max-height: 790px) and (min-width: 761px) {
+      .hero__content { padding-top: 78px; }
+      .hero .h-hero { font-size: clamp(32px, 8vmin, 62px); }
+      .hero__desc-head b { font-size: 29px; }
+      .hero__meta-item { padding: 11px 16px 13px; }
+    }
+
     /* Почему Таиланд — редакционные карточки */
     .why-grid {
       display: grid;
@@ -194,31 +215,97 @@
     /* Hero: две кнопки */
     .hero__cta-row { display: flex; flex-wrap: wrap; gap: 14px; }
 
-    /* Полоса брендов */
-    .brands { border-bottom: 1px solid var(--hair); background: var(--cream); }
-    .brands__row {
+    /* Блок брендов: тёмная витрина управляющих компаний */
+    .brandwall {
+      position: relative;
+      overflow: hidden;
+      background: var(--night);
+      color: var(--cream);
+      padding: clamp(56px, 7vw, 104px) 0;
+    }
+    /* фоновая графика: золотое свечение + концентрические дуги, как на карточке hero */
+    .brandwall::before {
+      content: "";
+      position: absolute;
+      right: -140px;
+      top: -140px;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: repeating-radial-gradient(circle, rgba(194, 161, 99, 0) 0 33px, rgba(194, 161, 99, 0.16) 33px 34px);
+      -webkit-mask-image: radial-gradient(circle, #000 30%, transparent 70%);
+      mask-image: radial-gradient(circle, #000 30%, transparent 70%);
+      pointer-events: none;
+    }
+    .brandwall__head {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px 60px;
       flex-wrap: wrap;
-      gap: 18px 40px;
-      padding: 26px 0;
+      margin-bottom: clamp(34px, 4vw, 56px);
     }
-    .brands__label {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--stone);
+    .brandwall__title { margin-top: 16px; max-width: 15ch; }
+    .brandwall__sub {
+      max-width: 380px;
+      font-size: 14px;
+      line-height: 1.75;
+      color: rgba(244, 240, 230, 0.55);
+      margin-bottom: 8px;
     }
-    .brands__list { display: flex; flex-wrap: wrap; gap: 14px 34px; }
-    .brands__list span {
+    .brandwall__grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(244, 240, 230, 0.14);
+      border: 1px solid rgba(244, 240, 230, 0.14);
+    }
+    .brandwall__cell {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: clamp(150px, 16vw, 210px);
+      padding: clamp(18px, 2vw, 28px);
+      background: var(--night);
+      transition: background 0.45s;
+    }
+    .brandwall__cell i {
       font-family: var(--ff-d);
-      font-size: 21px;
-      font-weight: 500;
-      color: var(--ink);
-      opacity: 0.72;
-      white-space: nowrap;
+      font-style: italic;
+      font-size: 14px;
+      color: var(--gold);
+      opacity: 0.85;
     }
+    .brandwall__cell b {
+      display: block;
+      margin: auto 0 10px;
+      font-family: var(--ff-d);
+      font-weight: 500;
+      font-size: clamp(24px, 2.3vw, 36px);
+      line-height: 1.05;
+      transition: color 0.45s;
+    }
+    .brandwall__cell span {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: rgba(244, 240, 230, 0.45);
+    }
+    .brandwall__cell::after {
+      content: "✦";
+      position: absolute;
+      top: 20px;
+      right: 22px;
+      font-size: 12px;
+      color: var(--gold);
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.5);
+      transition: opacity 0.45s, transform 0.45s;
+    }
+    .brandwall__cell:hover { background: #10160f; }
+    .brandwall__cell:hover b { color: var(--gold-2); }
+    .brandwall__cell:hover::after { opacity: 1; transform: rotate(0) scale(1); }
 
     /* Баннер эксперта */
     .expert-cta__grid {
@@ -505,9 +592,8 @@
     }
     @media (max-width: 720px) {
       .cta-final form { grid-template-columns: 1fr; }
-      .brands__row { padding: 20px 0; gap: 12px 24px; }
-      .brands__list { gap: 10px 22px; }
-      .brands__list span { font-size: 18px; }
+      .brandwall__grid { grid-template-columns: 1fr 1fr; }
+      .brandwall__cell { min-height: 128px; }
       .hero__cta-row .btn { width: 100%; justify-content: center; }
       .expert-cta__form { grid-template-columns: 1fr; }
       .cases-cta__form { grid-template-columns: 1fr; }
@@ -643,26 +729,26 @@
     </div>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee__track">
-      <div class="marquee__seq">
-        <span>Бангтао</span><i>✦</i><span>Лагуна</span><i>✦</i><span>Лаян</span><i>✦</i><span>Сурин</span><i>✦</i><span>Найянг</span><i>✦</i><span>Пансея</span><i>✦</i><span>Чернгталай</span><i>✦</i><span>Джомтьен</span><i>✦</i><span>Пратумнак</span><i>✦</i>
-      </div>
-      <div class="marquee__seq">
-        <span>Бангтао</span><i>✦</i><span>Лагуна</span><i>✦</i><span>Лаян</span><i>✦</i><span>Сурин</span><i>✦</i><span>Найянг</span><i>✦</i><span>Пансея</span><i>✦</i><span>Чернгталай</span><i>✦</i><span>Джомтьен</span><i>✦</i><span>Пратумнак</span><i>✦</i>
-      </div>
-    </div>
-  </div>
-
   <!-- БРЕНДЫ -->
-  <div class="brands" data-reveal>
-    <div class="container brands__row">
-      <span class="brands__label">Проекты под управлением мировых брендов</span>
-      <div class="brands__list">
-        <span>Radisson</span><span>Banyan Tree</span><span>Aman</span><span>Minor Hotels</span><span>Sansiri</span><span>Laguna</span>
+  <section class="brandwall">
+    <div class="container">
+      <div class="brandwall__head">
+        <div>
+          <span class="label" data-reveal>Управляющие компании</span>
+          <h2 class="h2 brandwall__title" data-split>Проекты под управлением <em>мировых брендов</em></h2>
+        </div>
+        <p class="brandwall__sub" data-reveal>Отельные операторы берут на себя аренду, сервис и заполняемость. Вы получаете доход и стандарты качества мировых сетей — без личного участия в управлении.</p>
+      </div>
+      <div class="brandwall__grid" data-reveal-group data-stagger="0.07">
+        <div class="brandwall__cell"><i>01</i><b>Radisson</b><span>Международная гостиничная сеть</span></div>
+        <div class="brandwall__cell"><i>02</i><b>Banyan Tree</b><span>Люксовые курорты и спа</span></div>
+        <div class="brandwall__cell"><i>03</i><b>Aman</b><span>Ультра-люкс резиденции</span></div>
+        <div class="brandwall__cell"><i>04</i><b>Minor Hotels</b><span>Гостиничная группа, 55+ стран</span></div>
+        <div class="brandwall__cell"><i>05</i><b>Sansiri</b><span>Ведущий девелопер Таиланда</span></div>
+        <div class="brandwall__cell"><i>06</i><b>Laguna</b><span>Курортный кластер Пхукета</span></div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- КАТАЛОГ -->
   <section class="section" id="catalog">
