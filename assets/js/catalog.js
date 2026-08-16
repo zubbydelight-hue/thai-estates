@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "</div>" +
         '<div class="pmodal__cta">' +
         '<button class="btn btn--gold btn--block" data-open-modal="Проект — ' + p.name + '">Получить цены и планировки <span class="arr">→</span></button>' +
-        '<a class="btn btn--line btn--block" href="#quiz" data-close-project>Подобрать похожие проекты</a>' +
+        '<a class="btn btn--line-dark btn--block" href="#quiz" data-close-project>Подобрать похожие проекты</a>' +
         "</div>";
 
       show(0);
