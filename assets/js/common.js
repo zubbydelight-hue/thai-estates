@@ -17,7 +17,7 @@
       один раз, дальше заявки идут автоматически.
    Пока LEAD_EMAIL пустой, формы работают в демо-режиме.
    ============================================================ */
-const LEAD_EMAIL = ""; // ← почта для заявок, например "leads@alvo.com"
+const LEAD_EMAIL = "il.ya.ok.03@gmail.com"; // ← почта для заявок (сейчас тестовая)
 
 window.sendLead = function (fields) {
   if (!LEAD_EMAIL) {
@@ -38,7 +38,11 @@ window.sendLead = function (fields) {
     body: JSON.stringify(payload)
   }).then((r) => {
     if (!r.ok) throw new Error("HTTP " + r.status);
-    return r.json();
+    return r.json().then((data) => {
+      // formsubmit отвечает 200 даже без активации формы — проверяем флаг
+      if (String(data.success) === "false") throw new Error(data.message || "not activated");
+      return data;
+    });
   });
 };
 
