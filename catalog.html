@@ -228,23 +228,29 @@
     .why-card__text { margin-top: 12px; font-size: 14px; line-height: 1.75; color: var(--stone); max-width: 360px; }
     .why-card:nth-child(2) { transform: translateY(clamp(0px, 4vw, 64px)); }
 
-    /* CTA-финал */
-    .cta-final { position: relative; overflow: hidden; }
+    /* CTA-финал: компактный по высоте */
+    .cta-final { position: relative; overflow: hidden; padding: clamp(52px, 6vw, 88px) 0; }
     .cta-final__bg { position: absolute; inset: 0; }
     .cta-final__bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.16; }
     .cta-final__inner { position: relative; z-index: 2; max-width: 860px; margin: 0 auto; text-align: center; }
-    /* после удаления поля «Имя» форма — одна центрированная колонка */
+    .cta-final .h2 { font-size: clamp(28px, 3.6vw, 48px); }
+    /* форма в одну строку: телефон + кнопка */
     .cta-final form {
-      margin-top: clamp(34px, 4vw, 54px);
+      margin-top: clamp(24px, 3vw, 36px);
       display: grid;
-      grid-template-columns: 1fr;
-      justify-items: center;
-      gap: 18px;
+      grid-template-columns: auto auto;
+      justify-content: center;
+      align-items: center;
+      gap: 12px 14px;
       text-align: left;
     }
-    .cta-final form .phone-field { width: min(420px, 100%); flex: none; }
-    .cta-final form .btn { justify-self: center; min-width: min(420px, 100%); margin-top: 10px; }
-    .cta-final .form-note { text-align: center; color: rgba(244,240,230,0.4); }
+    .cta-final form .phone-field { width: min(340px, 100%); flex: none; }
+    .cta-final form .btn { margin-top: 0; }
+    .cta-final .form-note { grid-column: 1 / -1; text-align: center; color: rgba(244,240,230,0.4); }
+    @media (max-width: 720px) {
+      .cta-final form .phone-field { width: 100%; }
+      .cta-final form .btn { width: 100%; justify-content: center; }
+    }
 
     /* Hero: две кнопки */
     .hero__cta-row { display: flex; flex-wrap: wrap; gap: 14px; }
@@ -1262,7 +1268,7 @@
   <section class="section section--dark cta-final">
     <div class="cta-final__bg"><img src="assets/img/btgr-lagoon-1.jpg" alt=""></div>
     <div class="container cta-final__inner">
-      <div class="agent agent--center agent--light" style="margin-bottom:26px" data-reveal>
+      <div class="agent agent--center agent--light" style="margin-bottom:18px" data-reveal>
         <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
         <div>
           <div class="agent__name">Kun Ping — эксперт по недвижимости Таиланда</div>
@@ -1270,11 +1276,11 @@
         </div>
       </div>
       <span class="label" data-reveal>Начните с презентации</span>
-      <h2 class="h2" style="margin-top:18px" data-split>Получите полную презентацию <em>всех 18</em> проектов</h2>
-      <p class="sec-head__sub" style="margin:22px auto 0" data-reveal>PDF с ценами, планировками, доходностью и графиками рассрочки — в WhatsApp или Telegram в течение 15 минут</p>
+      <h2 class="h2" style="margin-top:14px" data-split>Получите полную презентацию проектов <em>под ваш запрос</em></h2>
+      <p class="sec-head__sub" style="margin:16px auto 0" data-reveal>PDF с ценами, планировками, доходностью и графиками рассрочки — в WhatsApp или Telegram в течение 15 минут</p>
       <form data-demo-form data-reveal>
         <input class="input input--ghost" type="tel" placeholder="+7 900 000-00-00" autocomplete="tel" required>
-        <button class="btn btn--gold btn--lg" type="submit">Получить презентацию <span class="arr">→</span></button>
+        <button class="btn btn--gold" type="submit">Получить презентацию <span class="arr">→</span></button>
         <span class="form-note">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности. Это демо — данные никуда не отправляются</span>
       </form>
     </div>
@@ -1286,7 +1292,7 @@
       <div class="footer__row">
         <span>+66 80 000 00 00</span>
         <span>info@alvo.demo</span>
-        <span>Phuket · Pattaya · 2026</span>
+        <span>Phuket · 2026</span>
       </div>
       <small>Демо-лендинг АЛВО создан в презентационных целях. Названия проектов и фотографии принадлежат их застройщикам и используются как иллюстрация концепции «единый лендинг с подборкой объектов». Цены и параметры являются ориентировочными и не являются публичной офертой</small>
     </div>
