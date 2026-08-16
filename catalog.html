@@ -745,7 +745,7 @@
     .pmodal__gallery, .pmodal__info { min-width: 0; }
     /* плавающая кнопка квиза не должна перекрывать открытые попапы */
     body:has(.modal.is-open) .quiz-fab { opacity: 0 !important; pointer-events: none !important; }
-    .pmodal__cta .btn { white-space: normal; height: auto; min-height: 54px; padding-block: 13px; text-align: center; }
+    .pmodal__cta .btn { white-space: normal; height: auto; min-height: 48px; padding-block: 10px; text-align: center; line-height: 1.4; }
     @media (max-width: 900px) {
       .modal--project { padding: 10px; }
       .modal__panel--project {
@@ -775,10 +775,13 @@
       .pmodal__cta .btn {
         flex: 1;
         min-width: 0;
+        min-height: 44px;
+        padding-block: 8px;
         padding-inline: 10px;
-        font-size: 10.5px;
-        letter-spacing: 0.1em;
-        gap: 7px;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        line-height: 1.35;
+        gap: 6px;
       }
       /* transform панели делает position:fixed локальным — убираем,
          чтобы крестик крепился к экрану, а не к скроллящемуся контенту */
