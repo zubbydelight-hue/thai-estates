@@ -755,6 +755,33 @@
         background: var(--cream);
         border-top: 1px solid var(--hair);
         box-shadow: 0 -14px 26px -20px rgba(0, 0, 0, 0.4);
+        /* обе кнопки в один ряд */
+        flex-direction: row;
+        gap: 8px;
+      }
+      .pmodal__cta .btn {
+        flex: 1;
+        min-width: 0;
+        padding-inline: 10px;
+        font-size: 10.5px;
+        letter-spacing: 0.1em;
+        gap: 7px;
+      }
+      /* transform панели делает position:fixed локальным — убираем,
+         чтобы крестик крепился к экрану, а не к скроллящемуся контенту */
+      .modal--project .modal__panel--project,
+      .modal--project.is-open .modal__panel--project { transform: none; }
+      /* крестик закрытия: закреплён в углу экрана, виден на фоне фото */
+      .modal--project .modal__close {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 6;
+        background: rgba(11, 16, 12, 0.6);
+        border-color: rgba(244, 240, 230, 0.45);
+        color: var(--cream);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
       }
     }
 
