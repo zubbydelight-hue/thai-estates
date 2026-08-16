@@ -743,8 +743,9 @@
     .pmodal__cta { display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
     /* содержимое не должно распирать колонки грида (кнопки, nowrap-спеки) */
     .pmodal__gallery, .pmodal__info { min-width: 0; }
-    /* плавающая кнопка квиза не должна перекрывать открытые попапы */
-    body:has(.modal.is-open) .quiz-fab { opacity: 0 !important; pointer-events: none !important; }
+    /* плавающая кнопка квиза не должна перекрывать открытые попапы и меню */
+    body:has(.modal.is-open) .quiz-fab,
+    body.menu-open .quiz-fab { opacity: 0 !important; pointer-events: none !important; }
     /* скролл попапа не передаётся странице, когда упирается в край */
     .modal__panel,
     .modal__panel--project,
