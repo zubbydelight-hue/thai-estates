@@ -366,18 +366,27 @@
 
     /* Баннер эксперта */
     /* компактнее по вертикали: секция и внутренние отступы ужаты */
-    .expert-cta { padding: clamp(52px, 6.5vw, 96px) 0; }
+    .expert-cta { padding: clamp(40px, 5vw, 72px) 0; }
+    /* Плашка-панель, визуально отделяет блок от следующего квиза */
+    .expert-cta__panel {
+      background: linear-gradient(150deg, rgba(28, 34, 26, 0.9), rgba(15, 19, 14, 0.9));
+      border: 1px solid var(--hair-l);
+      border-radius: 12px;
+      padding: clamp(28px, 3.6vw, 52px);
+      box-shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.7);
+    }
     /* Верх: заголовок + пояснение в две колонки */
     .expert-cta__top {
       display: grid;
       grid-template-columns: 1.5fr 1fr;
-      gap: clamp(28px, 5vw, 80px);
+      gap: clamp(24px, 4vw, 64px);
       align-items: end;
     }
+    .expert-cta__top .h2 { font-size: clamp(24px, 2.7vw, 38px); }
     .expert-cta__note {
       margin: 0;
-      font-size: 14.5px;
-      line-height: 1.7;
+      font-size: 14px;
+      line-height: 1.65;
       color: rgba(244, 240, 230, 0.6);
     }
     /* Широкая форма-строка: телефон + кнопка в ряд, согласие ниже */
@@ -385,8 +394,8 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 14px 16px;
-      margin-top: clamp(28px, 3.4vw, 44px);
+      gap: 12px 16px;
+      margin-top: clamp(22px, 2.6vw, 34px);
     }
     .expert-cta__form .phone-field { flex: 1 1 340px; }
     .expert-cta__form .btn { flex: 0 0 auto; }
@@ -397,8 +406,8 @@
       grid-template-columns: 1fr auto;
       gap: clamp(24px, 4vw, 64px);
       align-items: center;
-      margin-top: clamp(30px, 3.6vw, 52px);
-      padding-top: clamp(24px, 3vw, 40px);
+      margin-top: clamp(22px, 2.6vw, 36px);
+      padding-top: clamp(20px, 2.4vw, 32px);
       border-top: 1px solid var(--hair-l);
     }
     .expert-cta__consultant { display: flex; align-items: center; gap: 16px; }
@@ -1213,35 +1222,37 @@
   <!-- ЭКСПЕРТ -->
   <section class="section section--dark expert-cta">
     <div class="container">
-      <div class="expert-cta__top" data-reveal>
-        <div class="expert-cta__intro">
-          <span class="label">Личный эксперт</span>
-          <h2 class="h2" style="margin-top:18px" data-split>Оставьте заявку и получите персональную подборку объектов под <em>ваши задачи</em> и бюджет</h2>
-        </div>
-        <p class="expert-cta__note">Kun Ping выслушает вашу задачу, разработает инвестиционную стратегию и подберёт объекты под бюджет — бесплатно и без обязательств в течение 15 минут</p>
-      </div>
-      <form class="expert-cta__form" data-demo-form data-reveal>
-        <input type="hidden" name="lead_source" value="Блок «Личный эксперт» — стратегия">
-        <input class="input" type="tel" placeholder="+7 900 000-00-00" autocomplete="tel" required>
-        <button class="btn btn--gold" type="submit">Получить подборку <span class="arr">→</span></button>
-        <label class="consent">
-          <input type="checkbox" name="consent" required>
-          <span>Соглашаюсь с <a href="privacy.html" target="_blank" rel="noopener">политикой обработки персональных данных</a></span>
-        </label>
-      </form>
-      <div class="expert-cta__bottom">
-        <div class="expert-cta__consultant" data-reveal>
-          <img class="expert-cta__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
-          <div>
-            <div class="expert-cta__name">Kun Ping</div>
-            <div class="expert-cta__role">Инвестиционный эксперт по недвижимости Таиланда</div>
-            <span class="agent__status" style="margin-top:10px">онлайн, отвечает за 15 минут</span>
+      <div class="expert-cta__panel">
+        <div class="expert-cta__top" data-reveal>
+          <div class="expert-cta__intro">
+            <span class="label">Личный эксперт</span>
+            <h2 class="h2" style="margin-top:14px" data-split>Оставьте заявку и получите персональную подборку объектов под <em>ваши задачи</em> и бюджет</h2>
           </div>
+          <p class="expert-cta__note">Kun Ping выслушает вашу задачу, разработает инвестиционную стратегию и подберёт объекты под бюджет — бесплатно и без обязательств в течение 15 минут</p>
         </div>
-        <div class="expert-cta__stats" data-reveal-group data-stagger="0.1">
-          <div><b>$12M+</b><span>инвестировано клиентами</span></div>
-          <div><b>9 лет</b><span>на рынке Таиланда</span></div>
-          <div><b>70%</b><span>сделок — дистанционно</span></div>
+        <form class="expert-cta__form" data-demo-form data-reveal>
+          <input type="hidden" name="lead_source" value="Блок «Личный эксперт» — стратегия">
+          <input class="input" type="tel" placeholder="+7 900 000-00-00" autocomplete="tel" required>
+          <button class="btn btn--gold" type="submit">Получить подборку <span class="arr">→</span></button>
+          <label class="consent">
+            <input type="checkbox" name="consent" required>
+            <span>Соглашаюсь с <a href="privacy.html" target="_blank" rel="noopener">политикой обработки персональных данных</a></span>
+          </label>
+        </form>
+        <div class="expert-cta__bottom">
+          <div class="expert-cta__consultant" data-reveal>
+            <img class="expert-cta__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
+            <div>
+              <div class="expert-cta__name">Kun Ping</div>
+              <div class="expert-cta__role">Инвестиционный эксперт по недвижимости Таиланда</div>
+              <span class="agent__status" style="margin-top:10px">онлайн, отвечает за 15 минут</span>
+            </div>
+          </div>
+          <div class="expert-cta__stats" data-reveal-group data-stagger="0.1">
+            <div><b>$12M+</b><span>инвестировано клиентами</span></div>
+            <div><b>9 лет</b><span>на рынке Таиланда</span></div>
+            <div><b>70%</b><span>сделок — дистанционно</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1541,7 +1552,7 @@
   <script src="assets/js/data.js?v=11"></script>
   <script src="assets/js/quiz-engine.js?v=13"></script>
   <script src="assets/js/common.js?v=13"></script>
-  <script src="assets/js/catalog.js?v=19"></script>
+  <script src="assets/js/catalog.js?v=20"></script>
   <script src="assets/js/motion.js?v=11"></script>
 </body>
 </html>

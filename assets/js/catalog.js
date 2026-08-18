@@ -39,9 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
     '<div class="pcard pcard--teaser">' +
     '<div class="pcard-teaser__inner">' +
     '<span class="pcard-teaser__label">Квиз · 1 минута</span>' +
-    '<div class="pcard-teaser__title">Не можете выбрать из ' + CATALOG.length + ' проектов?</div>' +
-    '<p class="pcard-teaser__text">Ответьте на 4 вопроса — алгоритм покажет ваш топ-3 с ценами и пришлём подробный расчёт</p>' +
-    '<a class="btn btn--gold" href="#quiz">Пройти подбор <span class="arr">→</span></a>' +
+    '<div class="pcard-teaser__title">Нужна помощь в выборе из ' + CATALOG.length + ' проектов?</div>' +
+    '<p class="pcard-teaser__text">Ответьте на 4 вопроса — и получите ваш топ-3 с ценами и доступными планировками уже сегодня</p>' +
+    '<a class="btn btn--gold" href="#quiz">Получить подборку <span class="arr">→</span></a>' +
     "</div></div>";
 
   function render(list) {
