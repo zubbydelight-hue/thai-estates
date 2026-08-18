@@ -141,7 +141,8 @@
       const suffix = el.dataset.suffix || "";
       const prefix = el.dataset.prefix || "";
       const decimals = (el.dataset.count.split(".")[1] || "").length;
-      const obj = { v: 0 };
+      const from = el.dataset.countFrom !== undefined ? parseFloat(el.dataset.countFrom) : 0;
+      const obj = { v: from };
       const cfg = {
         v: target,
         duration: 1.8,

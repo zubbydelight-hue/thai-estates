@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const count = document.getElementById("catalog-count");
   let firstRender = true;
 
-  // Паттайя исключена из каталога — показываем только Пхукет
-  const CATALOG = PROJECTS.filter((p) => p.region !== "pattaya");
+  // все 18 проектов подборки
+  const CATALOG = PROJECTS;
 
   // Карточка: только название, стоимость, площадь и теги; клик открывает попап
   function cardHtml(p) {
