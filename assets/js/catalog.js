@@ -3,6 +3,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   const grid = document.getElementById("cards-grid");
   const count = document.getElementById("catalog-count");
+  const moreWrap = document.getElementById("cards-more");
+  const moreBtn = document.getElementById("cards-more-btn");
+  const COLLAPSED_COUNT = 3;
   let firstRender = true;
 
   // все 18 проектов подборки
@@ -52,6 +55,15 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.innerHTML = cardsHtml.join("");
     count.textContent = "Показано проектов: " + list.length + " из " + CATALOG.length;
 
+    // изначально показываем только первые 3 проекта, остальное — по кнопке
+    if (list.length > COLLAPSED_COUNT) {
+      grid.classList.add("is-collapsed");
+      if (moreWrap) moreWrap.hidden = false;
+    } else {
+      grid.classList.remove("is-collapsed");
+      if (moreWrap) moreWrap.hidden = true;
+    }
+
     if (window.gsap) {
       const cards = grid.querySelectorAll(".pcard");
       if (firstRender && window.ScrollTrigger) {
@@ -70,6 +82,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   render(CATALOG);
+
+  if (moreBtn) {
+    moreBtn.addEventListener("click", () => {
+      grid.classList.remove("is-collapsed");
+      if (moreWrap) moreWrap.hidden = true;
+      if (window.gsap) {
+        gsap.to(grid.querySelectorAll(".pcard"), { opacity: 1, y: 0, duration: 0.6, stagger: 0.04, ease: "power3.out" });
+      }
+      if (window.ScrollTrigger) ScrollTrigger.refresh();
+    });
+  }
 
   document.querySelectorAll("#filters .chip").forEach((chip) =>
     chip.addEventListener("click", () => {
