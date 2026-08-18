@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#1b3a5c" stroke-width="1.6"/>
+    </pattern>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="7" fill="#f3f6f9" stroke="#1b3a5c" stroke-width="2.5"/>
+  <path d="M6 30 L26 8 L44 22 L30 44 Z" fill="#e8b84b" stroke="#1b3a5c" stroke-width="2"/>
+  <path d="M30 44 L44 22 L58 34 L46 56 Z" fill="#7fb069" stroke="#1b3a5c" stroke-width="2"/>
+  <path d="M30 44 L44 22 L58 34 L46 56 Z" fill="url(#hatch)" stroke="none"/>
+  <path d="M6 30 L26 8 L20 2 L2 2 L2 30 Z" fill="#c05746" stroke="#1b3a5c" stroke-width="2"/>
+  <circle cx="48" cy="16" r="10" fill="#ffffff" stroke="#1b3a5c" stroke-width="2.5"/>
+  <text x="48" y="21" font-family="DejaVu Sans, Arial, sans-serif" font-size="13"
+        font-weight="bold" text-anchor="middle" fill="#1b3a5c">?</text>
+</svg>

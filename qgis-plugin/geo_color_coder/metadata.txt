@@ -1,0 +1,29 @@
+[general]
+name=Geo Color Coder
+qgisMinimumVersion=3.22
+description=Кодирование полигонов геологической карты по цвету и окраске (классификация с учителем)
+version=0.1.0
+author=Geo Color Coder
+email=noreply@example.com
+
+about=Плагин обучается на размеченных оператором примерах и кодирует все полигоны
+    векторного слоя по внешнему виду подстилающего растра (геологической карты):
+    цвет заливки, цвет и плотность крапа/штриховки, направление штриховки, текстура.
+    Для каждого объекта записывается предсказанный код, вероятность, отрыв от второй
+    гипотезы и мера нетипичности (новизны).
+
+tracker=https://example.com/issues
+repository=https://example.com/repo
+homepage=https://example.com
+
+changelog=0.1.0 Первая версия: признаки цвета и окраски, RandomForest/kNN,
+    кросс-валидация, вероятности и уровень уверенности, стилизация результата.
+
+tags=classification,raster,vector,geology,machine learning,supervised,color,texture
+
+category=Vector
+icon=resources/icon.svg
+experimental=False
+deprecated=False
+server=False
+hasProcessingProvider=no

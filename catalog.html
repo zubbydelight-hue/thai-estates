@@ -494,8 +494,15 @@
       border: 1px solid rgba(194, 161, 99, 0.45);
       box-shadow: 0 0 0 1px rgba(194, 161, 99, 0.12), 0 44px 110px -40px rgba(194, 161, 99, 0.28);
       grid-template-columns: 1fr 300px;
+      max-width: none;
+      margin: 0;
     }
-    .quiz-spotlight .quiz__side { order: 2; }
+    .quiz-spotlight .quiz__side { order: 2; min-height: 0; padding: 24px 24px; }
+    .quiz-spotlight .quiz__body { padding: clamp(24px, 3vw, 40px); }
+    .quiz-spotlight .quiz__question { font-size: clamp(20px, 2vw, 27px); }
+    /* Заголовок квиза компактнее, чтобы вместе с квизом влезал на экран */
+    #quiz .sec-head__main .h2 { font-size: clamp(26px, 3vw, 42px); }
+    #quiz .sec-head__sub { margin-top: 12px; }
     @media (max-width: 860px) {
       .quiz-spotlight .quiz { grid-template-columns: 1fr; }
       .quiz-spotlight .quiz__side { order: 0; }
@@ -523,6 +530,10 @@
       color: var(--gold);
       background: rgba(194, 161, 99, 0.07);
     }
+    .step-node__badge img { width: 30px; height: 30px; object-fit: contain; display: block; }
+    .step-node__badge b { display: none; font-family: var(--ff-d); font-style: italic; color: var(--gold); }
+    .step-node__badge.no-icon img { display: none; }
+    .step-node__badge.no-icon b { display: block; }
     .step-node__top i { flex: 1; height: 1px; background: repeating-linear-gradient(90deg, rgba(20, 23, 15, 0.3) 0 6px, transparent 6px 12px); }
     .step-node:last-child .step-node__top i { display: none; }
     .step-node__title {
@@ -557,14 +568,26 @@
       #faq .faq__item:nth-child(2) { border-top: none; }
     }
 
-    /* Форма после кейсов */
-    .cases-cta { max-width: 760px; margin-left: auto; margin-right: auto; }
+    /* Форма после кейсов — тёмная плашка */
+    .cases-cta {
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      background: var(--night);
+      color: var(--cream);
+      border-radius: 8px;
+      padding: clamp(30px, 4vw, 56px) clamp(24px, 4vw, 60px);
+      box-shadow: 0 40px 90px -40px rgba(11, 16, 12, 0.5);
+    }
     .cases-cta__title {
       font-family: var(--ff-d);
       font-weight: 500;
       font-size: clamp(26px, 2.6vw, 36px);
+      color: var(--cream);
     }
-    .cases-cta__sub { margin-top: 10px; font-size: 14.5px; line-height: 1.7; color: var(--stone); }
+    .cases-cta__sub { margin-top: 10px; font-size: 14.5px; line-height: 1.7; color: rgba(244, 240, 230, 0.6); }
+    .cases-cta .consent { color: rgba(244, 240, 230, 0.55); }
+    .cases-cta .consent a { color: var(--gold-2); }
     .cases-cta__form {
       display: grid;
       grid-template-columns: 1fr 1fr auto;
@@ -876,6 +899,41 @@
     .expert-cta__form .consent,
     .cases-cta__form .consent { grid-column: 1 / -1; }
     .cta-final form .consent { grid-column: 1 / -1; justify-self: center; }
+
+    /* Футер: копирайт, политика, соцсети */
+    .footer__bottom {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px 26px;
+      margin-top: 26px;
+    }
+    .footer__copy { font-size: 13px; color: rgba(244, 240, 230, 0.55); }
+    .footer__policy {
+      font-size: 13px;
+      color: rgba(244, 240, 230, 0.7);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.25s;
+    }
+    .footer__policy:hover { color: var(--gold); }
+    .footer__socials { display: flex; gap: 12px; margin-left: auto; }
+    .footer__socials a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--hair-l);
+      color: rgba(244, 240, 230, 0.7);
+      transition: color 0.25s, border-color 0.25s, background 0.25s;
+    }
+    .footer__socials a:hover { color: var(--night); background: var(--gold); border-color: var(--gold); }
+    .footer__legal { display: block; margin-top: 20px; font-size: 11px; line-height: 1.7; color: rgba(244, 240, 230, 0.3); }
+    @media (max-width: 560px) {
+      .footer__socials { margin-left: 0; width: 100%; }
+    }
 
     /* Плавающая кнопка квиза */
     .quiz-fab {
@@ -1196,7 +1254,8 @@
         <div class="sec-head__idx">02 / Подбор</div>
         <div class="sec-head__main">
           <span class="label" data-reveal>Квиз-подбор · 1 минута</span>
-          <h2 class="h2" data-split>Ответьте на 4 вопроса — получите <em>топ-3 проекта</em> с ценами, планировками, расчётом стоимости и доходности на проекте</h2>
+          <h2 class="h2" data-split>Ответьте на 4 вопроса — получите <em>топ-3 проекта</em></h2>
+          <p class="sec-head__sub" data-reveal>С ценами, планировками, расчётом стоимости и доходности на проекте</p>
         </div>
       </div>
       <div id="quiz-container" class="quiz-spotlight" data-reveal></div>
@@ -1237,7 +1296,7 @@
         <form class="cases-cta__form" data-demo-form>
           <input type="hidden" name="lead_source" value="Блок «Кейсы» — расчёт доходности">
           <input class="input" type="tel" placeholder="+7 900 000-00-00" autocomplete="tel" required>
-          <button class="btn btn--night" type="submit">Получить расчёт <span class="arr">→</span></button>
+          <button class="btn btn--gold" type="submit">Получить расчёт <span class="arr">→</span></button>
           <label class="consent">
             <input type="checkbox" name="consent" required>
             <span>Соглашаюсь с <a href="privacy.html" target="_blank" rel="noopener">политикой обработки персональных данных</a></span>
@@ -1292,22 +1351,22 @@
       </div>
       <div class="steps-flow" data-reveal-group data-stagger="0.1">
         <div class="step-node">
-          <div class="step-node__top"><span>01</span><i aria-hidden="true"></i></div>
+          <div class="step-node__top"><span class="step-node__badge"><img src="assets/img/icons/step-consultant.png" alt="" onerror="this.closest('.step-node__badge').classList.add('no-icon')"><b>01</b></span><i aria-hidden="true"></i></div>
           <div class="step-node__title">Подбор и бронирование</div>
           <p>Выбираем проект и юнит, фиксируем цену депозитом — дистанционно, за 1–3 дня</p>
         </div>
         <div class="step-node">
-          <div class="step-node__top"><span>02</span><i aria-hidden="true"></i></div>
+          <div class="step-node__top"><span class="step-node__badge"><img src="assets/img/icons/step-contract.png" alt="" onerror="this.closest('.step-node__badge').classList.add('no-icon')"><b>02</b></span><i aria-hidden="true"></i></div>
           <div class="step-node__title">Договор и проверка</div>
           <p>Проверяем застройщика и договор. Freehold или leasehold — подскажем, что выгоднее</p>
         </div>
         <div class="step-node">
-          <div class="step-node__top"><span>03</span><i aria-hidden="true"></i></div>
+          <div class="step-node__top"><span class="step-node__badge"><img src="assets/img/icons/step-zero.png" alt="" onerror="this.closest('.step-node__badge').classList.add('no-icon')"><b>03</b></span><i aria-hidden="true"></i></div>
           <div class="step-node__title">Рассрочка 0% до ключей</div>
           <p>Платежи привязаны к этапам стройки. Первый взнос — обычно 30–35% от стоимости</p>
         </div>
         <div class="step-node">
-          <div class="step-node__top"><span>04</span><i aria-hidden="true"></i></div>
+          <div class="step-node__top"><span class="step-node__badge"><img src="assets/img/icons/step-keys.png" alt="" onerror="this.closest('.step-node__badge').classList.add('no-icon')"><b>04</b></span><i aria-hidden="true"></i></div>
           <div class="step-node__title">Ключи и доход</div>
           <p>Принимаем объект, подключаем управляющую компанию — доход приходит на карту</p>
         </div>
@@ -1388,7 +1447,25 @@
         <span>info@alvo.demo</span>
         <span>Phuket · 2026</span>
       </div>
-      <small>Демо-лендинг АЛВО создан в презентационных целях. Названия проектов и фотографии принадлежат их застройщикам и используются как иллюстрация концепции «единый лендинг с подборкой объектов». Цены и параметры являются ориентировочными и не являются публичной офертой</small>
+      <div class="footer__bottom">
+        <span class="footer__copy">Все права защищены, 2026 г.</span>
+        <a class="footer__policy" href="privacy.html" target="_blank" rel="noopener">Политика конфиденциальности</a>
+        <div class="footer__socials">
+          <a href="#" aria-label="Instagram" title="Instagram">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="3" y="3" width="18" height="18" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="Telegram" title="Telegram">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M21.9 4.3 18.7 19c-.24 1.06-.87 1.32-1.77.82l-4.9-3.6-2.36 2.27c-.26.26-.48.48-.98.48l.35-4.98 9.06-8.19c.4-.35-.09-.55-.61-.2L6.28 12.9l-4.83-1.51c-1.05-.33-1.07-1.05.22-1.55l18.9-7.29c.87-.32 1.63.2 1.35 1.75z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <small class="footer__legal">Instagram и Facebook принадлежат компании Meta, признанной экстремистской организацией и запрещённой на территории Российской Федерации.</small>
     </div>
   </footer>
 
