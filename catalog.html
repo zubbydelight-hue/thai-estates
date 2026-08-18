@@ -367,14 +367,8 @@
     /* Баннер эксперта */
     /* компактнее по вертикали: секция и внутренние отступы ужаты */
     .expert-cta { padding: clamp(40px, 5vw, 72px) 0; }
-    /* Плашка-панель, визуально отделяет блок от следующего квиза */
-    .expert-cta__panel {
-      background: linear-gradient(150deg, rgba(28, 34, 26, 0.9), rgba(15, 19, 14, 0.9));
-      border: 1px solid var(--hair-l);
-      border-radius: 12px;
-      padding: clamp(28px, 3.6vw, 52px);
-      box-shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.7);
-    }
+    /* панель без рамки — просто контейнер (разделение с квизом даёт фон квиза) */
+    .expert-cta__panel { padding: 0; }
     /* Верх: заголовок + пояснение в две колонки */
     .expert-cta__top {
       display: grid;
@@ -527,6 +521,8 @@
       border: 1px solid rgba(194, 161, 99, 0.6);
       box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.7);
     }
+    /* Квиз чуть светлее блока «Личный эксперт» сверху — для разделения */
+    #quiz { background: #14180f; }
     /* Заголовок квиза компактнее, чтобы вместе с квизом влезал на экран */
     #quiz .sec-head__main .h2 { font-size: clamp(26px, 3vw, 42px); }
     #quiz .sec-head__sub { margin-top: 12px; }
@@ -607,6 +603,8 @@
     .cases-cta__title,
     .cases-cta__sub,
     .cases-cta__form { max-width: 820px; margin-left: auto; margin-right: auto; }
+    /* чёрная полоса вплотную к следующей секции — без светлого зазора снизу */
+    #cases { padding-bottom: 0; }
     .cases-cta__title {
       font-family: var(--ff-d);
       font-weight: 500;
