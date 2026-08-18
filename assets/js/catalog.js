@@ -37,21 +37,27 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-  // Врезка-тизер квиза внутри сетки лотов
-  const quizTeaserHtml =
-    '<div class="pcard pcard--teaser">' +
-    '<div class="pcard-teaser__inner">' +
-    '<span class="pcard-teaser__label">Квиз · 1 минута</span>' +
-    '<div class="pcard-teaser__title">Нужна помощь в выборе из ' + CATALOG.length + ' проектов?</div>' +
-    '<p class="pcard-teaser__text">Ответьте на 4 вопроса — и получите ваш топ-3 с ценами и доступными планировками уже сегодня</p>' +
-    '<a class="btn btn--gold" href="#quiz">Получить подборку <span class="arr">→</span></a>' +
-    "</div></div>";
+  // Слайдер проектов в показательном блоке «Личный эксперт»
+  const scTrack = document.getElementById("showcase-slider");
+  if (scTrack) {
+    scTrack.innerHTML = CATALOG.slice(0, 8)
+      .map((p) =>
+        '<div class="sc-slide"><img src="' + p.img + '" alt="' + p.name + '" loading="lazy">' +
+        '<div class="sc-slide__body"><div class="sc-slide__name">' + p.name + "</div>" +
+        '<div class="sc-slide__price">' + p.priceLabel + "</div></div></div>"
+      )
+      .join("");
+    document.querySelectorAll(".sc-slider__btn").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const first = scTrack.querySelector(".sc-slide");
+        const step = first ? first.getBoundingClientRect().width + 12 : 300;
+        scTrack.scrollBy({ left: Number(btn.dataset.dir) * step, behavior: "smooth" });
+      })
+    );
+  }
 
   function render(list) {
     const cardsHtml = list.map(cardHtml);
-    // после 6-й карточки — призыв пройти квиз
-    if (cardsHtml.length > 6) cardsHtml.splice(6, 0, quizTeaserHtml);
-    else cardsHtml.push(quizTeaserHtml);
     grid.innerHTML = cardsHtml.join("");
     count.textContent = "Показано проектов: " + list.length + " из " + CATALOG.length;
 
@@ -94,21 +100,49 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  document.querySelectorAll("#filters .chip").forEach((chip) =>
-    chip.addEventListener("click", () => {
-      document.querySelectorAll("#filters .chip").forEach((c) => c.classList.remove("is-active"));
-      chip.classList.add("is-active");
-      const f = chip.dataset.filter;
-      if (f === "all") return render(CATALOG);
-      const [kind, val] = f.split(":");
-      if (kind === "region") return render(CATALOG.filter((p) => p.region === val));
-      if (kind === "strategy") return render(CATALOG.filter((p) => p.strategy.includes(val)));
-      if (kind === "budget") {
-        const [min, max] = val.split("-").map(Number);
-        return render(CATALOG.filter((p) => p.priceUsd >= min && (max ? p.priceUsd <= max : true)));
+  // Строка-поиск: кастомные выпадающие списки
+  const fields = document.querySelectorAll("#searchbar .sfield");
+  fields.forEach((field) => {
+    const valueEl = field.querySelector(".sfield__value");
+    const menu = field.querySelector(".sfield__menu");
+    field.addEventListener("click", (e) => {
+      const li = e.target.closest("li[data-val]");
+      if (li) {
+        field.dataset.value = li.dataset.val;
+        valueEl.textContent = li.textContent;
+        menu.querySelectorAll("li").forEach((x) => x.classList.toggle("is-selected", x === li));
+        field.classList.remove("is-open");
+        return;
       }
-    })
-  );
+      const willOpen = !field.classList.contains("is-open");
+      fields.forEach((f) => f.classList.remove("is-open"));
+      field.classList.toggle("is-open", willOpen);
+    });
+  });
+  // закрытие меню кликом вне поля
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#searchbar .sfield")) fields.forEach((f) => f.classList.remove("is-open"));
+  });
+
+  // фильтр применяется ТОЛЬКО по кнопке; списки комбинируются по И
+  function applyFilters() {
+    let list = CATALOG.slice();
+    fields.forEach((field) => {
+      const kind = field.dataset.filter;
+      const val = field.dataset.value;
+      if (!val || val === "all") return;
+      if (kind === "type") list = list.filter((p) => p.type === val);
+      else if (kind === "region") list = list.filter((p) => p.region === val);
+      else if (kind === "strategy") list = list.filter((p) => p.strategy.includes(val));
+      else if (kind === "budget") {
+        const [min, max] = val.split("-").map(Number);
+        list = list.filter((p) => p.priceUsd >= min && (max ? p.priceUsd <= max : true));
+      }
+    });
+    render(list);
+  }
+  const searchBtn = document.getElementById("search-submit");
+  if (searchBtn) searchBtn.addEventListener("click", applyFilters);
 
   /* ---------- Попап проекта: галерея + подробности ---------- */
   const pm = document.getElementById("project-modal");

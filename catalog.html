@@ -7,7 +7,7 @@
   <meta name="description" content="Актуальная подборка 18 инвестиционных проектов Пхукета и Паттайи: цены от $85 000, доходность до 10% годовых, беспроцентная рассрочка. Аренда, перепродажа, проживание.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Alegreya:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Alegreya:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/base.css?v=9">
   <link rel="stylesheet" href="assets/css/quiz.css?v=12">
   <style>
@@ -628,6 +628,86 @@
     }
     .cases-cta .form-note { display: block; margin-top: 14px; }
 
+    /* ---------- Строка-поиск каталога (кастомные выпадающие списки) ---------- */
+    .searchbar {
+      margin-top: clamp(22px, 2.4vw, 34px);
+      background: var(--cream-2);
+      border-radius: 24px;
+      padding: clamp(14px, 1.4vw, 20px);
+    }
+    .searchbar__row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) auto;
+      gap: 12px;
+      align-items: stretch;
+    }
+    .sfield {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+      background: var(--white);
+      border: 1px solid var(--hair);
+      border-radius: 14px;
+      padding: 11px 40px 11px 16px;
+      cursor: pointer;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .sfield:hover { border-color: rgba(20, 23, 15, 0.28); }
+    .sfield.is-open { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(194, 161, 99, 0.14); }
+    .sfield__label { font-size: 11px; font-weight: 600; color: var(--stone); pointer-events: none; }
+    .sfield__value {
+      text-align: left;
+      font-size: 14.5px; font-weight: 600; color: var(--ink);
+      background: none; border: none; padding: 0; width: 100%;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      cursor: pointer;
+    }
+    /* стрелка-шеврон, поворачивается при открытии */
+    .sfield::after {
+      content: "";
+      position: absolute;
+      right: 16px; top: 50%;
+      width: 8px; height: 8px;
+      border-right: 2px solid var(--stone);
+      border-bottom: 2px solid var(--stone);
+      transform: translateY(-70%) rotate(45deg);
+      pointer-events: none;
+      transition: transform 0.25s;
+    }
+    .sfield.is-open::after { transform: translateY(-30%) rotate(-135deg); }
+    /* выпадающее меню */
+    .sfield__menu {
+      position: absolute;
+      top: calc(100% + 8px); left: 0; right: 0;
+      background: var(--white);
+      border: 1px solid var(--hair);
+      border-radius: 14px;
+      box-shadow: 0 18px 44px rgba(11, 16, 12, 0.18);
+      padding: 6px;
+      z-index: 40;
+      opacity: 0; visibility: hidden; transform: translateY(-6px);
+      transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    }
+    .sfield.is-open .sfield__menu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .sfield__menu li {
+      padding: 10px 14px;
+      border-radius: 9px;
+      font-size: 14px; font-weight: 500; color: var(--ink);
+      transition: background 0.2s, color 0.2s;
+    }
+    .sfield__menu li:hover { background: var(--cream-2); }
+    .sfield__menu li.is-selected { background: var(--night); color: var(--cream); font-weight: 600; }
+    .searchbar__submit { border-radius: 14px; padding: 0 30px; white-space: nowrap; min-height: 56px; }
+    @media (max-width: 980px) {
+      .searchbar__row { grid-template-columns: 1fr 1fr; }
+      .searchbar__submit { grid-column: 1 / -1; min-height: 54px; }
+    }
+    @media (max-width: 560px) {
+      .searchbar__row { grid-template-columns: 1fr; }
+    }
+
     /* ---------- Фильтры каталога: три смысловые строки ---------- */
     .filters { display: flex; flex-direction: column; gap: 14px; }
     .filters__row {
@@ -966,6 +1046,139 @@
       .footer__socials { margin-left: 0; width: 100%; }
     }
 
+    /* ---------- Показательный блок (бенто) ---------- */
+    .showcase { padding: clamp(46px, 5.5vw, 84px) 0; }
+    .showcase__head { margin-bottom: clamp(26px, 3vw, 44px); }
+    .showcase__head .h2 { margin-top: 14px; max-width: 20ch; }
+    .showcase__grid {
+      display: grid;
+      grid-template-columns: 1.02fr 1fr 1fr;
+      gap: 14px;
+    }
+    .sc-card {
+      position: relative;
+      border-radius: 14px;
+      border: 1px solid var(--hair-l);
+      background: #12170f;
+      padding: clamp(20px, 1.9vw, 28px);
+      overflow: hidden;
+    }
+    .sc-card__label {
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(244, 240, 230, 0.5);
+    }
+    /* Агент + цитата */
+    .sc-agent {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      min-height: 430px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0;
+    }
+    .sc-agent__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+    .sc-agent::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(8, 11, 8, 0.12) 0%, rgba(8, 11, 8, 0.18) 42%, rgba(8, 11, 8, 0.93) 100%);
+    }
+    .sc-tag {
+      display: inline-block;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(11, 16, 12, 0.5);
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(244, 240, 230, 0.25);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    }
+    .sc-agent__tag { position: absolute; top: 18px; left: 18px; z-index: 1; }
+    .sc-agent__body { position: relative; z-index: 1; padding: clamp(20px, 2vw, 28px); }
+    .sc-agent__quote { font-family: var(--ff-d); font-size: clamp(18px, 1.55vw, 23px); line-height: 1.35; font-style: italic; }
+    .sc-agent__author { margin-top: 14px; font-size: 12.5px; color: rgba(244, 240, 230, 0.7); }
+    /* Слайдер проектов */
+    .sc-slider { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; }
+    .sc-slider__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .sc-slider__nav { display: flex; gap: 8px; }
+    .sc-slider__btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--hair-l); color: var(--cream);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    .sc-slider__btn:hover { background: var(--gold); color: var(--night); border-color: var(--gold); }
+    .sc-slider__track { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .sc-slider__track::-webkit-scrollbar { display: none; }
+    .sc-slide { scroll-snap-align: start; flex: 0 0 80%; border-radius: 10px; overflow: hidden; background: var(--night); border: 1px solid var(--hair-l); }
+    .sc-slide img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+    .sc-slide__body { padding: 11px 14px 14px; }
+    .sc-slide__name { font-family: var(--ff-d); font-size: 16.5px; font-weight: 500; line-height: 1.2; }
+    .sc-slide__price { margin-top: 4px; font-size: 12.5px; color: var(--gold-2); }
+    /* Статистика + пляжи */
+    .sc-stats { grid-column: 3; grid-row: 1; display: flex; flex-direction: column; }
+    .sc-stats__num { font-family: var(--ff-d); font-size: clamp(24px, 2.2vw, 32px); color: var(--gold-2); line-height: 1; }
+    .sc-stats__title { margin-top: 10px; font-family: var(--ff-d); font-size: clamp(18px, 1.5vw, 22px); line-height: 1.25; }
+    .sc-stats__text { margin-top: 12px; font-size: 13px; line-height: 1.6; color: rgba(244, 240, 230, 0.6); }
+    .sc-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 16px; }
+    .sc-chip { padding: 7px 13px; border-radius: 999px; border: 1px solid var(--hair-l); font-size: 12px; font-weight: 600; color: rgba(244, 240, 230, 0.82); }
+    /* Сумма сделок */
+    .sc-money {
+      grid-column: 2 / span 2;
+      grid-row: 2;
+      display: flex; flex-direction: column; justify-content: center;
+      background: linear-gradient(135deg, #16221a, #0b120d);
+      min-height: 156px;
+    }
+    .sc-money__watermark {
+      position: absolute; right: clamp(16px, 2vw, 32px); top: 50%; transform: translateY(-50%);
+      font-family: var(--ff-d); font-weight: 500; font-size: clamp(58px, 8vw, 118px);
+      color: rgba(244, 240, 230, 0.05); letter-spacing: 0.05em; pointer-events: none; line-height: 1;
+    }
+    .sc-money__num { position: relative; z-index: 1; font-family: var(--ff-d); font-size: clamp(34px, 4.4vw, 58px); font-weight: 500; color: var(--cream); line-height: 1; }
+    .sc-money__label { position: relative; z-index: 1; margin-top: 10px; font-size: 13.5px; color: rgba(244, 240, 230, 0.6); }
+    .sc-money__stats { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px 30px; margin-top: 16px; font-size: 13px; color: rgba(244, 240, 230, 0.7); }
+    .sc-money__stats b { color: var(--gold-2); font-weight: 700; }
+    @media (max-width: 980px) {
+      .showcase__grid { grid-template-columns: 1fr 1fr; }
+      .sc-agent { grid-column: 1 / -1; grid-row: auto; min-height: 320px; }
+      .sc-slider { grid-column: 1; grid-row: auto; }
+      .sc-stats { grid-column: 2; grid-row: auto; }
+      .sc-money { grid-column: 1 / -1; grid-row: auto; }
+    }
+    @media (max-width: 620px) {
+      .showcase__grid { grid-template-columns: 1fr; }
+      .sc-slider, .sc-stats, .sc-money { grid-column: 1; }
+      .sc-slide { flex-basis: 86%; }
+    }
+
+    /* ---------- Квиз-тизер (полоса) ---------- */
+    .teaser-band { background: var(--cream-2); padding: clamp(40px, 5vw, 72px) 0; }
+    .teaser-box {
+      background: var(--night);
+      color: var(--cream);
+      border-radius: 16px;
+      min-height: 33vh;
+      padding: clamp(30px, 5vw, 64px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px 48px;
+      flex-wrap: wrap;
+    }
+    .teaser-box .label { color: var(--gold-2); }
+    .teaser-box__title { font-family: var(--ff-d); font-weight: 500; font-size: clamp(28px, 3.4vw, 48px); line-height: 1.05; margin-top: 16px; max-width: 20ch; }
+    .teaser-box__title em { font-style: italic; color: var(--gold); }
+    .teaser-box__text { margin-top: 16px; font-size: 15px; line-height: 1.7; color: rgba(244, 240, 230, 0.65); max-width: 560px; }
+    .teaser-box .btn { flex: 0 0 auto; }
+    @media (max-width: 720px) {
+      .teaser-box { flex-direction: column; align-items: flex-start; min-height: 0; }
+      .teaser-box .btn { width: 100%; justify-content: center; }
+    }
+
     /* Плавающая кнопка квиза */
     .quiz-fab {
       position: fixed;
@@ -1116,9 +1329,136 @@
       .hero__grid { grid-template-columns: 1fr; }
       .hero__desc { max-width: 480px; }
     }
+
+    /* ============================================================
+       ЭКСПЕРИМЕНТ (класс .exp-framed на <body>):
+       единый фон страницы + содержимое блоков в скруглённых
+       карточках-рамках разных цветов + заголовки шрифтом Gotham.
+       Чтобы откатить — убрать класс exp-framed у <body>.
+       ============================================================ */
+    .exp-framed {
+      --ff-d: "Montserrat", sans-serif;
+      --frame-w: 1560px;   /* единая ширина всех рамок */
+      --gap: 16px;         /* единый зазор между рамками */
+      background: #d9d1c0;
+    }
+    /* Gotham для заголовков — плотный трекинг, без ложного курсива */
+    .exp-framed h1, .exp-framed h2, .exp-framed h3,
+    .exp-framed .h1, .exp-framed .h2, .exp-framed .display {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+    }
+    .exp-framed h1 em, .exp-framed h2 em, .exp-framed h3 em,
+    .exp-framed .h2 em, .exp-framed [data-split] em { font-style: normal; }
+
+    /* Единая сетка «полей»: одинаковая ширина и одинаковые зазоры у всех рамок.
+       Вертикальный паддинг = половина зазора → между соседними карточками ровно --gap */
+    .exp-framed .section,
+    .exp-framed .section--tight,
+    .exp-framed .brandwall,
+    .exp-framed .teaser-band,
+    .exp-framed .showcase {
+      padding: calc(var(--gap) / 2) var(--gutter);
+      background: transparent !important;
+      color: var(--ink);
+    }
+    /* Все контейнеры-рамки одной ширины и по центру */
+    .exp-framed .section > .container,
+    .exp-framed .brandwall > .container,
+    .exp-framed .teaser-band > .container,
+    .exp-framed .showcase > .container {
+      max-width: var(--frame-w);
+      margin-inline: auto;
+    }
+    /* Наполнение светлых рамок */
+    .exp-framed .section > .container,
+    .exp-framed .brandwall > .container {
+      padding: clamp(34px, 4.4vw, 76px);
+      border-radius: 30px;
+      background: var(--white);
+    }
+    /* Цвета рамок по блокам */
+    .exp-framed #cases > .container { background: var(--cream); }
+    .exp-framed #why > .container   { background: var(--cream-2); }
+    .exp-framed #faq > .container   { background: var(--cream-2); }
+    /* Тёмные рамки */
+    .exp-framed .section--dark > .container {
+      background: var(--night);
+      color: var(--cream);
+    }
+    .exp-framed .brandwall > .container {
+      background: var(--night);
+      color: var(--cream);
+    }
+    .exp-framed .cta-final > .container {
+      background: linear-gradient(135deg, var(--pine), var(--night));
+      color: var(--cream);
+    }
+
+    /* Показательный блок (бенто): внешней рамки нет — рамками служат сами ячейки */
+    .exp-framed .showcase > .container {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+    }
+    .exp-framed .showcase .showcase__head .label { color: var(--gold); }
+    .exp-framed .showcase .showcase__head .h2 { color: var(--ink); }
+
+    /* Полоса-тизер квиза: чёрный бокс сам играет роль карточки */
+    .exp-framed .teaser-band > .container { padding-left: 0; padding-right: 0; }
+    .exp-framed .teaser-box { border-radius: 30px; }
+
+    /* Кейсы-CTA: чёрным боксом внутри карточки, без вырыва на всю ширину.
+       Важно: базовый стиль тянет отрицательные margin слева И справа — сбрасываем оба */
+    .exp-framed .cases-cta {
+      width: auto;
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: 22px;
+      padding: clamp(30px, 3.8vw, 52px);
+      background: var(--night);
+      color: var(--cream);
+    }
+
+    /* Убираем «лишний» большой отступ сверху у каталога (ID-правило #catalog перебивало сетку) */
+    .exp-framed #catalog { padding-top: calc(var(--gap) / 2); }
+
+    /* Больше воздуха между тёмной карточкой и футером — но НЕ внешним отступом
+       (иначе появляется серый геп), а внутренним padding: фон-картинка блока
+       тянется вниз вплотную к футеру, а карточка отодвигается вверх */
+    .exp-framed .cta-final { padding-bottom: clamp(40px, 4.6vw, 76px); }
+
+    /* Поля ввода телефона — светлый прямоугольник со скруглёнными углами (везде) */
+    .exp-framed .phone-field .input,
+    .exp-framed input[type="tel"].input {
+      background: var(--white);
+      color: var(--ink);
+      border: 1px solid var(--hair);
+      border-radius: 14px;
+    }
+    .exp-framed .phone-field .input::placeholder { color: #a9a695; }
+
+    /* HERO: ширину оставляем как есть (на всю), но скругляем нижние углы в общий стиль */
+    .exp-framed .hero {
+      border-radius: 0 0 30px 30px;
+      overflow: hidden;
+      margin-bottom: calc(var(--gap) / 2);
+    }
+    /* Заголовок hero: меньше и легче, чтобы не поджимал мини-блок «О подборке 18» */
+    .exp-framed .hero__title {
+      font-size: clamp(36px, 5vw, 76px);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+    .exp-framed .hero__grid { gap: clamp(32px, 4vw, 64px); }
+
+    /* Скруглённые углы у фотографий в карточках */
+    .exp-framed .why-card__media,
+    .exp-framed .case-card__media { border-radius: 20px; overflow: hidden; }
   </style>
 </head>
-<body>
+<body class="exp-framed">
   <div class="preloader">
     <div class="preloader__logo">ALVO</div>
     <div class="preloader__line"></div>
@@ -1215,24 +1555,47 @@
         </div>
       </div>
 
-      <div class="filters" id="filters" data-reveal>
-        <div class="filters__row">
-          <span class="filters__label">Стратегия покупки</span>
-          <div class="filters__chips">
-            <button class="chip is-active" data-filter="all">Все проекты</button>
-            <button class="chip" data-filter="strategy:live">Проживание</button>
-            <button class="chip" data-filter="strategy:rent">Аренда</button>
-            <button class="chip" data-filter="strategy:private">Инвестиции</button>
-            <button class="chip" data-filter="strategy:resale">Перепродажа</button>
+      <div class="searchbar" id="searchbar" data-reveal>
+        <div class="searchbar__row">
+          <div class="sfield" data-filter="type" data-value="all">
+            <span class="sfield__label">Тип объекта</span>
+            <button class="sfield__value" type="button">Апартаменты и квартиры</button>
+            <ul class="sfield__menu">
+              <li data-val="all" class="is-selected">Апартаменты и квартиры</li>
+              <li data-val="villa">Виллы</li>
+            </ul>
           </div>
-        </div>
-        <div class="filters__row">
-          <span class="filters__label">Стоимость</span>
-          <div class="filters__chips">
-            <button class="chip" data-filter="budget:0-250000">до $250K</button>
-            <button class="chip" data-filter="budget:250000-1000000">$250K – $1M</button>
-            <button class="chip" data-filter="budget:1000000-">от $1M</button>
+          <div class="sfield" data-filter="strategy" data-value="all">
+            <span class="sfield__label">Стратегия покупки</span>
+            <button class="sfield__value" type="button">Любая стратегия</button>
+            <ul class="sfield__menu">
+              <li data-val="all" class="is-selected">Любая стратегия</li>
+              <li data-val="live">Проживание</li>
+              <li data-val="rent">Аренда</li>
+              <li data-val="private">Инвестиции</li>
+              <li data-val="resale">Перепродажа</li>
+            </ul>
           </div>
+          <div class="sfield" data-filter="budget" data-value="all">
+            <span class="sfield__label">Стоимость</span>
+            <button class="sfield__value" type="button">Любая стоимость</button>
+            <ul class="sfield__menu">
+              <li data-val="all" class="is-selected">Любая стоимость</li>
+              <li data-val="0-250000">до $250K</li>
+              <li data-val="250000-1000000">$250K – $1M</li>
+              <li data-val="1000000-">от $1M</li>
+            </ul>
+          </div>
+          <div class="sfield" data-filter="region" data-value="all">
+            <span class="sfield__label">Локация</span>
+            <button class="sfield__value" type="button">Все локации</button>
+            <ul class="sfield__menu">
+              <li data-val="all" class="is-selected">Все локации</li>
+              <li data-val="phuket">Пхукет</li>
+              <li data-val="pattaya">Паттайя</li>
+            </ul>
+          </div>
+          <button class="btn btn--night searchbar__submit" id="search-submit" type="button">Найти недвижимость</button>
         </div>
       </div>
 
@@ -1244,57 +1607,71 @@
     </div>
   </section>
 
-  <!-- ЭКСПЕРТ -->
-  <section class="section section--dark expert-cta">
+  <!-- ЭКСПЕРТ / ПОКАЗАТЕЛЬНЫЙ БЛОК -->
+  <section class="section section--dark showcase">
     <div class="container">
-      <div class="expert-cta__panel">
-        <div class="expert-cta__top" data-reveal>
-          <div class="expert-cta__intro">
-            <span class="label">Личный эксперт</span>
-            <h2 class="h2" style="margin-top:14px" data-split>Оставьте заявку и получите персональную подборку объектов под <em>ваши задачи</em> и бюджет</h2>
+      <div class="showcase__head" data-reveal>
+        <span class="label">Личный эксперт</span>
+        <h2 class="h2" data-split>Воплощаем ваши инвестиционные цели <em>в реальность</em></h2>
+      </div>
+      <div class="showcase__grid">
+        <article class="sc-card sc-agent" data-reveal>
+          <img class="sc-agent__bg" src="assets/img/kun-ping.jpg" alt="Kun Ping">
+          <span class="sc-tag sc-agent__tag">Банг Тао · Пхукет</span>
+          <div class="sc-agent__body">
+            <p class="sc-agent__quote">«Моя задача — подобрать объект, который приносит доход и радует вас. Честная экспертиза, прозрачные расчёты и сервис высокого уровня»</p>
+            <div class="sc-agent__author">Kun Ping — эксперт по недвижимости Таиланда</div>
           </div>
-          <p class="expert-cta__note">Kun Ping выслушает вашу задачу, разработает инвестиционную стратегию и подберёт объекты под бюджет — бесплатно и без обязательств в течение 15 минут</p>
-        </div>
-        <form class="expert-cta__form" data-demo-form data-reveal>
-          <input type="hidden" name="lead_source" value="Блок «Личный эксперт» — стратегия">
-          <input class="input" type="tel" placeholder="+7 900 000-00-00" autocomplete="tel" required>
-          <button class="btn btn--gold" type="submit">Получить подборку <span class="arr">→</span></button>
-          <label class="consent">
-            <input type="checkbox" name="consent" required>
-            <span>Соглашаюсь с <a href="privacy.html" target="_blank" rel="noopener">политикой обработки персональных данных</a></span>
-          </label>
-        </form>
-        <div class="expert-cta__bottom">
-          <div class="expert-cta__consultant" data-reveal>
-            <img class="expert-cta__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
-            <div>
-              <div class="expert-cta__name">Kun Ping</div>
-              <div class="expert-cta__role">Инвестиционный эксперт по недвижимости Таиланда</div>
-              <span class="agent__status" style="margin-top:10px">онлайн, отвечает за 15 минут</span>
+        </article>
+
+        <article class="sc-card sc-slider" data-reveal>
+          <div class="sc-slider__head">
+            <span class="sc-card__label">Проекты подборки</span>
+            <div class="sc-slider__nav">
+              <button class="sc-slider__btn" type="button" data-dir="-1" aria-label="Назад">←</button>
+              <button class="sc-slider__btn" type="button" data-dir="1" aria-label="Вперёд">→</button>
             </div>
           </div>
-          <div class="expert-cta__stats" data-reveal-group data-stagger="0.1">
-            <div><b>$12M+</b><span>инвестировано клиентами</span></div>
-            <div><b>9 лет</b><span>на рынке Таиланда</span></div>
-            <div><b>70%</b><span>сделок — дистанционно</span></div>
+          <div class="sc-slider__track" id="showcase-slider"></div>
+        </article>
+
+        <article class="sc-card sc-stats" data-reveal>
+          <div class="sc-stats__num">18 проектов</div>
+          <div class="sc-stats__title">Проверенные объекты на побережье Пхукета</div>
+          <p class="sc-stats__text">Отобрали проекты от надёжных застройщиков — с прозрачными ценами, планировками и расчётом доходности</p>
+          <div class="sc-chips">
+            <span class="sc-chip">Банг Тао</span>
+            <span class="sc-chip">Сурин</span>
+            <span class="sc-chip">Камала</span>
+            <span class="sc-chip">Най Тон</span>
+            <span class="sc-chip">Лаян</span>
           </div>
-        </div>
+        </article>
+
+        <article class="sc-card sc-money" data-reveal>
+          <div class="sc-money__watermark">ALVO</div>
+          <div class="sc-money__num">$12 500 000</div>
+          <div class="sc-money__label">Инвестировано клиентами в проекты у моря</div>
+          <div class="sc-money__stats">
+            <span><b>9 лет</b> на рынке Таиланда</span>
+            <span><b>70%</b> сделок дистанционно</span>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- КВИЗ -->
-  <section class="section section--dark" id="quiz">
+  <!-- КВИЗ-ТИЗЕР (полоса) -->
+  <section class="teaser-band">
     <div class="container">
-      <div class="sec-head">
-        <div class="sec-head__idx">02 / Подбор</div>
-        <div class="sec-head__main">
-          <span class="label" data-reveal>Квиз-подбор · 1 минута</span>
-          <h2 class="h2" data-split>Ответьте на 4 вопроса — получите <em>топ-3 проекта</em></h2>
-          <p class="sec-head__sub" data-reveal>С ценами, планировками, расчётом стоимости и доходности на проекте</p>
+      <div class="teaser-box" data-reveal>
+        <div class="teaser-box__content">
+          <span class="label">Квиз · 1 минута</span>
+          <h2 class="teaser-box__title" data-split>Нужна помощь в выборе из <em>18 проектов</em>?</h2>
+          <p class="teaser-box__text">Ответьте на 4 вопроса — и получите ваш топ-3 с ценами и доступными планировками уже сегодня</p>
         </div>
+        <a class="btn btn--gold" href="#quiz">Получить подборку <span class="arr">→</span></a>
       </div>
-      <div id="quiz-container" class="quiz-spotlight" data-reveal></div>
     </div>
   </section>
 
@@ -1302,7 +1679,7 @@
   <section class="section" id="cases">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-head__idx">03 / Кейсы</div>
+        <div class="sec-head__idx">02 / Кейсы</div>
         <div class="sec-head__main">
           <span class="label" data-reveal>Реальные сценарии</span>
           <h2 class="h2" data-split>Сколько зарабатывают на проектах <em>из подборки</em></h2>
@@ -1346,7 +1723,7 @@
   <section class="section section--panel" id="why">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-head__idx">04 / Рынок</div>
+        <div class="sec-head__idx">03 / Рынок</div>
         <div class="sec-head__main">
           <span class="label" data-reveal>Почему Таиланд</span>
           <h2 class="h2" data-split>Рынок, который растёт быстрее, чем <em>строятся</em> дома</h2>
@@ -1372,6 +1749,21 @@
           <p class="why-card__text">Пхукет — один из самых загруженных курортов мира. Высокий сезон длится 8 месяцев, спрос на аренду стабильно превышает предложение</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- КВИЗ -->
+  <section class="section section--dark" id="quiz">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-head__idx">04 / Подбор</div>
+        <div class="sec-head__main">
+          <span class="label" data-reveal>Квиз-подбор · 1 минута</span>
+          <h2 class="h2" data-split>Ответьте на 4 вопроса — получите <em>топ-3 проекта</em></h2>
+          <p class="sec-head__sub" data-reveal>С ценами, планировками, расчётом стоимости и доходности на проекте</p>
+        </div>
+      </div>
+      <div id="quiz-container" class="quiz-spotlight" data-reveal></div>
     </div>
   </section>
 
@@ -1577,7 +1969,7 @@
   <script src="assets/js/data.js?v=11"></script>
   <script src="assets/js/quiz-engine.js?v=14"></script>
   <script src="assets/js/common.js?v=13"></script>
-  <script src="assets/js/catalog.js?v=22"></script>
+  <script src="assets/js/catalog.js?v=25"></script>
   <script src="assets/js/motion.js?v=11"></script>
 </body>
 </html>
