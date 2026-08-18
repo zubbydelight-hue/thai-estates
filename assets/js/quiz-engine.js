@@ -18,7 +18,9 @@ function createQuiz(container, config) {
         '<div class="quiz__side-media"><img alt=""></div>' +
         '<div class="quiz__side-head"><span class="quiz__side-num"></span><span class="quiz__side-of">из ' + pad(total) + "</span></div>" +
         (config.bullets && config.bullets.length
-          ? '<ul class="quiz__side-bullets">' + config.bullets.map((b) => "<li>" + b + "</li>").join("") + "</ul>"
+          ? '<ul class="quiz__side-bullets">' + config.bullets.map((b) => (b && typeof b === "object")
+              ? '<li class="has-cover">' + (b.img ? '<img class="quiz__side-cover" src="' + b.img + '" alt="Обложка каталога" onerror="this.remove()">' : "") + "<span>" + b.text + "</span></li>"
+              : "<li>" + b + "</li>").join("") + "</ul>"
           : "") +
         '<div class="quiz__side-agent">' +
         '<img src="assets/img/kun-ping.jpg" alt="Kun Ping">' +
