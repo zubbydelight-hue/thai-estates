@@ -37,57 +37,25 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-  // Слайдер проектов в показательном блоке «Личный эксперт»
-  const scTrack = document.getElementById("showcase-slider");
-  if (scTrack) {
-    scTrack.innerHTML = CATALOG.slice(0, 8)
-      .map((p) =>
-        '<div class="sc-slide"><img src="' + p.img + '" alt="' + p.name + '" loading="lazy">' +
-        '<div class="sc-slide__body"><div class="sc-slide__name">' + p.name + "</div>" +
-        '<div class="sc-slide__price">' + p.priceLabel + "</div></div></div>"
-      )
-      .join("");
-    document.querySelectorAll(".sc-slider__btn").forEach((btn) =>
-      btn.addEventListener("click", () => {
-        const first = scTrack.querySelector(".sc-slide");
-        const step = first ? first.getBoundingClientRect().width + 12 : 300;
-        scTrack.scrollBy({ left: Number(btn.dataset.dir) * step, behavior: "smooth" });
-      })
-    );
+  // Слайдер объектов в блоке эксперта
+  const polaroid = document.getElementById("editorial-project");
+  if (polaroid && CATALOG.length) {
+    let slide = 0;
+    const img = polaroid.querySelector("img");
+    const nameEl = polaroid.querySelector(".sv-polaroid__name");
+    const metaEl = polaroid.querySelector(".sv-polaroid__meta");
+    const show = (i) => {
+      slide = (i + CATALOG.length) % CATALOG.length;
+      const p = CATALOG[slide];
+      img.src = p.img;
+      img.alt = p.name;
+      nameEl.textContent = p.name;
+      metaEl.textContent = p.priceLabel + " · " + p.location;
+    };
+    show(0);
+    polaroid.querySelector(".sv-polaroid__arrow--prev").addEventListener("click", () => show(slide - 1));
+    polaroid.querySelector(".sv-polaroid__arrow--next").addEventListener("click", () => show(slide + 1));
   }
-
-  const editorial = document.getElementById("editorial-project");
-  if (editorial && CATALOG[0]) {
-    const p = CATALOG[0];
-    editorial.innerHTML =
-      '<img src="' + p.img + '" alt="' + p.name + '">' +
-      '<div class="sv-polaroid__body"><span class="sc-card__label">Объект под задачу</span>' +
-      '<div class="sv-polaroid__name">' + p.name + "</div>" +
-      '<div class="sv-polaroid__meta">' + p.priceLabel + " · " + p.location + "</div></div>";
-  }
-  const dialogPicks = document.getElementById("dialog-projects");
-  if (dialogPicks) {
-    dialogPicks.innerHTML = CATALOG.slice(0, 2)
-      .map((p) =>
-        '<div class="sv-pick"><img src="' + p.img + '" alt="' + p.name + '">' +
-        '<div class="sv-pick__body"><div class="sv-pick__name">' + p.name + "</div>" +
-        '<div class="sv-pick__price">' + p.priceLabel + "</div></div></div>"
-      )
-      .join("");
-  }
-
-  const expert = document.getElementById("expert");
-  document.querySelectorAll(".showcase-switch [data-variant]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const v = btn.dataset.variant;
-      document.querySelectorAll(".showcase-switch [data-variant]").forEach((b) => b.classList.toggle("is-active", b === btn));
-      document.querySelectorAll("[data-variant-panel]").forEach((p) => {
-        p.hidden = p.dataset.variantPanel !== v;
-      });
-      if (expert) expert.classList.toggle("is-editorial", v === "editorial");
-      if (window.ScrollTrigger) ScrollTrigger.refresh();
-    });
-  });
 
   function render(list) {
     const cardsHtml = list.map(cardHtml);
@@ -344,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
   createQuiz(document.getElementById("quiz-container"), {
     img: "assets/img/santa-monica-7.jpg",
     resultImg: "assets/img/trisara-1.jpg",
-    bullets: ["4 вопроса", "Меньше минуты", "Топ-3 проекта с ценами", { text: "PDF-подборка в подарок", img: "assets/img/catalog-cover.png" }],
+    bullets: ["4 вопроса", "Меньше минуты", "Топ-3 проекта с ценами", { text: "PDF-подборка в подарок", img: "assets/img/catalog-cover.png?v=2" }],
     questions: [
       {
         key: "strategy",

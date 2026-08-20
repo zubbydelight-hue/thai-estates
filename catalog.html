@@ -111,7 +111,7 @@
 
     /* Карточка «О подборке»: контрастное тёмное стекло, высота в ряд с заголовком */
     .hero__grid { align-items: stretch; }
-    .hero__title { align-self: end; }
+    .hero__title { align-self: end; margin-top: 0; }
     .hero__desc {
       position: relative;
       overflow: hidden;
@@ -517,6 +517,10 @@
       margin: 0;
     }
     .quiz-spotlight .quiz__side { order: 2; min-height: 0; padding: 20px 22px; }
+    .quiz-spotlight .quiz__side-media img { filter: brightness(0.48) saturate(0.92); }
+    .quiz-spotlight .quiz__side-media::after {
+      background: linear-gradient(180deg, rgba(8, 10, 6, 0.78) 0%, rgba(8, 10, 6, 0.66) 42%, rgba(8, 10, 6, 0.9) 100%);
+    }
     .quiz-spotlight .quiz__body { padding: clamp(20px, 2.4vw, 32px); }
     .quiz-spotlight .quiz__question { font-size: clamp(19px, 1.9vw, 25px); margin-bottom: 6px; }
     .quiz-spotlight .quiz__question + .quiz__options { margin-top: 18px; }
@@ -1231,68 +1235,8 @@
       .sc-slide { flex-basis: 86%; }
     }
 
-    /* Демо-переключатель раскладок экспертного блока */
-    .showcase-switch {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 22px;
-      padding: 8px 10px;
-      border: 1px dashed rgba(194, 161, 99, 0.55);
-      border-radius: 16px;
-      background: rgba(244, 240, 230, 0.06);
-    }
-    .showcase-switch > span {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold-2);
-      padding: 0 8px;
-    }
-    .showcase-switch button {
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      color: rgba(244, 240, 230, 0.7);
-      border: 1px solid rgba(244, 240, 230, 0.16);
-      transition: background 0.25s, color 0.25s, border-color 0.25s;
-    }
-    .showcase-switch button:hover { color: var(--cream); border-color: rgba(194, 161, 99, 0.6); }
-    .showcase-switch button.is-active { background: var(--gold); color: var(--night); border-color: var(--gold); }
-    .showcase-variant[hidden] { display: none !important; }
-    .showcase.is-editorial .showcase__head { display: none; }
-
-    /* 1. Путь сделки */
-    .sv-path {
-      display: grid;
-      grid-template-columns: 0.92fr 1.08fr;
-      gap: 14px;
-    }
-    .sv-path .sc-agent { min-height: 540px; grid-column: auto; grid-row: auto; }
-    .sv-path__steps { display: grid; gap: 14px; }
-    .sv-step {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 18px;
-      align-items: center;
-      min-height: 168px;
-    }
-    .sv-step__idx {
-      font-family: var(--ff-d);
-      font-size: 42px;
-      font-weight: 500;
-      color: var(--gold-2);
-      line-height: 1;
-      min-width: 52px;
-    }
-    .sv-step__kicker { font-size: 10.5px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-2); }
-    .sv-step__title { margin-top: 6px; font-family: var(--ff-d); font-size: clamp(20px, 1.8vw, 26px); line-height: 1.2; }
-    .sv-step__text { margin-top: 8px; font-size: 13.5px; line-height: 1.6; color: rgba(244, 240, 230, 0.62); }
-
-    /* 2. Редакционный разворот */
+    /* ---------- Показательный блок: редакционный разворот ---------- */
+    .showcase { padding: clamp(46px, 5.5vw, 84px) 0; }
     .sv-edit {
       display: grid;
       grid-template-columns: 1.45fr 0.9fr;
@@ -1308,7 +1252,7 @@
       overflow: hidden;
       border: 1px solid var(--hair-l);
     }
-    .sv-edit__hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 32% 16%; }
+    .sv-edit__hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 32% 48%; }
     .sv-edit__hero::after {
       content: "";
       position: absolute; inset: 0;
@@ -1329,41 +1273,35 @@
     .sv-stamp b { display: block; font-family: var(--ff-d); font-size: clamp(18px, 1.8vw, 26px); font-weight: 500; color: var(--gold-2); line-height: 1.1; }
     .sv-stamp span { display: block; margin-top: 6px; font-size: 11px; line-height: 1.35; color: rgba(244, 240, 230, 0.6); }
     .sv-polaroid { padding: 0; display: flex; flex-direction: column; }
-    .sv-polaroid img { width: 100%; aspect-ratio: 16 / 11; object-fit: cover; }
+    .sv-polaroid__media { position: relative; }
+    .sv-polaroid img { width: 100%; aspect-ratio: 16 / 11; object-fit: cover; display: block; }
+    .sv-polaroid__arrow {
+      position: absolute;
+      top: 50%;
+      z-index: 1;
+      transform: translateY(-50%);
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(244, 240, 230, 0.35);
+      background: rgba(11, 16, 12, 0.55);
+      color: var(--cream);
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: background 0.25s, border-color 0.25s, color 0.25s;
+    }
+    .sv-polaroid__arrow:hover { background: var(--gold); color: var(--night); border-color: var(--gold); }
+    .sv-polaroid__arrow--prev { left: 12px; }
+    .sv-polaroid__arrow--next { right: 12px; }
     .sv-polaroid__body { padding: 16px 18px 18px; }
     .sv-polaroid__name { font-family: var(--ff-d); font-size: 22px; font-weight: 500; }
     .sv-polaroid__meta { margin-top: 6px; font-size: 13px; color: var(--gold-2); }
-
-    /* 3. Диалог */
-    .sv-dialog {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .sv-dialog .sc-agent { min-height: 360px; grid-column: auto; grid-row: auto; }
-    .sv-ask__q { font-size: 12px; font-weight: 700; color: var(--gold-2); letter-spacing: 0.04em; }
-    .sv-ask__title { margin-top: 10px; font-family: var(--ff-d); font-size: clamp(22px, 2vw, 30px); line-height: 1.2; }
-    .sv-ask__list { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
-    .sv-ask__list div { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--hair-l); font-size: 14px; }
-    .sv-ask__list small { color: rgba(244, 240, 230, 0.5); }
-    .sv-picks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px; }
-    .sv-pick { border-radius: 10px; overflow: hidden; border: 1px solid var(--hair-l); background: var(--night); }
-    .sv-pick img { width: 100%; aspect-ratio: 16 / 11; object-fit: cover; }
-    .sv-pick__body { padding: 10px 12px 12px; }
-    .sv-pick__name { font-family: var(--ff-d); font-size: 15px; font-weight: 500; line-height: 1.25; }
-    .sv-pick__price { margin-top: 4px; font-size: 12px; color: var(--gold-2); }
-    .sv-calc { min-height: 180px; display: flex; flex-direction: column; justify-content: center; background: linear-gradient(135deg, #16221a, #0b120d); }
-    .sv-calc__num { font-family: var(--ff-d); font-size: clamp(36px, 4vw, 52px); color: var(--cream); line-height: 1; }
-    .sv-calc__text { margin-top: 10px; font-size: 14px; line-height: 1.6; color: rgba(244, 240, 230, 0.65); max-width: 36ch; }
-
     @media (max-width: 980px) {
-      .sv-path, .sv-edit, .sv-dialog { grid-template-columns: 1fr; }
+      .sv-edit { grid-template-columns: 1fr; }
       .sv-edit__hero { grid-row: auto; min-height: 420px; }
-      .sv-path .sc-agent, .sv-dialog .sc-agent { min-height: 320px; }
     }
     @media (max-width: 620px) {
-      .sv-edit__stamps, .sv-picks { grid-template-columns: 1fr; }
-      .sv-step { grid-template-columns: 1fr; gap: 8px; min-height: 0; }
+      .sv-edit__stamps { grid-template-columns: 1fr; }
     }
 
     /* ---------- Квиз-тизер (полоса) ---------- */
@@ -1703,7 +1641,6 @@
     <div class="hero__bg" data-hero-img><img src="assets/img/trisara-1.jpg" alt="Вилла у побережья Пхукета"></div>
     <div class="hero__content">
       <div class="container">
-        <span class="label label--line">Актуально · август 2026 · Пхукет</span>
         <div class="hero__grid">
           <h1 class="h-hero hero__title" data-split>Подборка инвестиционных проектов на Пхукете — <em>август 2026</em></h1>
           <div class="hero__desc" data-hero-fade>
@@ -1819,150 +1756,32 @@
   <!-- ЭКСПЕРТ / ПОКАЗАТЕЛЬНЫЙ БЛОК -->
   <section class="section section--dark showcase" id="expert">
     <div class="container">
-      <div class="showcase-switch" role="tablist" aria-label="Демо: варианты блока эксперта">
-        <span>Демо</span>
-        <button type="button" data-variant="now" class="is-active">Сейчас</button>
-        <button type="button" data-variant="path">1. Путь сделки</button>
-        <button type="button" data-variant="editorial">2. Разворот</button>
-        <button type="button" data-variant="dialog">3. Диалог</button>
-      </div>
-
-      <div class="showcase__head" data-reveal>
-        <span class="label">Личный эксперт</span>
-        <h2 class="h2" data-split>Из инвестиционной цели <em>в реальность</em></h2>
-      </div>
-
-      <div class="showcase-variant" data-variant-panel="now">
-        <div class="showcase__grid">
-          <article class="sc-card sc-agent" data-reveal>
-            <img class="sc-agent__bg" src="assets/img/andrey.jpg" alt="Андрей">
-            <span class="sc-tag sc-agent__tag">Банг Тао · Пхукет</span>
-            <div class="sc-agent__body">
-              <p class="sc-agent__quote">«Моя задача — подобрать объект, который приносит доход и радует вас. Честная экспертиза, прозрачные расчёты и сервис высокого уровня»</p>
-              <div class="sc-agent__author">Андрей — с 2018 года на рынке Пхукета</div>
-            </div>
-          </article>
-
-          <article class="sc-card sc-slider" data-reveal>
-            <div class="sc-slider__head">
-              <span class="sc-card__label">Проекты подборки</span>
-              <div class="sc-slider__nav">
-                <button class="sc-slider__btn" type="button" data-dir="-1" aria-label="Назад">←</button>
-                <button class="sc-slider__btn" type="button" data-dir="1" aria-label="Вперёд">→</button>
-              </div>
-            </div>
-            <div class="sc-slider__track" id="showcase-slider"></div>
-          </article>
-
-          <article class="sc-card sc-stats" data-reveal>
-            <div class="sc-stats__num">18 проектов</div>
-            <div class="sc-stats__title">Проверенные объекты на побережье Пхукета</div>
-            <p class="sc-stats__text">Отобрали проекты от надёжных застройщиков — с прозрачными ценами, планировками и расчётом доходности</p>
-            <div class="sc-chips">
-              <span class="sc-chip">Банг Тао</span>
-              <span class="sc-chip">Сурин</span>
-              <span class="sc-chip">Камала</span>
-              <span class="sc-chip">Най Тон</span>
-              <span class="sc-chip">Лаян</span>
-            </div>
-          </article>
-
-          <article class="sc-card sc-money" data-reveal>
-            <div class="sc-money__watermark">ALVO</div>
-            <div class="sc-money__num">$12 500 000</div>
-            <div class="sc-money__label">Инвестировано клиентами в проекты у моря</div>
-            <div class="sc-money__stats">
-              <span><b>9 лет</b> на рынке Таиланда</span>
-              <span><b>70%</b> сделок дистанционно</span>
-            </div>
-          </article>
-        </div>
-      </div>
-
-      <div class="showcase-variant" data-variant-panel="path" hidden>
-        <div class="sv-path">
-          <article class="sc-card sc-agent">
-            <img class="sc-agent__bg" src="assets/img/andrey.jpg" alt="Андрей">
-            <span class="sc-tag sc-agent__tag">Андрей · с 2018 на Пхукете</span>
-            <div class="sc-agent__body">
-              <p class="sc-agent__quote">«Сначала фиксируем цель и бюджет — потом объект. Не наоборот»</p>
-              <div class="sc-agent__author">Личный эксперт по сделке</div>
-            </div>
-          </article>
-          <div class="sv-path__steps">
-            <article class="sc-card sv-step">
-              <div class="sv-step__idx">01</div>
-              <div>
-                <div class="sv-step__kicker">Цель</div>
-                <div class="sv-step__title">Пассивный доход 10–12%</div>
-                <p class="sv-step__text">Определяем стратегию: аренда, рост цены или жизнь у моря — от этого зависит тип объекта</p>
-              </div>
-            </article>
-            <article class="sc-card sv-step">
-              <div class="sv-step__idx">02</div>
-              <div>
-                <div class="sv-step__kicker">Объект</div>
-                <div class="sv-step__title">Апартаменты в Банг Тао</div>
-                <p class="sv-step__text">Подбираем 2–3 юнита под бюджет с планировками, отельным управлением и прозрачной ценой</p>
-              </div>
-            </article>
-            <article class="sc-card sv-step">
-              <div class="sv-step__idx">03</div>
-              <div>
-                <div class="sv-step__kicker">Доход</div>
-                <div class="sv-step__title">Ключи и rental pool</div>
-                <p class="sv-step__text">Подключаем управляющую компанию — отчёт и выплаты приходят на карту без вашего участия</p>
-              </div>
-            </article>
+      <div class="sv-edit" data-reveal>
+        <div class="sv-edit__hero">
+          <img src="assets/img/andrey.jpg" alt="Андрей">
+          <div class="sv-edit__copy">
+            <span class="label">Личный эксперт</span>
+            <h2 class="h2">Из инвестиционной цели <em>в реальность</em></h2>
+            <p>Андрей с 2018 года на рынке Пхукета. Подбирает объекты под задачу, считает доходность и ведёт сделку до ключей</p>
           </div>
         </div>
-      </div>
-
-      <div class="showcase-variant" data-variant-panel="editorial" hidden>
-        <div class="sv-edit">
-          <div class="sv-edit__hero">
-            <img src="assets/img/andrey.jpg" alt="Андрей">
-            <div class="sv-edit__copy">
-              <span class="label">Личный эксперт</span>
-              <h2 class="h2">Из инвестиционной цели <em>в реальность</em></h2>
-              <p>Андрей с 2018 года на рынке Пхукета. Подбирает объекты под задачу, считает доходность и ведёт сделку до ключей</p>
-            </div>
-          </div>
-          <div class="sv-edit__stamps">
-            <div class="sv-stamp"><b>18</b><span>проектов в подборке</span></div>
-            <div class="sv-stamp"><b>2018</b><span>на рынке Пхукета</span></div>
-            <div class="sv-stamp"><b>70%</b><span>сделок дистанционно</span></div>
-          </div>
-          <article class="sc-card sv-polaroid" id="editorial-project"></article>
+        <div class="sv-edit__stamps">
+          <div class="sv-stamp"><b>18</b><span>проектов в подборке</span></div>
+          <div class="sv-stamp"><b>2018</b><span>на рынке Пхукета</span></div>
+          <div class="sv-stamp"><b>12,5 млн</b><span>уже инвестировано клиентами</span></div>
         </div>
-      </div>
-
-      <div class="showcase-variant" data-variant-panel="dialog" hidden>
-        <div class="sv-dialog">
-          <article class="sc-card sc-agent">
-            <img class="sc-agent__bg" src="assets/img/andrey.jpg" alt="Андрей">
-            <span class="sc-tag sc-agent__tag">Банг Тао · Пхукет</span>
-            <div class="sc-agent__body">
-              <p class="sc-agent__quote">«Моя задача — подобрать объект, который приносит доход и радует вас»</p>
-              <div class="sc-agent__author">Андрей — с 2018 года на рынке Пхукета</div>
-            </div>
-          </article>
-          <article class="sc-card sv-ask">
-            <div class="sv-ask__q">Типичный запрос</div>
-            <div class="sv-ask__title">Аренда у моря под ключ</div>
-            <div class="sv-ask__list">
-              <div><span>Стратегия</span><small>Пассивный доход</small></div>
-              <div><span>Бюджет</span><small>$250 000 – $500 000</small></div>
-              <div><span>Срок</span><small>1–2 месяца</small></div>
-            </div>
-          </article>
-          <div class="sc-card sv-picks" id="dialog-projects"></div>
-          <article class="sc-card sv-calc">
-            <div class="sc-card__label">Что уходит в WhatsApp</div>
-            <div class="sv-calc__num">10–12%</div>
-            <p class="sv-calc__text">Расчёт доходности по 2 проектам, планировки и график рассрочки — в течение 15 минут</p>
-          </article>
-        </div>
+        <article class="sc-card sv-polaroid" id="editorial-project">
+          <div class="sv-polaroid__media">
+            <button class="sv-polaroid__arrow sv-polaroid__arrow--prev" type="button" aria-label="Назад">←</button>
+            <img src="" alt="">
+            <button class="sv-polaroid__arrow sv-polaroid__arrow--next" type="button" aria-label="Вперёд">→</button>
+          </div>
+          <div class="sv-polaroid__body">
+            <span class="sc-card__label">Объект под задачу</span>
+            <div class="sv-polaroid__name"></div>
+            <div class="sv-polaroid__meta"></div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -2078,22 +1897,22 @@
         <div class="step-node">
           <div class="step-node__top"><span class="step-node__badge"><img src="assets/img/icons/step-consultant.png" alt="" onerror="this.closest('.step-node__badge').classList.add('no-icon')"><b>01</b></span><i aria-hidden="true"></i></div>
           <div class="step-node__title">Подбор и бронирование</div>
-          <p>Выбираем проект и юнит, фиксируем цену депозитом — дистанционно, за 1–3 дня</p>
+          <p>Выбираем проект и юнит, фиксируем цену депозитом</p>
         </div>
         <div class="step-node">
           <div class="step-node__top"><span class="step-node__badge"><img src="assets/img/icons/step-contract.png" alt="" onerror="this.closest('.step-node__badge').classList.add('no-icon')"><b>02</b></span><i aria-hidden="true"></i></div>
           <div class="step-node__title">Договор и проверка</div>
-          <p>Проверяем застройщика и договор. Freehold или leasehold — подскажем, что выгоднее</p>
+          <p>Проверяем условия и договор. Freehold или leasehold — подскажем, что выгоднее</p>
         </div>
         <div class="step-node">
           <div class="step-node__top"><span class="step-node__badge"><img src="assets/img/icons/step-zero.png" alt="" onerror="this.closest('.step-node__badge').classList.add('no-icon')"><b>03</b></span><i aria-hidden="true"></i></div>
           <div class="step-node__title">Рассрочка 0% до ключей</div>
-          <p>Платежи привязаны к этапам стройки. Первый взнос — обычно 30–35% от стоимости</p>
+          <p>Платежи привязаны к этапам стройки. Первый взнос</p>
         </div>
         <div class="step-node">
           <div class="step-node__top"><span class="step-node__badge"><img src="assets/img/icons/step-keys.png" alt="" onerror="this.closest('.step-node__badge').classList.add('no-icon')"><b>04</b></span><i aria-hidden="true"></i></div>
           <div class="step-node__title">Ключи и доход</div>
-          <p>Принимаем объект, подключаем управляющую компанию — доход приходит на карту</p>
+          <p>Принимаем объект, подключаем управляющую компанию и доход</p>
         </div>
       </div>
     </div>
@@ -2172,11 +1991,16 @@
         <span class="footer__copy">Все права защищены, 2026 г.</span>
         <a class="footer__policy" href="privacy.html" target="_blank" rel="noopener">Политика конфиденциальности</a>
         <div class="footer__socials">
-          <a href="#" aria-label="Instagram" title="Instagram">
+          <a href="https://www.instagram.com/alvorealestate?igsh=aTYydWw2NTd6Ynpz&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6">
               <rect x="3" y="3" width="18" height="18" rx="5"/>
               <circle cx="12" cy="12" r="4"/>
               <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="WhatsApp" title="WhatsApp">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.3A10 10 0 1 0 12 2Zm5.4 13.8c-.2.6-1.3 1.2-1.8 1.3-.5.1-1 .2-1.7 0-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.3-.3.6-.3.8-.3h.5c.2 0 .4-.1.6.5.2.6.8 1.9.8 2 .1.2.1.3 0 .5l-.4.7c-.2.2-.3.4-.1.7.1.3.7 1.1 1.4 1.8.9.9 1.7 1.1 2 1.3.2.1.4.1.6-.1l.8-1c.2-.3.4-.2.7-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .7-.2 1.3Z"/>
             </svg>
           </a>
           <a href="#" aria-label="Telegram" title="Telegram">
@@ -2262,7 +2086,7 @@
   <script src="assets/js/data.js?v=12"></script>
   <script src="assets/js/quiz-engine.js?v=17"></script>
   <script src="assets/js/common.js?v=15"></script>
-  <script src="assets/js/catalog.js?v=30"></script>
+  <script src="assets/js/catalog.js?v=32"></script>
   <script src="assets/js/motion.js?v=11"></script>
 </body>
 </html>
