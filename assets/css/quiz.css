@@ -92,10 +92,11 @@
   border-top: 1px solid rgba(244, 240, 230, 0.24);
 }
 .quiz__side-agent img {
-  width: 46px;
-  height: 46px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   object-fit: cover;
+  object-position: center;
   border: 1px solid rgba(194, 161, 99, 0.65);
   flex-shrink: 0;
 }
@@ -376,7 +377,7 @@
   .quiz__side-of { display: inline; margin-left: 8px; }
   .quiz__side-bullets { display: none; } /* в компактной шапке буллитам нет места */
   .quiz__side-agent { padding-top: 0; border-top: none; }
-  .quiz__side-agent img { width: 38px; height: 38px; }
+  .quiz__side-agent img { width: 48px; height: 48px; }
   .quiz__side-agent span { display: none; }
 }
 

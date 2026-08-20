@@ -23,8 +23,8 @@ function createQuiz(container, config) {
               : "<li>" + b + "</li>").join("") + "</ul>"
           : "") +
         '<div class="quiz__side-agent">' +
-        '<img src="assets/img/kun-ping.jpg" alt="Kun Ping">' +
-        "<div><b>Kun Ping</b><span>изучит ответы и подберёт варианты лично</span></div>" +
+        '<img src="assets/img/andrey-mini.jpg" alt="Андрей">' +
+        "<div><b>Андрей</b><span>С 2018 года на рынке Пхукета</span></div>" +
         "</div>" +
         "</aside>"
       : "") +
@@ -132,9 +132,12 @@ function createQuiz(container, config) {
         // письмо: телефон + читаемые ответы квиза (лейблы выбранных опций)
         const fields = {
           "Источник": "Квиз — подбор проектов",
+          "Имя": form.querySelector('input[name="name"]')?.value.trim() || "",
           "Телефон": form.querySelector('input[type="tel"]')?.value.trim() || "",
           "Страница": location.href
         };
+        const method = form.querySelector('input[name="method"]:checked')?.value;
+        if (method) fields["Способ связи"] = method;
         (config.questions || []).forEach((q, i) => {
           const opt = q.options.find((o) => o.value === answers[q.key]);
           if (opt) fields["Квиз " + (i + 1) + ". " + q.question] = opt.label;
@@ -223,7 +226,17 @@ function miniCardsHtml(projects) {
 function leadFormHtml(buttonText) {
   return (
     '<form class="quiz__form">' +
-    '<input class="input" type="tel" name="phone" placeholder="+7 900 000-00-00" autocomplete="tel" required>' +
+    '<div class="lead-methods-label">Удобный способ связи</div>' +
+    '<div class="lead-methods" role="radiogroup" aria-label="Удобный способ связи">' +
+    '<label class="lead-method"><input type="radio" name="method" value="Telegram" checked>' +
+    '<span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.6 18.9 19c-.2 1-.8 1.2-1.6.8l-4.5-3.3-2.2 2.1c-.2.2-.4.4-.9.4l.3-4.5 8.3-7.5c.4-.3-.1-.5-.6-.2l-10.2 6.4-4.4-1.4c-1-.3-1-1 .2-1.4l17.2-6.6c.8-.3 1.5.2 1.4 1.2Z"/></svg>Telegram</span></label>' +
+    '<label class="lead-method"><input type="radio" name="method" value="WhatsApp">' +
+    '<span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.3A10 10 0 1 0 12 2Zm5.4 13.8c-.2.6-1.3 1.2-1.8 1.3-.5.1-1 .2-1.7 0-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.3-.3.6-.3.8-.3h.5c.2 0 .4-.1.6.5.2.6.8 1.9.8 2 .1.2.1.3 0 .5l-.4.7c-.2.2-.3.4-.1.7.1.3.7 1.1 1.4 1.8.9.9 1.7 1.1 2 1.3.2.1.4.1.6-.1l.8-1c.2-.3.4-.2.7-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .7-.2 1.3Z"/></svg>WhatsApp</span></label>' +
+    "</div>" +
+    '<div class="quiz__form-row">' +
+    '<input class="input" type="text" name="name" placeholder="Ваше имя" autocomplete="name" required>' +
+    '<input class="input" type="tel" name="phone" placeholder="+7 900 000-00-00" autocomplete="tel" data-cc="ru" required>' +
+    "</div>" +
     '<button class="btn btn--gold btn--lg btn--block" type="submit">' + (buttonText || "Получить подборку") + "</button>" +
     '<label class="consent"><input type="checkbox" name="consent" required><span>Соглашаюсь с <a href="privacy.html" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>' +
     "</form>"

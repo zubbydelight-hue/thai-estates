@@ -844,10 +844,11 @@ body.menu-open .nav::before { opacity: 0; }
   text-align: left;
 }
 .agent__photo {
-  width: 56px;
-  height: 56px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
   object-fit: cover;
+  object-position: center;
   border: 2px solid var(--gold);
   flex-shrink: 0;
 }
@@ -872,7 +873,7 @@ body.menu-open .nav::before { opacity: 0; }
 @keyframes agentpulse { 50% { opacity: 0.35; } }
 
 .agent--center { flex-direction: column; text-align: center; gap: 16px; }
-.agent--center .agent__photo { width: 88px; height: 88px; }
+.agent--center .agent__photo { width: 104px; height: 104px; }
 .agent--light .agent__name { color: var(--cream); }
 .agent--light .agent__role { color: rgba(244, 240, 230, 0.55); }
 

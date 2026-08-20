@@ -9,13 +9,13 @@ const PROJECTS = [
     region: "phuket",
     strategy: ["rent"],
     strategyLabel: "Аренда",
-    type: "villa",
+    type: "condo",
     priceUsd: 850000,
     priceLabel: "от $850 000",
     img: "assets/img/hythe-1.jpg",
     areaLabel: "от 326 м²",
     perks: ["для прибыли", "рассрочка 0%", "приватный бассейн", "wellness-концепция"],
-    desc: "Wellness-виллы с приватными бассейнами от ведущего застройщика вилл на Пхукете. Спа-зоны, сады и полная приватность в 10 минутах от пляжа Бангтао",
+    desc: "Wellness-апартаменты с приватными бассейнами от Botanica на Пхукете. Спа-зоны, сады и полная приватность в 10 минутах от пляжа Бангтао",
     site: "botanicaluxuryvilla.com"
   },
   {
@@ -308,7 +308,7 @@ const PROJECT_DETAILS = {
     yieldLabel: "до 8% годовых на аренде",
     discount: "5% при 100% оплате",
     payment: "Рассрочка 0% до передачи ключей",
-    plans: "Виллы 3–4 спальни · 326–540 м²"
+    plans: "Апартаменты 3–4 спальни · 326–540 м²"
   },
   cassia: {
     photos: ["assets/img/cassia-1.webp", "assets/img/cassia-2.webp", "assets/img/cassia-3.webp"],

@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Alegreya:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/base.css?v=9">
-  <link rel="stylesheet" href="assets/css/quiz.css?v=12">
+  <link rel="stylesheet" href="assets/css/base.css?v=13">
+  <link rel="stylesheet" href="assets/css/quiz.css?v=16">
   <style>
     /* ---------- Шрифт заголовков: Book Antiqua / Palatino ----------
        На устройствах без системной Palatino подхватывается Alegreya (Google Fonts) —
@@ -85,6 +85,16 @@
     /* открытое мобильное меню перекрывает всё — таблетку прячем */
     body.menu-open .nav__inner::before,
     body.menu-open .nav__inner::after { opacity: 0; }
+
+    /* ---------- Hero: слабее затемнение, фото читается лучше ---------- */
+    .hero__bg::after {
+      background:
+        linear-gradient(180deg, rgba(11, 16, 12, 0.32) 0%, rgba(11, 16, 12, 0.1) 42%, rgba(11, 16, 12, 0.68) 100%),
+        linear-gradient(90deg, rgba(11, 16, 12, 0.22) 0%, rgba(11, 16, 12, 0.02) 60%);
+    }
+
+    /* Блок брендов скрыт по запросу, HTML оставлен */
+    .brandwall { display: none !important; }
 
     /* ---------- Hero: контент по центру высоты, метрики прижаты к низу ---------- */
     .hero__content {
@@ -281,6 +291,7 @@
     /* каталог идёт сразу после тёмного блока брендов — сокращаем верхний отступ */
     #catalog { padding-top: clamp(52px, 6vw, 92px); }
     /* свёрнутый каталог: показываем только первые 3 карточки */
+    .cards-grid { position: relative; z-index: 1; }
     .cards-grid.is-collapsed > *:nth-child(n+4) { display: none; }
     .cards-more { display: flex; justify-content: center; margin-top: clamp(26px, 3vw, 44px); }
     .cards-more[hidden] { display: none; }
@@ -508,12 +519,65 @@
     .quiz-spotlight .quiz__side { order: 2; min-height: 0; padding: 20px 22px; }
     .quiz-spotlight .quiz__body { padding: clamp(20px, 2.4vw, 32px); }
     .quiz-spotlight .quiz__question { font-size: clamp(19px, 1.9vw, 25px); margin-bottom: 6px; }
-    .quiz-spotlight .quiz__hint { margin-bottom: 16px; font-size: 13.5px; }
-    .quiz-spotlight .quiz__question + .quiz__options { margin-top: 16px; }
-    .quiz-spotlight .quiz__hint + .quiz__options { margin-top: 0; }
-    .quiz-spotlight .quiz__options--cards { gap: 12px; }
-    .quiz-spotlight .quiz-card__media { aspect-ratio: 16 / 8; }
-    .quiz-spotlight .quiz-card__label { padding: 10px 14px 12px; font-size: 14.5px; }
+    .quiz-spotlight .quiz__question + .quiz__options { margin-top: 18px; }
+    .quiz-spotlight .quiz__nav { margin-top: 18px; }
+    /* Варианты как радиокнопки в две колонки — без фото и без подписей */
+    .quiz-spotlight .quiz__options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .quiz-spotlight .quiz-opt {
+      gap: 12px;
+      min-height: 56px;
+      padding: 14px 16px 14px 48px;
+      border: 1px solid rgba(20, 23, 15, 0.12);
+      border-radius: 14px;
+      box-shadow: none;
+      transform: none;
+    }
+    .quiz-spotlight .quiz-opt:hover {
+      transform: none;
+      border-color: rgba(20, 23, 15, 0.28);
+      background: #f7f4ee;
+    }
+    .quiz-spotlight .quiz-opt.is-selected {
+      border-color: var(--night);
+      box-shadow: none;
+      background: #f3efe6;
+    }
+    .quiz-spotlight .quiz-opt::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #d4cfc4;
+      background: #ece8df;
+      transform: translateY(-50%);
+    }
+    .quiz-spotlight .quiz-opt.is-selected::before {
+      border-color: var(--night);
+      background: radial-gradient(circle at center, var(--night) 38%, #ece8df 42%);
+    }
+    .quiz-spotlight .quiz-opt::after { display: none; }
+    .quiz-spotlight .quiz-opt__icon { display: none; }
+    .quiz-spotlight .quiz-opt__label { font-size: 14.5px; font-weight: 500; }
+    .quiz-spotlight .quiz-opt__label small { display: none; }
+    @media (max-width: 640px) {
+      .quiz-spotlight .quiz__options { grid-template-columns: 1fr; }
+    }
+    .quiz-spotlight .quiz__form .lead-methods { justify-content: flex-start; }
+    .quiz-spotlight .quiz__form .lead-method { flex: none; }
+    .quiz-spotlight .quiz__form .lead-method span { padding: 10px 18px; border-radius: 14px; }
+    .quiz-spotlight .quiz__form .input {
+      background: var(--white);
+      color: var(--ink);
+      border: 1px solid var(--hair);
+      border-radius: 14px;
+    }
     /* Мини-обложка каталога рядом с буллитом «PDF-подборка в подарок» */
     .quiz__side-bullets li.has-cover { align-items: center; gap: 12px; }
     .quiz__side-bullets li.has-cover::before { content: none; }
@@ -627,10 +691,13 @@
 
     /* ---------- Строка-поиск каталога (кастомные выпадающие списки) ---------- */
     .searchbar {
+      position: relative;
+      z-index: 20;
       margin-top: clamp(22px, 2.4vw, 34px);
       background: var(--cream-2);
       border-radius: 24px;
       padding: clamp(14px, 1.4vw, 20px);
+      overflow: visible;
     }
     .searchbar__row {
       display: grid;
@@ -652,7 +719,11 @@
       transition: border-color 0.25s, box-shadow 0.25s;
     }
     .sfield:hover { border-color: rgba(20, 23, 15, 0.28); }
-    .sfield.is-open { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(194, 161, 99, 0.14); }
+    .sfield.is-open {
+      z-index: 30;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(194, 161, 99, 0.14);
+    }
     .sfield__label { font-size: 11px; font-weight: 600; color: var(--stone); pointer-events: none; }
     .sfield__value {
       text-align: left;
@@ -683,7 +754,7 @@
       border-radius: 14px;
       box-shadow: 0 18px 44px rgba(11, 16, 12, 0.18);
       padding: 6px;
-      z-index: 40;
+      z-index: 50;
       opacity: 0; visibility: hidden; transform: translateY(-6px);
       transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
     }
@@ -696,10 +767,18 @@
     }
     .sfield__menu li:hover { background: var(--cream-2); }
     .sfield__menu li.is-selected { background: var(--night); color: var(--cream); font-weight: 600; }
-    .searchbar__submit { border-radius: 14px; padding: 0 30px; white-space: nowrap; min-height: 56px; }
+    .searchbar__submit {
+      border-radius: 14px;
+      padding: 0 34px;
+      white-space: nowrap;
+      min-height: 62px;
+      font-size: 12.5px;
+      letter-spacing: 0.16em;
+      box-shadow: 0 12px 28px -8px rgba(194, 161, 99, 0.9);
+    }
     @media (max-width: 980px) {
       .searchbar__row { grid-template-columns: 1fr 1fr; }
-      .searchbar__submit { grid-column: 1 / -1; min-height: 54px; }
+      .searchbar__submit { grid-column: 1 / -1; min-height: 58px; }
     }
     @media (max-width: 560px) {
       .searchbar__row { grid-template-columns: 1fr; }
@@ -1077,7 +1156,7 @@
       justify-content: flex-end;
       padding: 0;
     }
-    .sc-agent__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+    .sc-agent__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 32% 18%; }
     .sc-agent::after {
       content: "";
       position: absolute; inset: 0;
@@ -1152,6 +1231,141 @@
       .sc-slide { flex-basis: 86%; }
     }
 
+    /* Демо-переключатель раскладок экспертного блока */
+    .showcase-switch {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 22px;
+      padding: 8px 10px;
+      border: 1px dashed rgba(194, 161, 99, 0.55);
+      border-radius: 16px;
+      background: rgba(244, 240, 230, 0.06);
+    }
+    .showcase-switch > span {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-2);
+      padding: 0 8px;
+    }
+    .showcase-switch button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(244, 240, 230, 0.7);
+      border: 1px solid rgba(244, 240, 230, 0.16);
+      transition: background 0.25s, color 0.25s, border-color 0.25s;
+    }
+    .showcase-switch button:hover { color: var(--cream); border-color: rgba(194, 161, 99, 0.6); }
+    .showcase-switch button.is-active { background: var(--gold); color: var(--night); border-color: var(--gold); }
+    .showcase-variant[hidden] { display: none !important; }
+    .showcase.is-editorial .showcase__head { display: none; }
+
+    /* 1. Путь сделки */
+    .sv-path {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 14px;
+    }
+    .sv-path .sc-agent { min-height: 540px; grid-column: auto; grid-row: auto; }
+    .sv-path__steps { display: grid; gap: 14px; }
+    .sv-step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      align-items: center;
+      min-height: 168px;
+    }
+    .sv-step__idx {
+      font-family: var(--ff-d);
+      font-size: 42px;
+      font-weight: 500;
+      color: var(--gold-2);
+      line-height: 1;
+      min-width: 52px;
+    }
+    .sv-step__kicker { font-size: 10.5px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-2); }
+    .sv-step__title { margin-top: 6px; font-family: var(--ff-d); font-size: clamp(20px, 1.8vw, 26px); line-height: 1.2; }
+    .sv-step__text { margin-top: 8px; font-size: 13.5px; line-height: 1.6; color: rgba(244, 240, 230, 0.62); }
+
+    /* 2. Редакционный разворот */
+    .sv-edit {
+      display: grid;
+      grid-template-columns: 1.45fr 0.9fr;
+      grid-template-rows: auto 1fr;
+      gap: 14px;
+    }
+    .sv-edit__hero {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      position: relative;
+      min-height: 560px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--hair-l);
+    }
+    .sv-edit__hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 32% 16%; }
+    .sv-edit__hero::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(8,11,8,0.08) 0%, rgba(8,11,8,0.2) 40%, rgba(8,11,8,0.92) 100%);
+    }
+    .sv-edit__copy { position: absolute; left: clamp(22px, 3vw, 44px); right: 24px; bottom: clamp(22px, 3vw, 44px); z-index: 1; }
+    .sv-edit__copy .label { color: var(--gold-2); }
+    .sv-edit__copy .h2 { margin-top: 12px; max-width: 12ch; color: var(--cream); font-size: clamp(34px, 4.4vw, 64px); }
+    .sv-edit__copy p { margin-top: 14px; max-width: 38ch; font-size: 14.5px; line-height: 1.65; color: rgba(244, 240, 230, 0.7); }
+    .sv-edit__stamps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .sv-stamp {
+      padding: 16px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--hair-l);
+      background: #12170f;
+      text-align: center;
+    }
+    .sv-stamp b { display: block; font-family: var(--ff-d); font-size: clamp(18px, 1.8vw, 26px); font-weight: 500; color: var(--gold-2); line-height: 1.1; }
+    .sv-stamp span { display: block; margin-top: 6px; font-size: 11px; line-height: 1.35; color: rgba(244, 240, 230, 0.6); }
+    .sv-polaroid { padding: 0; display: flex; flex-direction: column; }
+    .sv-polaroid img { width: 100%; aspect-ratio: 16 / 11; object-fit: cover; }
+    .sv-polaroid__body { padding: 16px 18px 18px; }
+    .sv-polaroid__name { font-family: var(--ff-d); font-size: 22px; font-weight: 500; }
+    .sv-polaroid__meta { margin-top: 6px; font-size: 13px; color: var(--gold-2); }
+
+    /* 3. Диалог */
+    .sv-dialog {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .sv-dialog .sc-agent { min-height: 360px; grid-column: auto; grid-row: auto; }
+    .sv-ask__q { font-size: 12px; font-weight: 700; color: var(--gold-2); letter-spacing: 0.04em; }
+    .sv-ask__title { margin-top: 10px; font-family: var(--ff-d); font-size: clamp(22px, 2vw, 30px); line-height: 1.2; }
+    .sv-ask__list { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+    .sv-ask__list div { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--hair-l); font-size: 14px; }
+    .sv-ask__list small { color: rgba(244, 240, 230, 0.5); }
+    .sv-picks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px; }
+    .sv-pick { border-radius: 10px; overflow: hidden; border: 1px solid var(--hair-l); background: var(--night); }
+    .sv-pick img { width: 100%; aspect-ratio: 16 / 11; object-fit: cover; }
+    .sv-pick__body { padding: 10px 12px 12px; }
+    .sv-pick__name { font-family: var(--ff-d); font-size: 15px; font-weight: 500; line-height: 1.25; }
+    .sv-pick__price { margin-top: 4px; font-size: 12px; color: var(--gold-2); }
+    .sv-calc { min-height: 180px; display: flex; flex-direction: column; justify-content: center; background: linear-gradient(135deg, #16221a, #0b120d); }
+    .sv-calc__num { font-family: var(--ff-d); font-size: clamp(36px, 4vw, 52px); color: var(--cream); line-height: 1; }
+    .sv-calc__text { margin-top: 10px; font-size: 14px; line-height: 1.6; color: rgba(244, 240, 230, 0.65); max-width: 36ch; }
+
+    @media (max-width: 980px) {
+      .sv-path, .sv-edit, .sv-dialog { grid-template-columns: 1fr; }
+      .sv-edit__hero { grid-row: auto; min-height: 420px; }
+      .sv-path .sc-agent, .sv-dialog .sc-agent { min-height: 320px; }
+    }
+    @media (max-width: 620px) {
+      .sv-edit__stamps, .sv-picks { grid-template-columns: 1fr; }
+      .sv-step { grid-template-columns: 1fr; gap: 8px; min-height: 0; }
+    }
+
     /* ---------- Квиз-тизер (полоса) ---------- */
     .teaser-band { background: var(--cream-2); padding: clamp(40px, 5vw, 72px) 0; }
     .teaser-box {
@@ -1167,7 +1381,7 @@
       flex-wrap: wrap;
     }
     .teaser-box .label { color: var(--gold-2); }
-    .teaser-box__title { font-family: var(--ff-d); font-weight: 500; font-size: clamp(28px, 3.4vw, 48px); line-height: 1.05; margin-top: 16px; max-width: 20ch; }
+    .teaser-box__title { font-family: var(--ff-d); font-weight: 500; font-size: clamp(28px, 3.4vw, 48px); line-height: 1.05; margin-top: 0; max-width: 20ch; }
     .teaser-box__title em { font-style: italic; color: var(--gold); }
     .teaser-box__text { margin-top: 16px; font-size: 15px; line-height: 1.7; color: rgba(244, 240, 230, 0.65); max-width: 560px; }
     .teaser-box .btn { flex: 0 0 auto; }
@@ -1544,9 +1758,7 @@
   <section class="section" id="catalog">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-head__idx">01 / Подборка</div>
         <div class="sec-head__main">
-          <span class="label" data-reveal>Подборка · август 2026</span>
           <h2 class="h2" data-split>ТОП-18 проектов от <em>$85 000</em> для жизни и инвестиций у моря Пхукета</h2>
           <p class="sec-head__sub" data-reveal>Реальные фотографии, цены и площади по каждому объекту. Фильтруйте по стратегии или бюджету, открывайте карточку — внутри галерея, планировки и условия оплаты</p>
         </div>
@@ -1592,7 +1804,7 @@
               <li data-val="pattaya">Паттайя</li>
             </ul>
           </div>
-          <button class="btn btn--night searchbar__submit" id="search-submit" type="button">Найти недвижимость</button>
+          <button class="btn btn--gold searchbar__submit" id="search-submit" type="button">Найти недвижимость</button>
         </div>
       </div>
 
@@ -1605,55 +1817,152 @@
   </section>
 
   <!-- ЭКСПЕРТ / ПОКАЗАТЕЛЬНЫЙ БЛОК -->
-  <section class="section section--dark showcase">
+  <section class="section section--dark showcase" id="expert">
     <div class="container">
+      <div class="showcase-switch" role="tablist" aria-label="Демо: варианты блока эксперта">
+        <span>Демо</span>
+        <button type="button" data-variant="now" class="is-active">Сейчас</button>
+        <button type="button" data-variant="path">1. Путь сделки</button>
+        <button type="button" data-variant="editorial">2. Разворот</button>
+        <button type="button" data-variant="dialog">3. Диалог</button>
+      </div>
+
       <div class="showcase__head" data-reveal>
         <span class="label">Личный эксперт</span>
-        <h2 class="h2" data-split>Воплощаем ваши инвестиционные цели <em>в реальность</em></h2>
+        <h2 class="h2" data-split>Из инвестиционной цели <em>в реальность</em></h2>
       </div>
-      <div class="showcase__grid">
-        <article class="sc-card sc-agent" data-reveal>
-          <img class="sc-agent__bg" src="assets/img/kun-ping.jpg" alt="Kun Ping">
-          <span class="sc-tag sc-agent__tag">Банг Тао · Пхукет</span>
-          <div class="sc-agent__body">
-            <p class="sc-agent__quote">«Моя задача — подобрать объект, который приносит доход и радует вас. Честная экспертиза, прозрачные расчёты и сервис высокого уровня»</p>
-            <div class="sc-agent__author">Kun Ping — эксперт по недвижимости Таиланда</div>
-          </div>
-        </article>
 
-        <article class="sc-card sc-slider" data-reveal>
-          <div class="sc-slider__head">
-            <span class="sc-card__label">Проекты подборки</span>
-            <div class="sc-slider__nav">
-              <button class="sc-slider__btn" type="button" data-dir="-1" aria-label="Назад">←</button>
-              <button class="sc-slider__btn" type="button" data-dir="1" aria-label="Вперёд">→</button>
+      <div class="showcase-variant" data-variant-panel="now">
+        <div class="showcase__grid">
+          <article class="sc-card sc-agent" data-reveal>
+            <img class="sc-agent__bg" src="assets/img/andrey.jpg" alt="Андрей">
+            <span class="sc-tag sc-agent__tag">Банг Тао · Пхукет</span>
+            <div class="sc-agent__body">
+              <p class="sc-agent__quote">«Моя задача — подобрать объект, который приносит доход и радует вас. Честная экспертиза, прозрачные расчёты и сервис высокого уровня»</p>
+              <div class="sc-agent__author">Андрей — с 2018 года на рынке Пхукета</div>
+            </div>
+          </article>
+
+          <article class="sc-card sc-slider" data-reveal>
+            <div class="sc-slider__head">
+              <span class="sc-card__label">Проекты подборки</span>
+              <div class="sc-slider__nav">
+                <button class="sc-slider__btn" type="button" data-dir="-1" aria-label="Назад">←</button>
+                <button class="sc-slider__btn" type="button" data-dir="1" aria-label="Вперёд">→</button>
+              </div>
+            </div>
+            <div class="sc-slider__track" id="showcase-slider"></div>
+          </article>
+
+          <article class="sc-card sc-stats" data-reveal>
+            <div class="sc-stats__num">18 проектов</div>
+            <div class="sc-stats__title">Проверенные объекты на побережье Пхукета</div>
+            <p class="sc-stats__text">Отобрали проекты от надёжных застройщиков — с прозрачными ценами, планировками и расчётом доходности</p>
+            <div class="sc-chips">
+              <span class="sc-chip">Банг Тао</span>
+              <span class="sc-chip">Сурин</span>
+              <span class="sc-chip">Камала</span>
+              <span class="sc-chip">Най Тон</span>
+              <span class="sc-chip">Лаян</span>
+            </div>
+          </article>
+
+          <article class="sc-card sc-money" data-reveal>
+            <div class="sc-money__watermark">ALVO</div>
+            <div class="sc-money__num">$12 500 000</div>
+            <div class="sc-money__label">Инвестировано клиентами в проекты у моря</div>
+            <div class="sc-money__stats">
+              <span><b>9 лет</b> на рынке Таиланда</span>
+              <span><b>70%</b> сделок дистанционно</span>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="showcase-variant" data-variant-panel="path" hidden>
+        <div class="sv-path">
+          <article class="sc-card sc-agent">
+            <img class="sc-agent__bg" src="assets/img/andrey.jpg" alt="Андрей">
+            <span class="sc-tag sc-agent__tag">Андрей · с 2018 на Пхукете</span>
+            <div class="sc-agent__body">
+              <p class="sc-agent__quote">«Сначала фиксируем цель и бюджет — потом объект. Не наоборот»</p>
+              <div class="sc-agent__author">Личный эксперт по сделке</div>
+            </div>
+          </article>
+          <div class="sv-path__steps">
+            <article class="sc-card sv-step">
+              <div class="sv-step__idx">01</div>
+              <div>
+                <div class="sv-step__kicker">Цель</div>
+                <div class="sv-step__title">Пассивный доход 10–12%</div>
+                <p class="sv-step__text">Определяем стратегию: аренда, рост цены или жизнь у моря — от этого зависит тип объекта</p>
+              </div>
+            </article>
+            <article class="sc-card sv-step">
+              <div class="sv-step__idx">02</div>
+              <div>
+                <div class="sv-step__kicker">Объект</div>
+                <div class="sv-step__title">Апартаменты в Банг Тао</div>
+                <p class="sv-step__text">Подбираем 2–3 юнита под бюджет с планировками, отельным управлением и прозрачной ценой</p>
+              </div>
+            </article>
+            <article class="sc-card sv-step">
+              <div class="sv-step__idx">03</div>
+              <div>
+                <div class="sv-step__kicker">Доход</div>
+                <div class="sv-step__title">Ключи и rental pool</div>
+                <p class="sv-step__text">Подключаем управляющую компанию — отчёт и выплаты приходят на карту без вашего участия</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase-variant" data-variant-panel="editorial" hidden>
+        <div class="sv-edit">
+          <div class="sv-edit__hero">
+            <img src="assets/img/andrey.jpg" alt="Андрей">
+            <div class="sv-edit__copy">
+              <span class="label">Личный эксперт</span>
+              <h2 class="h2">Из инвестиционной цели <em>в реальность</em></h2>
+              <p>Андрей с 2018 года на рынке Пхукета. Подбирает объекты под задачу, считает доходность и ведёт сделку до ключей</p>
             </div>
           </div>
-          <div class="sc-slider__track" id="showcase-slider"></div>
-        </article>
-
-        <article class="sc-card sc-stats" data-reveal>
-          <div class="sc-stats__num">18 проектов</div>
-          <div class="sc-stats__title">Проверенные объекты на побережье Пхукета</div>
-          <p class="sc-stats__text">Отобрали проекты от надёжных застройщиков — с прозрачными ценами, планировками и расчётом доходности</p>
-          <div class="sc-chips">
-            <span class="sc-chip">Банг Тао</span>
-            <span class="sc-chip">Сурин</span>
-            <span class="sc-chip">Камала</span>
-            <span class="sc-chip">Най Тон</span>
-            <span class="sc-chip">Лаян</span>
+          <div class="sv-edit__stamps">
+            <div class="sv-stamp"><b>18</b><span>проектов в подборке</span></div>
+            <div class="sv-stamp"><b>2018</b><span>на рынке Пхукета</span></div>
+            <div class="sv-stamp"><b>70%</b><span>сделок дистанционно</span></div>
           </div>
-        </article>
+          <article class="sc-card sv-polaroid" id="editorial-project"></article>
+        </div>
+      </div>
 
-        <article class="sc-card sc-money" data-reveal>
-          <div class="sc-money__watermark">ALVO</div>
-          <div class="sc-money__num">$12 500 000</div>
-          <div class="sc-money__label">Инвестировано клиентами в проекты у моря</div>
-          <div class="sc-money__stats">
-            <span><b>9 лет</b> на рынке Таиланда</span>
-            <span><b>70%</b> сделок дистанционно</span>
-          </div>
-        </article>
+      <div class="showcase-variant" data-variant-panel="dialog" hidden>
+        <div class="sv-dialog">
+          <article class="sc-card sc-agent">
+            <img class="sc-agent__bg" src="assets/img/andrey.jpg" alt="Андрей">
+            <span class="sc-tag sc-agent__tag">Банг Тао · Пхукет</span>
+            <div class="sc-agent__body">
+              <p class="sc-agent__quote">«Моя задача — подобрать объект, который приносит доход и радует вас»</p>
+              <div class="sc-agent__author">Андрей — с 2018 года на рынке Пхукета</div>
+            </div>
+          </article>
+          <article class="sc-card sv-ask">
+            <div class="sv-ask__q">Типичный запрос</div>
+            <div class="sv-ask__title">Аренда у моря под ключ</div>
+            <div class="sv-ask__list">
+              <div><span>Стратегия</span><small>Пассивный доход</small></div>
+              <div><span>Бюджет</span><small>$250 000 – $500 000</small></div>
+              <div><span>Срок</span><small>1–2 месяца</small></div>
+            </div>
+          </article>
+          <div class="sc-card sv-picks" id="dialog-projects"></div>
+          <article class="sc-card sv-calc">
+            <div class="sc-card__label">Что уходит в WhatsApp</div>
+            <div class="sv-calc__num">10–12%</div>
+            <p class="sv-calc__text">Расчёт доходности по 2 проектам, планировки и график рассрочки — в течение 15 минут</p>
+          </article>
+        </div>
       </div>
     </div>
   </section>
@@ -1663,9 +1972,8 @@
     <div class="container">
       <div class="teaser-box" data-reveal>
         <div class="teaser-box__content">
-          <span class="label">Квиз · 1 минута</span>
           <h2 class="teaser-box__title" data-split>Нужна помощь в выборе из <em>18&nbsp;проектов?</em></h2>
-          <p class="teaser-box__text">Ответьте на 4 вопроса — и получите ваш топ-3 с ценами и доступными планировками уже сегодня</p>
+          <p class="teaser-box__text">Ответьте на 4 вопроса — и получите ваш топ-3 проекта с ценами и доступными планировками уже сегодня</p>
         </div>
         <a class="btn btn--gold" href="#quiz">Получить подборку <span class="arr">→</span></a>
       </div>
@@ -1676,9 +1984,7 @@
   <section class="section" id="cases">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-head__idx">02 / Кейсы</div>
         <div class="sec-head__main">
-          <span class="label" data-reveal>Реальные сценарии</span>
           <h2 class="h2" data-split>Сколько зарабатывают на проектах <em>из подборки</em></h2>
           <p class="sec-head__sub" data-reveal>Цифры из графиков продаж застройщиков за 2026 год: рост цены от старта продаж к сдаче и фактическая доходность арендных программ</p>
         </div>
@@ -1701,8 +2007,8 @@
         </div>
       </div>
       <div class="cases-cta" data-reveal>
-        <div class="cases-cta__title">Получите такой же расчёт под ваш бюджет</div>
-        <p class="cases-cta__sub">Укажите контакты — Kun Ping подберёт 2–3 сценария с цифрами по проектам из подборки</p>
+        <div class="cases-cta__title">Получите персональный расчёт под ваши цели и бюджет</div>
+        <p class="cases-cta__sub">Подберём до 3-х сценариев с цифрами и проектами из подборки</p>
         <form class="cases-cta__form" data-demo-form>
           <input type="hidden" name="lead_source" value="Блок «Кейсы» — расчёт доходности">
           <input class="input" type="tel" placeholder="+7 900 000-00-00" autocomplete="tel" required>
@@ -1720,9 +2026,7 @@
   <section class="section section--panel" id="why">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-head__idx">03 / Рынок</div>
         <div class="sec-head__main">
-          <span class="label" data-reveal>Почему Таиланд</span>
           <h2 class="h2" data-split>Рынок, который растёт быстрее, чем <em>строятся</em> дома</h2>
         </div>
       </div>
@@ -1753,9 +2057,7 @@
   <section class="section section--dark" id="quiz">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-head__idx">04 / Подбор</div>
         <div class="sec-head__main">
-          <span class="label" data-reveal>Квиз-подбор · 1 минута</span>
           <h2 class="h2" data-split>Ответьте на 4 вопроса — получите <em>топ-3 проекта</em></h2>
           <p class="sec-head__sub" data-reveal>С ценами, планировками, расчётом стоимости и доходности на проекте</p>
         </div>
@@ -1768,9 +2070,7 @@
   <section class="section section--tight" id="steps">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-head__idx">05 / Процесс</div>
         <div class="sec-head__main">
-          <span class="label" data-reveal>Как проходит сделка</span>
           <h2 class="h2" data-split>Четыре шага до собственности <em>у моря</em></h2>
         </div>
       </div>
@@ -1803,7 +2103,6 @@
   <section class="section section--panel" id="faq">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-head__idx">06 / FAQ</div>
         <div class="sec-head__main">
           <span class="label" data-reveal>Нас часто спрашивают</span>
           <h2 class="h2" data-split>Вопросы <em>и</em> ответы</h2>
@@ -1843,13 +2142,12 @@
     <div class="cta-final__bg"><img src="assets/img/btgr-lagoon-1.jpg" alt=""></div>
     <div class="container cta-final__inner">
       <div class="agent agent--center agent--light" style="margin-bottom:18px" data-reveal>
-        <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
+        <img class="agent__photo" src="assets/img/andrey-mini.jpg" alt="Андрей">
         <div>
-          <div class="agent__name">Kun Ping — эксперт по недвижимости Таиланда</div>
-          <div class="agent__role">Лично подберёт проекты под вашу задачу · <span class="agent__status">онлайн</span></div>
+          <div class="agent__name">Андрей</div>
+          <div class="agent__role">С 2018 года на рынке Пхукета · <span class="agent__status">онлайн</span></div>
         </div>
       </div>
-      <span class="label" data-reveal>Начните с презентации</span>
       <h2 class="h2" style="margin-top:14px" data-split>Получите полную презентацию проектов <em>под ваш запрос</em></h2>
       <p class="sec-head__sub" style="margin:16px auto 0" data-reveal>PDF с ценами, планировками, доходностью и графиками рассрочки — в WhatsApp или Telegram в течение 15 минут</p>
       <form data-demo-form data-reveal>
@@ -1868,8 +2166,6 @@
     <div class="container">
       <div class="footer__word" data-split>ALVO</div>
       <div class="footer__row">
-        <span>+66 80 000 00 00</span>
-        <span>info@alvo.demo</span>
         <span>Phuket · 2026</span>
       </div>
       <div class="footer__bottom">
@@ -1926,10 +2222,10 @@
       <div class="h3">Получить подборку с ценами</div>
       <p class="form-note" style="font-size:13.5px">Мы вышлем вам подборку доступных квартир, планировки этажей и ответим на ваши вопросы в течение 15 минут</p>
       <div class="agent" style="margin-top:18px;padding:13px 15px;border:1px solid var(--hair);border-radius:2px">
-        <img class="agent__photo" src="assets/img/kun-ping.jpg" alt="Kun Ping">
+        <img class="agent__photo" src="assets/img/andrey-mini.jpg" alt="Андрей">
         <div>
-          <div class="agent__name">Подборку отправит Kun Ping</div>
-          <div class="agent__role">Ответит в течение 15 минут · <span class="agent__status">онлайн</span></div>
+          <div class="agent__name">Подборку отправит Андрей</div>
+          <div class="agent__role">С 2018 года на рынке Пхукета · <span class="agent__status">онлайн</span></div>
         </div>
       </div>
       <form data-demo-form>
@@ -1963,10 +2259,10 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
   <!-- Lenis убран: прокрутка нативная, без инерции -->
-  <script src="assets/js/data.js?v=11"></script>
-  <script src="assets/js/quiz-engine.js?v=14"></script>
-  <script src="assets/js/common.js?v=13"></script>
-  <script src="assets/js/catalog.js?v=25"></script>
+  <script src="assets/js/data.js?v=12"></script>
+  <script src="assets/js/quiz-engine.js?v=17"></script>
+  <script src="assets/js/common.js?v=15"></script>
+  <script src="assets/js/catalog.js?v=30"></script>
   <script src="assets/js/motion.js?v=11"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let firstRender = true;
 
   // все 18 проектов подборки
-  const CATALOG = PROJECTS;
+  const CATALOG = PROJECTS.slice().sort((a, b) => a.priceUsd - b.priceUsd);
 
   // Карточка: только название, стоимость, площадь и теги; клик открывает попап
   function cardHtml(p) {
@@ -55,6 +55,39 @@ document.addEventListener("DOMContentLoaded", () => {
       })
     );
   }
+
+  const editorial = document.getElementById("editorial-project");
+  if (editorial && CATALOG[0]) {
+    const p = CATALOG[0];
+    editorial.innerHTML =
+      '<img src="' + p.img + '" alt="' + p.name + '">' +
+      '<div class="sv-polaroid__body"><span class="sc-card__label">Объект под задачу</span>' +
+      '<div class="sv-polaroid__name">' + p.name + "</div>" +
+      '<div class="sv-polaroid__meta">' + p.priceLabel + " · " + p.location + "</div></div>";
+  }
+  const dialogPicks = document.getElementById("dialog-projects");
+  if (dialogPicks) {
+    dialogPicks.innerHTML = CATALOG.slice(0, 2)
+      .map((p) =>
+        '<div class="sv-pick"><img src="' + p.img + '" alt="' + p.name + '">' +
+        '<div class="sv-pick__body"><div class="sv-pick__name">' + p.name + "</div>" +
+        '<div class="sv-pick__price">' + p.priceLabel + "</div></div></div>"
+      )
+      .join("");
+  }
+
+  const expert = document.getElementById("expert");
+  document.querySelectorAll(".showcase-switch [data-variant]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const v = btn.dataset.variant;
+      document.querySelectorAll(".showcase-switch [data-variant]").forEach((b) => b.classList.toggle("is-active", b === btn));
+      document.querySelectorAll("[data-variant-panel]").forEach((p) => {
+        p.hidden = p.dataset.variantPanel !== v;
+      });
+      if (expert) expert.classList.toggle("is-editorial", v === "editorial");
+      if (window.ScrollTrigger) ScrollTrigger.refresh();
+    });
+  });
 
   function render(list) {
     const cardsHtml = list.map(cardHtml);
@@ -258,26 +291,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const enhancePhone = (input) => {
     if (!input || input.closest(".phone-field")) return;
+    const country = (input.dataset.cc && CC.find((c) => c[0] === input.dataset.cc)) || defCountry;
     const wrap = document.createElement("span");
     wrap.className = "phone-field";
     input.parentNode.insertBefore(wrap, input);
     wrap.appendChild(input);
     const img = document.createElement("img");
-    img.src = flagUrl(defCountry[0]);
-    img.alt = defCountry[1];
+    img.src = flagUrl(country[0]);
+    img.alt = country[1];
     wrap.appendChild(img);
-    input.placeholder = defCountry[2] + " 900 000-00-00";
+    input.placeholder = country[2] + " 900 000-00-00";
 
     input.addEventListener("focus", () => {
-      if (!input.value.trim()) input.value = defCountry[2] + " ";
+      if (!input.value.trim()) input.value = country[2] + " ";
     });
     input.addEventListener("blur", () => {
-      if (input.value.trim() === defCountry[2] || input.value.trim() === "+") input.value = "";
+      if (input.value.trim() === country[2] || input.value.trim() === "+") input.value = "";
     });
     input.addEventListener("input", () => {
       let raw = input.value.replace(/[^\d+]/g, "");
       if (!raw) { input.value = ""; return; }
-      if (!raw.startsWith("+")) raw = defCountry[2] + raw; // авто-подстановка кода региона
+      if (!raw.startsWith("+")) raw = country[2] + raw; // авто-подстановка кода региона
       let best = null;
       CC.forEach((c) => {
         if (raw.startsWith(c[2]) && (!best || c[2].length > best[2].length)) best = c;
@@ -308,61 +342,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Встроенный квиз
   createQuiz(document.getElementById("quiz-container"), {
+    img: "assets/img/santa-monica-7.jpg",
     resultImg: "assets/img/trisara-1.jpg",
     bullets: ["4 вопроса", "Меньше минуты", "Топ-3 проекта с ценами", { text: "PDF-подборка в подарок", img: "assets/img/catalog-cover.png" }],
     questions: [
       {
         key: "strategy",
-        question: "Какая у вас цель?",
-        hint: "От этого зависит стратегия и тип проекта",
-        img: "assets/img/santa-monica-7.jpg",
+        question: "Какой целью рассматриваете покупку?",
         options: [
-          { value: "rent", label: "Пассивный доход с аренды", sub: "до 10% годовых", img: "assets/img/santa-monica-5.jpg" },
-          { value: "resale", label: "Заработать на росте цены", sub: "вход на стройке, выход на сдаче", img: "assets/img/riviera-malibu-2.jpg" },
-          { value: "live", label: "Жильё для себя и семьи", sub: "переезд или зимовки", img: "assets/img/angsana-1.webp" },
-          { value: "private", label: "Приватная коллекция", sub: "виллы от $1.5M", img: "assets/img/amanpuri-1.webp" }
-        ]
-      },
-      {
-        key: "region",
-        question: "Какой регион вам ближе?",
-        img: "assets/img/trisara-3.jpg",
-        options: [
-          { value: "phuket", label: "Пхукет", sub: "остров, премиум-курорты", img: "assets/img/trisara-2.jpg" },
-          { value: "pattaya", label: "Паттайя", sub: "город у моря, низкий порог входа", img: "assets/img/riviera-malibu-3.jpg" },
-          { value: "any", label: "Рассмотрю оба варианта", sub: "покажем лучшее из двух регионов", img: "assets/img/btgr-beach-2.webp" }
+          { value: "rent", label: "Пассивный доход с аренды" },
+          { value: "resale", label: "Заработать на росте цены" },
+          { value: "live", label: "Жильё для себя и семьи" },
+          { value: "private", label: "Приватная коллекция" }
         ]
       },
       {
         key: "type",
         question: "Апартаменты или вилла?",
-        img: "assets/img/botanica-grand-1.jpg",
         options: [
-          { value: "condo", label: "Апартаменты", sub: "проще сдавать, ниже вход", img: "assets/img/cassia-1.webp" },
-          { value: "villa", label: "Вилла", sub: "приватность и территория", img: "assets/img/hythe-1.jpg" },
-          { value: "any", label: "Не принципиально", sub: "подберём по бюджету и цели", img: "assets/img/skypark-elara-1.webp" }
+          { value: "condo", label: "Апартаменты" },
+          { value: "villa", label: "Вилла" }
         ]
       },
       {
         key: "budget",
-        question: "Какой бюджет рассматриваете?",
-        img: "assets/img/santa-monica-3.jpg",
+        question: "Ваш бюджет?",
         options: [
-          { value: "0-250000", label: "До $250 000", icon: "01" },
-          { value: "250000-500000", label: "$250 000 – $500 000", icon: "02" },
-          { value: "500000-2000000", label: "$500 000 – $2 000 000", icon: "03" },
-          { value: "2000000-", label: "Более $2 000 000", icon: "04" }
+          { value: "0-250000", label: "До $250 000" },
+          { value: "250000-500000", label: "$250 000 – $500 000" },
+          { value: "500000-2000000", label: "$500 000 – $2 000 000" },
+          { value: "2000000-", label: "Более $2 000 000" }
+        ]
+      },
+      {
+        key: "timing",
+        question: "В течение какого периода планируете покупку?",
+        options: [
+          { value: "now", label: "Нужно срочно" },
+          { value: "weeks", label: "2–4 недели" },
+          { value: "months", label: "1–2 месяца" },
+          { value: "later", label: "Не срочно" }
         ]
       }
     ],
     renderResult(answers) {
-      const top = matchProjects(answers, 3, CATALOG); // без проектов Паттайи
       return (
         '<div class="quiz__result-badge">Подборка готова</div>' +
-        '<div class="quiz__question">Вам подходят эти проекты</div>' +
-        '<p class="quiz__hint">Оставьте контакты — пришлём полную подборку с ценами, планировками и расчётом доходности по каждому проекту</p>' +
-        miniCardsHtml(top) +
-        leadFormHtml("Получить подборку с ценами")
+        '<div class="quiz__question">Получить подборку</div>' +
+        '<p class="quiz__hint">Укажите ваше имя и телефон и мы свяжемся с вами в ближайшее время!</p>' +
+        leadFormHtml("Получить подборку")
       );
     }
   });

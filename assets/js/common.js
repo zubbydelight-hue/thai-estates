@@ -17,7 +17,7 @@
       один раз, дальше заявки идут автоматически.
    Пока LEAD_EMAIL пустой, формы работают в демо-режиме.
    ============================================================ */
-const LEAD_EMAIL = "il.ya.ok.03@gmail.com"; // ← почта для заявок (сейчас тестовая)
+const LEAD_EMAIL = "facebook.dax@yandex.ru";
 
 window.sendLead = function (fields) {
   if (!LEAD_EMAIL) {
@@ -102,11 +102,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const btnHtml = btn.innerHTML;
       const fields = {
         "Источник": form.querySelector('input[name="lead_source"]')?.value || "Сайт",
+        "Имя": form.querySelector('input[name="name"]')?.value.trim() || "",
         "Телефон": form.querySelector('input[type="tel"]')?.value.trim() || "",
         "Страница": location.href
       };
       const method = form.querySelector('input[name="method"]:checked')?.value;
       if (method) fields["Способ связи"] = method;
+      if (!fields["Имя"]) delete fields["Имя"];
 
       btn.textContent = "Отправляем…";
       btn.disabled = true;
