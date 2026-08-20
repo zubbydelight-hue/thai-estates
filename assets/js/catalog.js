@@ -52,18 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
       nameEl.textContent = p.name;
       metaEl.textContent = p.priceLabel + " · " + p.location;
     };
-    const ken = () => {
-      if (!window.gsap || reduced) return;
-      gsap.killTweensOf(img);
-      gsap.fromTo(img, { scale: 1 }, { scale: 1.07, duration: 7.2, ease: "none" });
-    };
     const show = (i, dir = 1) => {
       const next = (i + CATALOG.length) % CATALOG.length;
       const p = CATALOG[next];
       if (!img.getAttribute("src")) {
         slide = next;
         apply(p);
-        ken();
         return;
       }
       if (busy || next === slide) return;
@@ -78,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const xOut = dir > 0 ? -36 : 36;
       const xIn = dir > 0 ? 36 : -36;
       gsap.timeline({
-        onComplete: () => { busy = false; ken(); }
+        onComplete: () => { busy = false; }
       })
         .to(img, { opacity: 0, x: xOut, duration: 0.32, ease: "power2.in" }, 0)
         .to([nameEl, metaEl], { opacity: 0, y: 10, duration: 0.22, ease: "power2.in" }, 0)
@@ -91,21 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
         .to([nameEl, metaEl], { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, "<0.08");
     };
     show(0);
-    let timer = 0;
-    const restart = () => {
-      clearInterval(timer);
-      if (reduced) return;
-      timer = setInterval(() => show(slide + 1, 1), 4800);
-    };
-    const go = (delta) => {
-      show(slide + delta, delta);
-      restart();
-    };
-    polaroid.querySelector(".sv-polaroid__arrow--prev").addEventListener("click", () => go(-1));
-    polaroid.querySelector(".sv-polaroid__arrow--next").addEventListener("click", () => go(1));
-    polaroid.addEventListener("mouseenter", () => clearInterval(timer));
-    polaroid.addEventListener("mouseleave", restart);
-    restart();
+    polaroid.querySelector(".sv-polaroid__arrow--prev").addEventListener("click", () => show(slide - 1, -1));
+    polaroid.querySelector(".sv-polaroid__arrow--next").addEventListener("click", () => show(slide + 1, 1));
   }
 
   function render(list) {
