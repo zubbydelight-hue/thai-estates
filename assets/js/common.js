@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const err = document.createElement("span");
           err.className = "form-note form-send-error";
           err.style.color = "#c96f5b";
-          err.textContent = "Не получилось отправить — попробуйте ещё раз или позвоните: +66 80 000 00 00";
+          err.textContent = "Не получилось отправить заявку. Проверьте соединение и попробуйте ещё раз.";
           btn.insertAdjacentElement("afterend", err);
         });
     });
