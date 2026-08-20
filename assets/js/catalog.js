@@ -44,17 +44,68 @@ document.addEventListener("DOMContentLoaded", () => {
     const img = polaroid.querySelector("img");
     const nameEl = polaroid.querySelector(".sv-polaroid__name");
     const metaEl = polaroid.querySelector(".sv-polaroid__meta");
-    const show = (i) => {
-      slide = (i + CATALOG.length) % CATALOG.length;
-      const p = CATALOG[slide];
+    let busy = false;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const apply = (p) => {
       img.src = p.img;
       img.alt = p.name;
       nameEl.textContent = p.name;
       metaEl.textContent = p.priceLabel + " · " + p.location;
     };
+    const ken = () => {
+      if (!window.gsap || reduced) return;
+      gsap.killTweensOf(img);
+      gsap.fromTo(img, { scale: 1 }, { scale: 1.07, duration: 7.2, ease: "none" });
+    };
+    const show = (i, dir = 1) => {
+      const next = (i + CATALOG.length) % CATALOG.length;
+      const p = CATALOG[next];
+      if (!img.getAttribute("src")) {
+        slide = next;
+        apply(p);
+        ken();
+        return;
+      }
+      if (busy || next === slide) return;
+      busy = true;
+      slide = next;
+      if (window.gsap) gsap.killTweensOf([img, nameEl, metaEl]);
+      if (!window.gsap || reduced) {
+        apply(p);
+        busy = false;
+        return;
+      }
+      const xOut = dir > 0 ? -36 : 36;
+      const xIn = dir > 0 ? 36 : -36;
+      gsap.timeline({
+        onComplete: () => { busy = false; ken(); }
+      })
+        .to(img, { opacity: 0, x: xOut, duration: 0.32, ease: "power2.in" }, 0)
+        .to([nameEl, metaEl], { opacity: 0, y: 10, duration: 0.22, ease: "power2.in" }, 0)
+        .add(() => {
+          apply(p);
+          gsap.set(img, { x: xIn, scale: 1 });
+          gsap.set([nameEl, metaEl], { y: 12 });
+        })
+        .to(img, { opacity: 1, x: 0, duration: 0.48, ease: "power3.out" })
+        .to([nameEl, metaEl], { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, "<0.08");
+    };
     show(0);
-    polaroid.querySelector(".sv-polaroid__arrow--prev").addEventListener("click", () => show(slide - 1));
-    polaroid.querySelector(".sv-polaroid__arrow--next").addEventListener("click", () => show(slide + 1));
+    let timer = 0;
+    const restart = () => {
+      clearInterval(timer);
+      if (reduced) return;
+      timer = setInterval(() => show(slide + 1, 1), 4800);
+    };
+    const go = (delta) => {
+      show(slide + delta, delta);
+      restart();
+    };
+    polaroid.querySelector(".sv-polaroid__arrow--prev").addEventListener("click", () => go(-1));
+    polaroid.querySelector(".sv-polaroid__arrow--next").addEventListener("click", () => go(1));
+    polaroid.addEventListener("mouseenter", () => clearInterval(timer));
+    polaroid.addEventListener("mouseleave", restart);
+    restart();
   }
 
   function render(list) {

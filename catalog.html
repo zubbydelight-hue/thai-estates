@@ -1252,7 +1252,7 @@
       overflow: hidden;
       border: 1px solid var(--hair-l);
     }
-    .sv-edit__hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 32% 48%; }
+    .sv-edit__hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 32% 0%; }
     .sv-edit__hero::after {
       content: "";
       position: absolute; inset: 0;
@@ -1273,8 +1273,15 @@
     .sv-stamp b { display: block; font-family: var(--ff-d); font-size: clamp(18px, 1.8vw, 26px); font-weight: 500; color: var(--gold-2); line-height: 1.1; }
     .sv-stamp span { display: block; margin-top: 6px; font-size: 11px; line-height: 1.35; color: rgba(244, 240, 230, 0.6); }
     .sv-polaroid { padding: 0; display: flex; flex-direction: column; }
-    .sv-polaroid__media { position: relative; }
-    .sv-polaroid img { width: 100%; aspect-ratio: 16 / 11; object-fit: cover; display: block; }
+    .sv-polaroid__media { position: relative; overflow: hidden; }
+    .sv-polaroid img {
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      object-fit: cover;
+      display: block;
+      will-change: transform, opacity;
+    }
+    .sv-polaroid__name, .sv-polaroid__meta { will-change: transform, opacity; }
     .sv-polaroid__arrow {
       position: absolute;
       top: 50%;
@@ -2086,7 +2093,7 @@
   <script src="assets/js/data.js?v=12"></script>
   <script src="assets/js/quiz-engine.js?v=17"></script>
   <script src="assets/js/common.js?v=15"></script>
-  <script src="assets/js/catalog.js?v=32"></script>
+  <script src="assets/js/catalog.js?v=33"></script>
   <script src="assets/js/motion.js?v=11"></script>
 </body>
 </html>
