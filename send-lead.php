@@ -1,6 +1,8 @@
 <?php
 /* ============================================================
    ALVO — серверная отправка заявок
+   Работает на любом хостинге с PHP 7+ (Beget, Timeweb и т.п.),
+   ничего в настройках хостинга менять не нужно.
 
    Зачем: сервис formsubmit.co при отправке прямо из браузера
    требует заголовок Referer и отдельную активацию для каждого
@@ -21,8 +23,13 @@
 
 $LEAD_EMAIL = 'facebook.dax@yandex.ru';        // куда приходят заявки
 $SITE_URL   = 'https://alvo-company.ru/';      // домен, на котором активирована форма formsubmit
-$FROM_EMAIL = 'noreply@alvo-company.ru';       // отправитель для mail(): обязательно на домене сайта
 $FROM_NAME  = 'Сайт ALVO';
+// Отправитель для mail(): Beget и другие хостинги требуют адрес на домене сайта,
+// иначе подменяют его на unverified@... и письмо уходит в спам. Берём домен автоматически.
+$host = isset($_SERVER['HTTP_HOST']) ? strtolower(preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'])) : '';
+$host = preg_replace('/^www\./', '', $host);
+if ($host === '' || !preg_match('/^[a-z0-9.-]+\.[a-z]{2,}$/', $host)) $host = 'alvo-company.ru';
+$FROM_EMAIL = 'noreply@' . $host;
 
 ini_set('display_errors', '0'); // любые notice хостинга не должны ломать JSON-ответ
 header('Content-Type: application/json; charset=utf-8');
