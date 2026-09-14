@@ -3,46 +3,74 @@
 /* ============================================================
    ЗАЯВКИ НА ПОЧТУ (для интеграции с amoCRM)
 
-   Заявки отправляются письмом через сервис formsubmit.co
-   на адрес LEAD_EMAIL. Тема письма собирается по шаблону
+   Тема письма собирается по шаблону
    «Заявка ALVO | <источник> | <телефон>» — из неё интегратор
    вытаскивает данные для идентификации заявки в amoCRM.
    В теле письма — таблица: источник, телефон (+7 …),
    способ связи, ответы квиза, страница.
 
-   Как включить:
-   1. Впишите почту для заявок в LEAD_EMAIL ниже.
-   2. Отправьте первую заявку с сайта — formsubmit.co пришлёт
-      на эту почту письмо со ссылкой активации. Подтвердите
-      один раз, дальше заявки идут автоматически.
+   Как отправляется:
+   1. Основной канал — серверный скрипт send-lead.php (лежит
+      в корне сайта рядом с index.html). Он сам доставляет
+      заявку на почту LEAD_EMAIL и не зависит от браузера,
+      блокировщиков и домена (www / без www).
+   2. Если скрипта нет (например, сайт открыт с GitHub Pages)
+      или он не ответил — запасной канал: formsubmit.co
+      напрямую из браузера. Ему нужна разовая активация
+      адреса и заголовок Referer, поэтому он ненадёжен
+      на телефонах — только как подстраховка.
    Пока LEAD_EMAIL пустой, формы работают в демо-режиме.
    ============================================================ */
 const LEAD_EMAIL = "facebook.dax@yandex.ru";
+const LEAD_ENDPOINT = "send-lead.php";
 
 window.sendLead = function (fields) {
   if (!LEAD_EMAIL) {
     console.warn("LEAD_EMAIL не указан — заявка не отправлена (демо-режим)", fields);
     return new Promise((resolve) => setTimeout(() => resolve({ demo: true }), 700));
   }
-  const payload = Object.assign(
-    {
-      _subject: "Заявка ALVO | " + (fields["Источник"] || "сайт") + " | " + (fields["Телефон"] || ""),
-      _template: "table",
-      _captcha: "false"
-    },
-    fields
-  );
-  return fetch("https://formsubmit.co/ajax/" + LEAD_EMAIL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify(payload)
-  }).then((r) => {
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    return r.json().then((data) => {
-      // formsubmit отвечает 200 даже без активации формы — проверяем флаг
-      if (String(data.success) === "false") throw new Error(data.message || "not activated");
+
+  const fetchJson = (url, body, ms) => {
+    const ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+    const timer = setTimeout(() => ctrl && ctrl.abort(), ms);
+    return fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(body),
+      signal: ctrl ? ctrl.signal : undefined
+    })
+      .then((r) => r.json().then((data) => ({ status: r.status, data })))
+      .finally(() => clearTimeout(timer));
+  };
+
+  // 1) серверный обработчик на хостинге
+  const viaServer = () =>
+    fetchJson(LEAD_ENDPOINT, fields, 25000).then(({ status, data }) => {
+      if (status >= 200 && status < 300 && data && data.ok === true) return data;
+      throw new Error("server: " + (data && (data.error || data.message) ? data.error || data.message : "HTTP " + status));
+    });
+
+  // 2) запасной канал — formsubmit.co прямо из браузера
+  const viaFormsubmit = () => {
+    const payload = Object.assign(
+      {
+        _subject: "Заявка ALVO | " + (fields["Источник"] || "сайт") + " | " + (fields["Телефон"] || ""),
+        _template: "table",
+        _captcha: "false"
+      },
+      fields
+    );
+    return fetchJson("https://formsubmit.co/ajax/" + LEAD_EMAIL, payload, 20000).then(({ status, data }) => {
+      if (status < 200 || status >= 300) throw new Error("HTTP " + status);
+      // formsubmit отвечает 200 даже при отказе — проверяем флаг
+      if (!data || String(data.success) !== "true") throw new Error((data && data.message) || "formsubmit failed");
       return data;
     });
+  };
+
+  return viaServer().catch((err) => {
+    console.warn("Заявка: серверный канал недоступен, пробуем formsubmit —", err && err.message);
+    return viaFormsubmit();
   });
 };
 

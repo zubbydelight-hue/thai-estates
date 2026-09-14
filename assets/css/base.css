@@ -1007,3 +1007,51 @@ body.menu-open .nav::before { opacity: 0; }
   .btn--lg { height: 60px; padding: 0 34px; }
   .footer__word { font-size: clamp(40px, 12vw, 64px); white-space: normal; }
 }
+
+/* ---------- Cookie + Яндекс.Метрика ---------- */
+.cookie-bar {
+  position: fixed;
+  left: max(16px, env(safe-area-inset-left));
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 16px 18px;
+  background: var(--night);
+  color: var(--cream);
+  border-radius: 16px;
+  border: 1px solid rgba(194, 161, 99, 0.4);
+  box-shadow: 0 22px 60px rgba(11, 16, 12, 0.4);
+}
+.cookie-bar__text {
+  margin: 0;
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(244, 240, 230, 0.82);
+}
+.cookie-bar__text a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
+.cookie-bar__ok {
+  flex-shrink: 0;
+  height: 42px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--night);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.cookie-bar.is-out { opacity: 0; transform: translateY(10px); transition: opacity 0.25s, transform 0.25s; pointer-events: none; }
+@media (max-width: 560px) {
+  .cookie-bar { flex-direction: column; align-items: stretch; }
+  .cookie-bar__ok { width: 100%; }
+}
